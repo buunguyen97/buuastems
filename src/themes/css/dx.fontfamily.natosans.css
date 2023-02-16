@@ -1,0 +1,27 @@
+@charset "UTF-8"; 
+
+/* font-family */
+/* 
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 100;src: url(fonts/NotoSansKR-Thin.woff2) format('woff2'),url(fonts/NotoSansKR-Thin.woff) format('woff'),url(fonts/NotoSansKR-Thin.otf) format('opentype');} 
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 300;src: url(fonts/NotoSansKR-Light.woff2) format('woff2'),url(fonts/NotoSansKR-Light.woff) format('woff'),url(fonts/NotoSansKR-Light.otf) format('opentype');} 
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 400;src: url(fonts/NotoSansKR-Regular.woff2) format('woff2'),url(fonts/NotoSansKR-Regular.woff) format('woff'),url(fonts/NotoSansKR-Regular.otf) format('opentype');} 
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 500;src: url(fonts/NotoSansKR-Medium.woff2) format('woff2'),url(fonts/NotoSansKR-Medium.woff) format('woff'),url(fonts/NotoSansKR-Medium.otf) format('opentype');} 
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 700;src: url(fonts/NotoSansKR-Bold.woff2) format('woff2'),url(fonts/NotoSansKR-Bold.woff) format('woff'),url(fonts/NotoSansKR-Bold.otf) format('opentype');} 
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 900;src: url(fonts/NotoSansKR-Black.woff2) format('woff2'),url(fonts/NotoSansKR-Black.woff) format('woff'),url(fonts/NotoSansKR-Black.otf) format('opentype');} */
+
+/* @font-face {font-family: 'Nanum Gothic';font-style: normal;font-weight: 300;src: url(fonts/NanumGothicLight.woff2) format('woff2'),url(fonts/NanumGothicLight.woff) format('woff'),url(fonts/NanumGothicLight.otf) format('opentype');} 
+@font-face {font-family: 'Nanum Gothic';font-style: normal;font-weight: 400;src: url(fonts/NanumGothic.woff2) format('woff2'),url(fonts/NanumGothic.woff) format('woff'),url(fonts/NanumGothic.otf) format('opentype');} 
+@font-face {font-family: 'Nanum Gothic';font-style: normal;font-weight: 700;src: url(fonts/NanumGothicBold.woff2) format('woff2'),url(fonts/NanumGothicBold.woff) format('woff'),url(fonts/NanumGothicBold.otf) format('opentype');} 
+@font-face {font-family: 'Nanum Gothic';font-style: normal;font-weight: 800;src: url(fonts/NanumGothicExtraBold.woff2) format('woff2'),url(fonts/NanumGothicExtraBold.woff) format('woff'),url(fonts/NanumGothicExtraBold.otf) format('opentype');}  */
+/* 
+html * {font-family: "Noto Sans KR", "Lucida Sans", Tohoma, Verdana, sans-serif;} */
+/* html * {font-family: "Malgun Gothic", "Lucida Sans", Tohoma, Verdana, sans-serif;} */
+/* html * {font-family: "Nanum Gothic", "Malgun Gothic", "Lucida Sans", Tohoma, Verdana, sans-serif;} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+html * {
+  font-family: 'Noto Sans KR', "Lucida Sans", Tohoma, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

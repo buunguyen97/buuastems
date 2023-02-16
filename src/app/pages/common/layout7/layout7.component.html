@@ -1,0 +1,945 @@
+<div class="map-drawer-wrapper">
+    <div class="map-drawer-inner">
+        <div class="left-side">
+            <!--기본 상하차 정보 패널-->
+            <div class="con1" id="container">
+                <div class="contents-header">
+                    <dx-button #bookmarkBtn
+                          class="bookmark-btn"
+                          (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+                    ></dx-button>
+                    <h2 class="content-block page-title">배차요청</h2>
+                    <span class="page-button-group">
+                        <span>운송 정보 입력 </span>
+                        <span class="page-count">{{currentStep}}/3</span>
+                    </span>
+                </div>
+                <div class="contents-body">
+                    <div class="contents-list">
+                        <dx-form #mainForm
+                        class="map-form-box"
+                        [(formData)]="mainFormData"
+                        [minColWidth]="300"
+                        [colCount]="1"
+                        [showColonAfterLabel]="false"
+                        labelLocation="left"
+                         >
+                            <!--step 1-->
+                            <dxi-item *ngIf="currentStep == 1" itemType="group">
+                            <!--상차지 -->
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title from">상차지</h3>
+                                        <dx-button text="주소록" (onClick)="addressPopupOpen()"></dx-button>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item dataField="상호(성명)" [colSpan]="1" cssClass="table-item border-right">
+                                            <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="담당자" [colSpan]="1" cssClass="table-item"></dxi-item>
+                                        <dxi-item itemType="group" [label]="{visible: false}" [colCount]="1" [colSpan]="2" cssClass="table-btn-group">
+                                            <dxi-item dataField="주소검색" [colCount]="1" cssClass="table-item table-btn-input">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                            <dxi-item cssClass="table-btn-md">
+                                                <dx-button text="주소검색"></dx-button>
+                                            </dxi-item>
+                                        </dxi-item>
+
+                                        <dxi-item dataField="상세주소" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="연락처1" [colSpan]="1" cssClass="table-item border-right" [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                                            <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="연락처2" [colSpan]="1" cssClass="table-item" [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}"></dxi-item>
+                                        <dxi-item dataField="상차일시" editorType="dxDateBox" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="전달사항" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                    </dxi-item>
+                                
+                                </dxi-item>
+                                <!--//상차지 -->
+                                <!--경유지 -->
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1"
+                                *ngFor="let stop of stops; let i = index" 
+                                >
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title transit">경유지</h3>
+                                        <div>
+                                            <dx-button 
+                                            type="dark"
+                                            icon="minus" 
+                                            text="경유지 삭제"
+                                            (onClick)="onRemoveStop(i)"
+                                            ></dx-button>
+                                            <dx-button text="주소록" (onClick)="addressPopupOpen()"></dx-button>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item dataField="상호(성명)" [colSpan]="1" cssClass="table-item border-right">
+                                            <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="담당자" [colSpan]="1" cssClass="table-item"></dxi-item>
+                                        <dxi-item itemType="group" [label]="{visible: false}" [colCount]="1" [colSpan]="2" cssClass="table-btn-group">
+                                            <dxi-item dataField="주소검색" [colCount]="1" cssClass="table-item table-btn-input">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                            <dxi-item cssClass="table-btn-md">
+                                                <dx-button text="주소검색"></dx-button>
+                                            </dxi-item>
+                                        </dxi-item>
+
+                                        <dxi-item dataField="상세주소" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="연락처1" [colSpan]="1" cssClass="table-item border-right" [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                                            <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="연락처2" [colSpan]="1" cssClass="table-item" [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}"></dxi-item>
+                                        <dxi-item dataField="상차일시" editorType="dxDateBox" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="전달사항" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                    </dxi-item>
+                                
+                                </dxi-item>
+                                <!--//경유지 -->
+                                <dxi-item class="btn-tool">
+                                    <dx-button *ngIf="stops.length == 0" icon="swap" text="상하자 전환" ></dx-button>
+                                    <dx-button #addStopBtn icon="location-pin" text="경유지 추가" (onClick)="onAddStop()"></dx-button>
+                                </dxi-item>
+                                <!--하차지 -->
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title to">하차지</h3>
+                                        <dx-button text="주소록" (onClick)="addressPopupOpen()"></dx-button>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item dataField="상호(성명)" [colSpan]="1" cssClass="table-item border-right">
+                                            <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="담당자" [colSpan]="1" cssClass="table-item"></dxi-item>
+                                        <dxi-item itemType="group" [label]="{visible: false}" [colCount]="1" [colSpan]="2" cssClass="table-btn-group">
+                                            <dxi-item dataField="주소검색" [colCount]="1" cssClass="table-item table-btn-input">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                            <dxi-item cssClass="table-btn-md">
+                                                <dx-button text="주소검색"></dx-button>
+                                            </dxi-item>
+                                        </dxi-item>
+
+                                        <dxi-item dataField="상세주소" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="연락처1" [colSpan]="1" cssClass="table-item border-right" [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                                            <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="연락처2" [colSpan]="1" cssClass="table-item" [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}"></dxi-item>
+                                        <dxi-item dataField="상차일시" editorType="dxDateBox" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="전달사항" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                    </dxi-item>
+                                
+                                </dxi-item>
+                                <!--//하차지 -->
+                            </dxi-item> 
+                            <!--//step 1-->
+                            <!--step2-->
+                            <dxi-item *ngIf="currentStep == 2" itemType="group">
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">물품종류</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item itemType="group" [colCount]="1" [colSpan]="1" cssClass="table-select-group">
+                                            <dxi-item itemType="group" cssClass="table-item table-select">
+                                                <dx-select-box [items]="['dd','dd']">
+                                                    <dxo-drop-down-options container=".contents-list"> </dxo-drop-down-options>
+                                                  </dx-select-box>
+                                            </dxi-item>
+                                            <dxi-item dataField="물품분류" cssClass="table-item table-select-input">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                        </dxi-item>
+                                    </dxi-item>
+                                
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">물품포장</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="1" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item itemType="group" [colCount]="1" [colSpan]="1" cssClass="table-select-group">
+                                            <dxi-item itemType="group" cssClass="table-item table-select">
+                                                <dx-select-box [items]="['dd','dd']">
+                                                    <dxo-drop-down-options container=".contents-list"> </dxo-drop-down-options>
+                                                  </dx-select-box>
+                                            </dxi-item>
+                                            <dxi-item dataField="포장방법" cssClass="table-item table-select-input">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                            <dxi-item cssClass="table-unit">개</dxi-item>
+                                    </dxi-item>
+                                </dxi-item>
+                                
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">중량 및 규격</h3>
+                                        <dxi-item cssClass="sign-check">
+                                            <dx-check-box text="탄소배출량 기록여부"></dx-check-box>
+                                        </dxi-item>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                                            <dxi-item dataField="중량" [colSpan]="2" cssClass="table-item">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                            <dxi-item cssClass="table-unit">톤</dxi-item>
+                                        </dxi-item>
+                                        <dxi-item itemType="group" [colCount]="7" [colSpan]="2" cssClass="table-multi-group">
+                               
+                                            <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="3">
+                                                <dxi-item dataField="규격" [colSpan]="1" cssClass="table-item" [editorOptions]="{ placeholder: '가로'}">
+                                                    <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                                </dxi-item>
+                                                <dxi-item cssClass="table-unit">mm</dxi-item>
+                                                <dxi-item cssClass="table-mark">x</dxi-item>
+                                            </dxi-item>
+                                            <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                                                <dxi-item dataField="물품가액" [label]="{visible: false}"[colSpan]="1" cssClass="table-item" [editorOptions]="{ placeholder: '세로'}">
+                                                    <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                                </dxi-item>
+                                                <dxi-item cssClass="table-unit">mm</dxi-item>
+                                                <dxi-item cssClass="table-mark">x</dxi-item>
+                                            </dxi-item>
+                                            <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                                                <dxi-item dataField="물품가액" [label]="{visible: false}" [colSpan]="1" cssClass="table-item" [editorOptions]="{ placeholder: '높이'}">
+                                                    <dxi-validation-rule
+                                                        type="required"
+                                                    ></dxi-validation-rule>
+                                                </dxi-item>
+                                                <dxi-item cssClass="table-unit">mm</dxi-item>
+                                            </dxi-item>
+                                        </dxi-item>
+                                        <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                                            <dxi-item dataField="cbm" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                            <dxi-item cssClass="table-unit">㎥</dxi-item>
+                                        </dxi-item>
+                                    </dxi-item>
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">물품가액 및 적재옵션</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                                            <dxi-item dataField="물품가액" [colSpan]="2" cssClass="table-item"></dxi-item>
+                                            <dxi-item cssClass="table-unit">￦</dxi-item>
+                                        </dxi-item>
+                                        <dxi-item dataField="적재옵션" [colSpan]="2"  editorType="dxSelectBox" cssClass="table-item"></dxi-item>
+                                    </dxi-item>
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">오더 유형 및 분류</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item dataField="오더분류" [colSpan]="2"  editorType="dxSelectBox" cssClass="table-item">
+                                            <dxi-validation-rule
+                                                type="required"
+                                            ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="오더유형" [colSpan]="1"  editorType="dxSelectBox" cssClass="table-item">
+                                            <dxi-validation-rule
+                                                type="required"
+                                            ></dxi-validation-rule>
+                                        </dxi-item>
+                                        <dxi-item dataField="운송사" [colSpan]="1"  editorType="dxSelectBox" cssClass="table-item"></dxi-item>
+                                    </dxi-item>
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">차량정보</h3>
+                                        <dx-button text="차량제원" (onClick)="  transportPopupOpen()"></dx-button>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item dataField="차량선택" [colSpan]="2"  editorType="dxSelectBox" cssClass="table-item"></dxi-item>
+                                        <dxi-item dataField="차량종류" [colSpan]="1"  editorType="dxSelectBox" cssClass="table-item"></dxi-item>
+                                        <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="1">
+                                            <dxi-item dataField="차량대수" [colSpan]="1"  cssClass="table-item">
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                            <dxi-item cssClass="table-unit">대</dxi-item>
+                                        </dxi-item>
+                                    </dxi-item>
+                                    <dxi-item>
+                                        <span class="noti">차량 선택이 어렵다면, 상단의 <b>차량제원을 참고</b>하세요.</span>
+                                    </dxi-item>
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">차량옵션</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="3" [colSpan]="1" cssClass="table-custom no-border">
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check1"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '짐받이',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check2"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '무진등',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check3"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '리프트',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                  
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check4"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '짐받이',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check5"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '옆문개방',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check6"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '뒷문개방',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                        <dxi-item
+                                            itemType="simple"
+                                            dataField="check7"
+                                            editorType="dxCheckBox"
+                                            [colSpan]="1" 
+                                            [editorOptions]="{
+                                            text: '차량덮개',
+                                            value: false
+                                            }"
+                                        >
+                                            <dxo-label [visible]="false"> </dxo-label>
+                                        </dxi-item>
+                                    </dxi-item>
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">운송구간</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item itemType="group" [colCount]="1" [colSpan]="2" cssClass="table-select-group">
+                                            <dxi-item dataField="구간"
+                                            [label]="{visible: false}"
+                                            editorType="dxSelectBox" 
+                                            cssClass="table-item table-select"></dxi-item>
+                                            <dxi-item
+                                                itemType="simple"
+                                                dataField="구간"
+                                                editorType="dxCheckBox"
+                                                cssClass="table-item table-select-input"
+                                                [editorOptions]="{
+                                                text: '차량덮개',
+                                                value: false
+                                                }"
+                                            >
+                                                <dxi-validation-rule
+                                                    type="required"
+                                                ></dxi-validation-rule>
+                                            </dxi-item>
+                                        </dxi-item>
+                                    </dxi-item>
+                                </dxi-item>
+                            </dxi-item>
+                            <!-- //step2-->
+                            <!-- step3-->
+                            <dxi-item *ngIf="currentStep == 3" itemType="group">
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">결제방식</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                                        <dxi-item dataField="결제방식" [colSpan]="2"  editorType="dxSelectBox" cssClass="table-item"></dxi-item>
+                                    </dxi-item>
+                                
+                                </dxi-item>
+                                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                                    <dxi-item class="table-header" [colSpan]="1">
+                                        <h3 class="table-title">결제방식</h3>
+                                    </dxi-item>
+                                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="border-custom">
+                                        <dx-radio-group 
+                                            [dataSource]="['카드 간편형 결제','충전형카드']"
+                                            itemTemplate="radio"
+                                            (onValueChanged)="onActivePanel($event)"
+                                            >
+                                            <div class="radio" *dxTemplate="let data of 'radio'"
+                                            >
+                                                <p class="radio-label" ><b>{{data}}</b></p>
+                                              
+                                                <div *ngIf="data == '카드 간편형 결제' && isActivePanel == '카드 간편형 결제'" class="radio-box">
+                                                    <dx-button text="카드등록" class="purple addCard" (onClick)="addPopupOpen()"></dx-button>
+                                                    <div class="slide-wrap">
+                                                        <div class="slides-container">
+                                                            <div class="slide-prev">
+                                                                <dx-button 
+                                                                id="cardPrevBtn" 
+                                                                icon="chevronleft" 
+                                                                class="disabled"
+                                                                (click)="onPrevCard(onActiveCardNum - 1)"></dx-button>
+                                                            </div>
+                                                            
+                                                            <div class="slides">
+                                                                <div id="slideList" class="slide-inner">
+                                                                    <dxi-item
+                                                                        itemType="group"
+                                                                        name="cards"
+                                                                        class="card-slide"
+                                                                        *ngFor="let card of cardOptions; let i = index"
+                                                                        [ngClass]="{selected: onActiveCardNum === i +1}"
+                                                                        (click)="selectCard(i + 1)"
+                                                                    >
+                                                                        <dxi-item cssClass="user-card-item" id="'card[' + i + ']'">
+                                                                            <img src="{{ card.ImageSrc }}">
+                                                                        </dxi-item>
+                                                                    </dxi-item>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="slide-next">
+                                                                <dx-button 
+                                                                id="cardNextBtn"
+                                                                icon="chevronright" (click)="onNextCard(onActiveCardNum + 1)"></dx-button>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class="slide-select">
+                                                            <dx-select-box [items]="['일시불','2개월']"></dx-select-box>
+                                                            <b><span class="current">{{onActiveCardNum}}</span>/4</b>
+                                                        </div>
+                                                    </div>
+                                                    <dxi-item>
+                                                        <dxi-item dataField="구간"
+                                                        [label]="{visible: false}"
+                                                        editorType="dxSelectBox" 
+                                                        cssClass="table-item table-select"></dxi-item>
+                                                    </dxi-item>
+                                                </div> 
+                                                <div *ngIf="data == '충전형카드' && isActivePanel == '충전형카드'" class="radio-box">
+                                                    <div class="border-row">
+                                                        <span>잔액</span>
+                                                        <b>120,000</b>
+                                                    </div>
+                                                    <div class="color-box">
+                                                        <dx-button text="카드내역보기" class="purple"></dx-button>
+                                                        <dx-button text="잔액충전"></dx-button>
+                                                        <dx-button text="잔액인출"></dx-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </dx-radio-group>
+                                      
+                                    </dxi-item>
+                                
+                                </dxi-item>
+                            </dxi-item>
+                            <!-- //step3-->
+                        </dx-form>
+                    </div>
+                </div>
+                <div *ngIf="currentStep == 1" class="contents-bottom">
+                    <div class="bottom-btn-group">
+                        <dx-button
+                            type="signup"
+                            text="다음 단계로"
+                            (onClick)="onChangeStep(2)"
+                        ></dx-button>
+                    </div>
+                </div>
+                <div *ngIf="currentStep == 2" class="contents-bottom">
+                    <div class="bottom-btn-group">
+                        <dx-button
+                            type="signup-border"
+                            text="이전 단계로"
+                            (onClick)="onChangeStep(1)"
+                        ></dx-button>
+                        <dx-button
+                            type="signup"
+                            text="다음 단계로"
+                            (onClick)="onChangeStep(3)"
+                        ></dx-button>
+                    </div>
+                </div>
+                <div *ngIf="currentStep == 3" class="contents-bottom">
+                    <div class="row border">
+                      <b class="price-title">결제금액</b>  
+                      <b class="price">190,000 원</b>
+                    </div>
+                    <div class="row border">
+                        <div class="padding-inner">
+                            <span class="item-distance">예상 주행거리</span><span>175 km</span>
+                        </div>
+                        <div class="padding-inner">
+                            <span class="item-clock">예상 소요시간</span><span>2시간 46분</span>
+                        </div>
+                    </div>
+                    <div class="check-container">
+                        <div class="row">
+                            <div>
+                                <input  id="check1" type="checkbox" class="custom-check"><label for="check1" class="dx-checkbox-icon"></label>
+                                <span><span class="point">(필수)</span> 서비스 이용약관 동의</span>
+                            </div>
+                            <a href="" class="underline">전문보기</a>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <input id="check2" type="checkbox" class="custom-check"><label for="check2" class="dx-checkbox-icon"></label>
+                                <span><span class="point">(필수)</span> 개인정보 수집 및 이용</span>
+                            </div>
+                            <a href="" class="underline">전문보기</a>
+                        </div>
+                    </div>
+                    <div class="bottom-btn-group">
+                        <dx-button
+                            type="signup"
+                            text="결제 및 배차요청"
+                        ></dx-button>
+                    </div>
+                
+                </div> 
+            </div>
+            <!--//기본 상하차 정보 패널-->
+            <!--side 정보 패널 -->
+            <div *ngIf="sideFormVisible" #sideForm class="con2">
+                <div class="con2-list">
+                    <div class="con2-content">
+                        <b class="con2-title"><span class="con2-icon icon1"></span>운송 정보</b>
+                        <div class="border-card">
+                            <span class="card-title from">상차지</span>
+                            <b>(주) AA생산</b>
+                            <span>서울시 금천구 가산디지털2</span>
+                            <span>166 1층 101호</span>
+                            <span>김상차, 010-1111-2222</span>
+                            <hr/>
+                            <span class="noti"> 상차지에서 물건 상차 후 30분 대기</span>
+                        </div>
+                        <div class="border-card">
+                            <span class="border-badge">하차</span>
+                            <span class="card-title transit">경유지</span>
+                            <b>(주) AA생산</b>
+                            <span>서울시 금천구 가산디지털2</span>
+                            <span>166 1층 101호</span>
+                            <span>김상차, 010-1111-2222</span>
+                            <hr/>
+                            <span class="noti"> 상차지에서 물건 상차 후 30분 대기</span>
+                        </div>
+                        <div class="border-card">
+                            <span class="card-title to">하차지</span>
+                            <b>(주) AA생산</b>
+                            <span>서울시 금천구 가산디지털2</span>
+                            <span>166 1층 101호</span>
+                            <span>김상차, 010-1111-2222</span>
+                            <hr/>
+                            <span class="noti"> 상차지에서 물건 상차 후 30분 대기</span>
+                        </div>
+                    </div>
+                    <div class="con2-content">
+                        <b class="con2-title"><span class="con2-icon icon2"></span>물품 정보</b>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>물품명</th>
+                                        <td>소형가전</td>
+                                    </tr>
+                                    <tr>
+                                        <th>수량</th>
+                                        <td>Box 10개</td>
+                                    </tr>
+                                    <tr>
+                                        <th>물품금액</th>
+                                        <td>￦ 1,000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>흔적여부</th>
+                                        <td>독차</td>
+                                    </tr>
+                                    <tr>
+                                        <th>적재량</th>
+                                        <td>7 톤</td>
+                                    </tr>
+                                    <tr>
+                                        <th>규격(mm)</th>
+                                        <td>900x1000x500</td>
+                                    </tr>
+                                    <tr>
+                                        <th>부피</th>
+                                        <td>450000000 (m3)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="con2-content">
+                        <b class="con2-title"><span class="con2-icon icon3"></span>물품 정보</b>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>차량종류</th>
+                                        <td>카고</td>
+                                    </tr>
+                                    <tr>
+                                        <th>왕복여부</th>
+                                        <td>편도</td>
+                                    </tr>
+                                    <tr>
+                                        <th>적재량</th>
+                                        <td>10 톤</td>
+                                    </tr>
+                                    <tr>
+                                        <th>운송사</th>
+                                        <td>oo통운</td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--//side 정보 패널 -->
+        </div>
+        <div class="right-content">
+            <!--map-->
+            <div class="map-container">
+                <dx-map #sMap></dx-map>
+            </div>
+            <!-- //map-->
+            <!--즐겨찾기-->
+            <div class="map-bookmark-wrap" [class.expanded]="isBookmakExpanded">
+                <div class="box top">
+                    <div class="box-header">
+                        <b>서울 종로구 사직동</b>
+                        <span>
+                            현위치로 수정 <dx-button icon="location" class="location-btn"></dx-button>
+                        </span>
+                    </div>
+                    <!--
+                        dx-icon-weather1: 청명
+                        dx-icon-weather2: 맑음
+                        dx-icon-weather3: 구름많음
+                        dx-icon-weather4: 흐림
+                    -->
+                    <div class="box-contents">
+                        <div class="flex-between current-box">
+                            <div class="weather-item">
+                                <span class="weather-flex"><i class="dx-icon-weather dx-icon-weather4"></i><b> 29℃</b></span>
+                                <span>13시 현재, 흐림</span>
+                            </div>
+                            <div>
+                                <span>어제보다 2℃ 높아요</span>
+                            </div>
+                        </div>
+                        <div class="flex-between">
+                            <div class="weather-item">
+                                <span class="weather-flex"><i class="dx-icon-weather dx-icon-weather2"></i><b> 29℃</b></span>
+                                <span>15시,맑음</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="weather-flex"><i class="dx-icon-weather dx-icon-weather3"></i><b> 29℃</b></span>
+                                <span>17시,구름많음</span>
+                            </div>
+                            <div class="weather-item">
+                                <span class="weather-flex"><i class="dx-icon-weather dx-icon-weather1"></i><b> 29℃</b></span>
+                                <span>19시,흐림</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isBookmakExpanded" class="box bottom">
+                    <!--최대 10개까지만 출력-->
+                    <div
+                        *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]; let i = index"
+                    >
+                        <div class="bottom-item">
+                            <span><i class="dx-icon dx-icon-clock"></i></span>
+                            <div class="lines">
+                                <span>ACME경기공장 → <span class="point">+2</span> 경유 → 서울OOO센터</span>
+                                <span><b>단독</b>· 파렛트 · 카고 2.5톤</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <dx-button #bookmarkToggleBtn
+                    class="toggle-btn"
+                    (onClick)="onBookmarkAdjust()"
+                ></dx-button>
+            </div>
+            <!-- // 즐겨찾기-->
+        </div>
+    </div>
+</div>
+
+<!--주소록팝업-->
+<dx-popup #addressPopup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          title="즐겨찾는 운송지"
+          height="200px"
+          width="400px"
+>
+        <div class="bookmark-contents">
+            <div class="btn-group">
+                <dx-button type="circle"
+                    class="yellow"
+                    icon="home"
+                    text="test"
+                ></dx-button>
+                <dx-button type="circle"
+                    class="orange"
+                    icon="map"
+                    text="test"
+                    
+                ></dx-button>
+                <dx-button type="circle"
+                    class="pink"
+                    icon="map"
+                    text="test"
+                
+                ></dx-button>
+                <dx-button type="circle"
+                    icon="add"
+                    text="추가하기"
+                ></dx-button>
+                <dx-button type="circle"
+                    icon="add"
+                    text="추가하기"
+                ></dx-button>
+                <dx-button type="circle"
+                    class="border"
+                    icon="listAll"
+                    text="전체"
+                ></dx-button>
+            
+            </div>
+        </div>
+</dx-popup>
+<!--//주소록 팝업-->
+
+<!--차량 팝업-->
+<dx-popup #transportPopup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          title="결제정보등록"
+          height="770px"
+          width="570px"
+>
+
+    <dxi-toolbar-item widget="dxButton"
+            location="after"
+            toolbar="bottom"
+            [options]="{
+                text: utilService.convert('com_btn_close'),
+                stylingMode: 'outlined',
+                type: 'normal',
+                onClick: transportPopupClose
+            }"></dxi-toolbar-item>
+    <dxi-toolbar-item
+            widget="dxButton"
+            location="after"
+            toolbar="bottom"
+            [options]="{
+                text: '등록하기',
+                type: 'success',
+                onClick: transportPopupClose
+            }"></dxi-toolbar-item>
+    <div *dxTemplate="let data of 'content'">
+        <dx-form 
+                [colCount]="2"
+                [showColonAfterLabel]="false"
+                labelLocation="left"
+                class="transport-form" 
+        >
+            <dxi-item itemType="group" [colSpan]="2" [colCount]="4" cssClass="transport-list">
+                <dxi-item
+                    itemType="group"
+                    name="cards"
+                    class="transport-card"
+                    *ngFor="let car of transportOptions; let i = index" 
+                >
+                    <dx-button class="transport-item" 
+                            [class.selected]="selectedNum == i"
+                            (onClick)="onSelectItem(i)">
+                        <img src="{{ car.ImageSrc }}">
+                        <span>{{ car.text }}</span>
+                    </dx-button>
+                </dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="2" [colSpan]="2" cssClass="table-custom">
+                <dxi-item dataField="차량종류" [colSpan]="1"  editorType="dxSelectBox" cssClass="table-item"></dxi-item>
+                <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="1">
+                    <dxi-item dataField="차량대수" [colSpan]="1"  cssClass="table-item"></dxi-item>
+                    <dxi-item cssClass="table-unit">대</dxi-item>
+                </dxi-item>
+            </dxi-item>
+        </dx-form>
+    </div>
+</dx-popup>
+<!--//차량 팝업-->
+<!--카드등록 팝업-->
+<dx-popup #addPopup1
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          title="결제정보등록"
+          height="610px"
+          width="400px"
+>
+  <dxi-toolbar-item #addCardBtn
+                    widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert('com_btn_save'),
+                      type: 'success',
+                      onClick: addPopupClose
+                    }"></dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert('com_btn_close'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: addPopupClose
+                    }"></dxi-toolbar-item>
+
+  <div *dxTemplate="let data of 'content'">
+    <dx-form #pwdPopupForm
+             [(formData)]="pwdPopupData"
+             [showColonAfterLabel]="false"
+             labelLocation="top"
+             [colCount]="2" 
+    >
+      <dxi-item itemType="group" [colCount]="2" [colSpan]="2" cssClass="pop-item-box no-border label-top-form">
+        <dxi-item itemType="group" [label]="{text: '카드종류'}" [colSpan]="1" [colCount]="2" cssClass="group-row" >
+          <dx-radio-group
+            [items]="['개인','법인']"
+            layout="horizontal"
+          >
+          </dx-radio-group>
+        </dxi-item>
+        <dxi-item itemType="empty" [colSpan]="1"></dxi-item>
+        <dxi-item dataField="test1" [colSpan]="2"
+                [label]="{text: '카드번호'}"
+                [editorOptions]="{ mask: '0000 - 0000 - 0000 - 0000', maskRules: rules }" 
+        ></dxi-item>
+        <dxi-item dataField="num5" [colCount]="2" [label]="{text:'유효기간'}" 
+          [editorOptions]="{ mask: '00 / 00', maskRules: rules , laceholder:'MM/YY' }">
+        </dxi-item>
+      
+        <dxi-item dataField="checkPassword"  [colSpan]="1" [editorOptions]="{mode: 'password'}"
+         [label]="{text:'카드 비밀번호'}"
+         [editorOptions]="{ mask: '00 **', maskRules: rules }">
+       
+            <dxi-validation-rule type="compare"
+                                [comparisonTarget]="passwordComparison"
+                                [message]="utilService.convert('mm_user_confirmMsg')"
+            ></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="test1"  [colSpan]="2"
+        [label]="{text: '생년월일'}"
+        [editorOptions]="{ placeholder:'년월일만 입력해주세요. 예)990101' }"></dxi-item>
+        
+        <dxi-item dataField="test1"  [colSpan]="2"
+        [label]="{text: '결제 안내 이메일'}"
+        [editorOptions]="{ placeholder:'이메일 입력' }"></dxi-item>
+      
+      
+
+        <dxi-item [colSpan]="2"
+          dataField="check3"
+          [label]="{visible: false}"
+          editorType="dxCheckBox"
+          [editorOptions]="{
+          text: '위 내용을 확인하였으며, 결제 약관에 동의합니다.'
+        }"
+      >
+      </dxi-item>
+        </dxi-item>
+      
+    </dx-form>
+  </div>
+</dx-popup>
+<!--//카드등록 팝업-->

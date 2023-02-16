@@ -1,0 +1,103 @@
+<!--
+  ~ Copyright (c) 2021 JFLab All rights reserved.
+  ~ File Name : side-navigation-menu.component.html
+  ~ Author : jbh5310
+  ~ Lastupdate : 2021-09-21 16:08:12
+  -->
+
+<!--<dx-tabs-->
+<!--  [dataSource]="menuTabs"-->
+<!--  [scrollByContent]="true"-->
+<!--  [showNavButtons]="false"-->
+<!--  [selectedIndex]="0"-->
+<!--  [width]="300"-->
+<!--  (onItemClick)="selectTab($event)"-->
+<!--&gt;-->
+<!--</dx-tabs>-->
+
+<!--<ng-container *ngIf="isMenu; else myMenu">-->
+<!--  <dx-tree-view-->
+<!--    #menuTreeView-->
+<!--    [items]="menuItems"-->
+<!--    [focusStateEnabled]="false"-->
+<!--    [searchEnabled]="true"-->
+<!--    (onItemClick)="onItemClick($event)"-->
+<!--    width="100%"-->
+<!--    searchMode="contains"-->
+<!--  >-->
+<!--  </dx-tree-view>-->
+<!--</ng-container>-->
+
+<!--<ng-template #myMenu>-->
+<!--  <dx-sortable-->
+<!--    filter=".dx-treeview-item"-->
+<!--    group="shared"-->
+<!--    [allowDropInsideItem]="false"-->
+<!--    [allowReordering]="true"-->
+<!--    (onDragChange)="onDragChange($event)"-->
+<!--    (onDragEnd)="onDragEnd($event)"-->
+<!--  >-->
+<!--    <dx-tree-view-->
+<!--      #myMenuTreeView-->
+<!--      [items]="menuItems"-->
+<!--      [focusStateEnabled]="false"-->
+<!--      [searchEnabled]="true"-->
+<!--      (onItemClick)="onItemClick($event)"-->
+<!--      width="100%"-->
+<!--      searchMode="contains"-->
+<!--    >-->
+<!--    </dx-tree-view>-->
+<!--  </dx-sortable>-->
+<!--</ng-template>-->
+
+<ng-content></ng-content>
+
+<div class="menu-container">
+  <div class="menu-tabs">
+    <dx-tab-panel>
+      <dxi-item title="시스템메뉴" icon="menu" itemType="tabbed" [tabPanelOptions]="{deferRendering: false}">
+        <div class="tab-panel-wrap">
+          <dx-tree-view
+            [items]="menuItems"
+            [selectByClick]="true"
+            [focusStateEnabled]="false"
+            [searchEnabled]="true"
+            (onItemClick)="onItemClick($event)"
+            expandEvent="click"
+            selectionMode="single"
+            searchMode="contains"
+            width="100%"
+          >
+          </dx-tree-view>
+        </div>
+      </dxi-item>
+      <dxi-item title="마이메뉴" icon="star-s" itemType="tabbed" [tabPanelOptions]="{deferRendering: false}">
+        <div class="tab-panel-wrap">
+          <!--my menu tree 추가-->
+          <dx-sortable
+            filter=".dx-treeview-item"
+            group="shared"
+            [allowDropInsideItem]="false"
+            [allowReordering]="true"
+            (onDragChange)="onDragChange($event)"
+            (onDragEnd)="onDragEnd($event)"
+          >
+            <dx-tree-view
+              #myMenuTreeView
+              [items]="myMenuItems"
+              [selectByClick]="true"
+              [focusStateEnabled]="false"
+              [searchEnabled]="true"
+              (onItemClick)="onItemClick($event)"
+              expandEvent="click"
+              selectionMode="single"
+              searchMode="contains"
+              width="100%"
+            >
+            </dx-tree-view>
+          </dx-sortable>
+        </div>
+      </dxi-item>
+    </dx-tab-panel>
+  </div>
+</div>

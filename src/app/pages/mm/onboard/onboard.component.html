@@ -1,0 +1,320 @@
+<!-- 공통 > 온보드관리 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '온보드관리')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="add"
+               type="default"
+               [text]="utilService.convert1('com.btn.new', '신규')"
+               (onClick)="onNew($event)">
+    </dx-button>
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item dataField="tenant"
+                    [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }">
+          </dxi-item>
+
+          <dxi-item dataField="targetType" editorType="dxSelectBox"
+                    [label]="{text: utilService.convert1('mm.onboard.targetType', '보딩타겟')}"
+                    [editorOptions]="{
+                      items: dsTargetType,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      showClearButton: true,
+                      minSearchLength: 0,
+                      placeholder: ''
+                    }">
+          </dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(this.mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+
+  <dx-accordion [collapsible]="true"
+                [multiple]="false"
+                [animationDuration]="300"
+  >
+    <dxi-item [title]="utilService.convert1('mm.onboard.mainGridTitle', '온보드관리 리스트')">
+      <dxi-item class="table-group" style="margin-bottom: 10px">
+        <span class="noti">저장 된 이미지는 <b>해상도에 차이</b>가 발생 할 수 있습니다.</span>
+      </dxi-item>
+      <dx-data-grid #mainGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                    (onRowDblClick)="onRowDblClick($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"></dxo-editing>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing type="custom"
+                           [enabled]="true"
+                           [customLoad]="loadStateMain"
+                           [customSave]="saveStateMain">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant" caption="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column dataField="targetType" [caption]="utilService.convert1('mm.onboard.targetType', '보딩타겟')">
+          <dxo-lookup [dataSource]=dsTargetType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="uploadFileCnt" [caption]="utilService.convert1('mm.onboard.filesCnt', '파일등록건수')"></dxi-column>
+
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-accordion>
+</div>
+<!-- Grid popup-->
+<dx-popup #popup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          [height]="770"
+          [width]="1140"
+          (onHidden)="onHiddenPopup($event)"
+>
+  <dxi-toolbar-item widget="dxButton"
+                    location="before"
+                    toolbar="bottom"
+                    [visible]="!isNewPopup"
+                    [options]="{
+                      text: utilService.convert1('com.btn.del', '삭제'),
+                      stylingMode: 'Contained',
+                      type: 'danger',
+                      onClick: onClickPopupDelete
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.save', '저장'),
+                      type: 'success',
+                      onClick: onClickPopupSave
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.close', '닫기'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: onClickPopupCancel
+                    }">
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           [colCountByScreen]="{
+                lg:6, md: 6, sm:4, xs:2
+           }"
+  >
+    <dxi-item itemType="group" cssClass="pop-item-box"
+              [colCount]="3" [colSpan]="6"
+              [caption]="utilService.convert(pageInfo.path)">
+      <dxi-item dataField="tenant"
+                [visible]="false"
+                [editorOptions]="{ value: G_TENANT }">
+      </dxi-item>
+      <dxi-item dataField="uid"
+                [visible]="false">
+      </dxi-item>
+
+      <dxi-item dataField="targetType" editorType="dxSelectBox"
+                [label]="{text: utilService.convert1('mm.onboard.targetType', '보딩타겟')}"
+                [editorOptions]="{
+                      items: dsTargetTypeItems,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      disabled: !isNewPopup,
+                      minSearchLength: 0
+                    }">
+      </dxi-item>
+    </dxi-item>
+
+    <dxi-item itemType="group" cssClass="pop-item-box" [colSpan]="4"
+              caption="Detail">
+      <dx-data-grid #popupGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    [height]="450"
+                    (onFocusedCellChanged)="onFocusedCellChangedPopupGrid($event)"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    (onInitNewRow)="onInitNewRowPopup($event)"
+                    sorting="{mode: none}"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"
+                     [allowUpdating]="true"
+                     [newRowPosition]="'last'">
+        </dxo-editing>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false" [allowSearch]="false"
+                    [showInColumnChooser]="false" [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant" caption="tenant"
+                    [visible]="false" [allowSearch]="false"
+                    [showInColumnChooser]="false" [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column dataField="seq" alignment="center" width="80"  [caption]="utilService.convert1('mm.onboard.seq', '순번')"></dxi-column>
+        <dxi-column type="buttons"
+                    class="button1"
+                    cellTemplate="imgTemplate"
+                    width="150"
+                    [caption]="utilService.convert1('mm.onboard.imgUpload', '이미지업로드')">
+          <div *dxTemplate="let data of 'imgTemplate'">
+            <dx-button icon="add" type="form-sm"
+                       (onClick)="onClickImgFileUpload($event, data)"
+                       [text]="utilService.convert1('mm.onboard.imgUpload', '이미지업로드')">
+            </dx-button>
+          </div>
+        </dxi-column>
+        <dxi-column dataField="phyUploadFile" [allowEditing]="false" [caption]="utilService.convert1('mm.onboard.fileName', '파일이름')"></dxi-column>
+
+        <dxi-column dataField="filePath"
+                    [visible]="false" [allowSearch]="false"
+                    [showInColumnChooser]="false" [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="logUploadFile"
+                    [visible]="false" [allowSearch]="false"
+                    [showInColumnChooser]="false" [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="extUploadFile"
+                    [visible]="false" [allowSearch]="false"
+                    [showInColumnChooser]="false" [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="sizeUploadFile"
+                    [visible]="false" [allowSearch]="false"
+                    [showInColumnChooser]="false" [allowEditing]="false">
+        </dxi-column>
+      </dx-data-grid>
+
+      <input id="imgFileUpload" hidden
+             type="file" accept="image/*"
+             (change)="onValueChangedImg($event)"/>
+    </dxi-item>
+
+    <dxi-item itemType="group" cssClass="pop-item-box dropzone-container"
+              caption="Image"
+              [height]="450"
+              [colSpan]="2"
+    >
+      <img id="previewImage" class="dropzone-image1"/>
+      <dx-button icon="chevronleft"
+                 class="preview-prev"
+                 type="default"
+                 [focusStateEnabled]="false"
+                 (onClick)="onClickPopupPrev()">
+      </dx-button>
+      <dx-button icon="chevronright"
+                 class="preview-next"
+                 type="default"
+                 [focusStateEnabled]="false"
+                 (onClick)="onClickPopupNext()">
+      </dx-button>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+
+<form id="form" enctype="multipart/form-data" hidden></form>

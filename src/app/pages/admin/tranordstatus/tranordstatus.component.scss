@@ -1,0 +1,70 @@
+
+.contents-header{
+  justify-content: flex-start;
+  .dx-toolbar{
+    width: auto;
+    height: 40px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    background-color: transparent;
+  }
+  .dx-texteditor.dx-editor-outlined{
+    height:40px;
+    border: transparent;
+    margin:0 3px;
+  }
+}
+::ng-deep{
+  #guage{
+    .dxg-range-container path{
+      fill: #d4d9e1 !important;
+    }
+    .dxg-value-indicator{
+      fill:#3366ff;
+    }
+    .dxg-main-bar{
+      transform: translateY(22px) scaleY(0.5);
+    }
+    // .dxg-subvalue-indicators{
+    //     .dxg-subvalue-indicator{
+    //         transform: scale(1.2);
+    //         transform-origin: 10% 50%;
+    //     }
+    // }
+
+    .dxg-elements text{
+      font-size: .875rem !important;
+      color: #717171 !important;
+      transform: translateY(-20px) !important;
+    }
+
+  }
+
+  .guage-sub-box{
+    position: relative;
+    top: -28px;
+    .dx-layout-manager .dx-field-item{
+      padding: 0 !important;
+      color: #242934;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: -0.03em;
+    }
+    .guage-sub-second{
+      position: relative;
+      left: -30%;
+    }
+    .guage-sub-last{
+      position: relative;
+      left: 30%;
+    }
+  }
+  .guage-sub-text{
+    font-size:.813rem;
+    color: #717171;
+    position: relative;
+    top: -12px;
+  }
+}

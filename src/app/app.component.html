@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) 2021 JFLab All rights reserved.
+  ~ File Name : app.component.html
+  ~ Author : jbh5310
+  ~ Lastupdate : 2021-06-17 17:49:51
+  -->
+
+<ng-container *ngIf="isAuthenticated(); else unauthenticated">
+  <app-side-nav-inner-toolbar title="{{appInfo.title}}">
+    <router-outlet></router-outlet>
+    <app-footer>
+      Copyright © 2019-{{appInfo.currentYear}} {{appInfo.title}} Inc.
+      <br/>
+    </app-footer>
+  </app-side-nav-inner-toolbar>
+</ng-container>
+
+<ng-template #unauthenticated>
+  <app-unauthenticated-content></app-unauthenticated-content>
+</ng-template>

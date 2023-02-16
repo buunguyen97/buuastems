@@ -1,0 +1,516 @@
+<!-- 공통 > 사용자 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '사용자')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="add"
+               type="default"
+               [text]="utilService.convert1('com.btn.new', '신규')"
+               (onClick)="onNew($event)">
+    </dx-button>
+    <dx-button icon="comment"
+               type="default"
+               [focusStateEnabled]="false"
+               [text]="utilService.convert1('mm.user.permissionYnChk', '관리자인증')"
+               (onClick)="updatePermissionYn($event)">
+    </dx-button>
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+
+          <dxi-item dataField="tenant"
+                    [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }">
+          </dxi-item>
+
+          <dxi-item dataField="usr" [label]="{text: utilService.convert1('mm.user.id', '사용자ID')}"></dxi-item>
+          <dxi-item dataField="name" [label]="{text: utilService.convert1('mm.user.name', '사용자명')}"></dxi-item>
+          <dxi-item dataField="actFlg" [label]="{text: utilService.convert1('mm.user.actFlg', '사용여부')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{
+                      items: dsYN,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      minSearchLength: 0,
+                      placeholder: '',
+                      showClearButton: true
+                   }">
+          </dxi-item>
+
+          <dxi-item dataField="userType" [label]="{text:utilService.convert1('mm.user.userType', '유형')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{
+                      items: dsUserType,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      minSearchLength: 0,
+                      placeholder: '',
+                      showClearButton: true
+                    }">
+          </dxi-item>
+          <dxi-item dataField="permissionYn" [label]="{text: utilService.convert1('mm.user.permissionYn', '관리자인증여부')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{
+                      items: dsYN,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      minSearchLength: 0,
+                      placeholder: '',
+                      showClearButton: true
+                   }">
+          </dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(this.mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+
+  <dx-accordion [collapsible]="true"
+                [multiple]="false"
+                [animationDuration]="300"
+  >
+    <dxi-item [title]="utilService.convert1('mm.user.mainGridTitle', '사용자 리스트')">
+      <dx-data-grid #mainGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    (onRowDblClick)="onRowDblClick($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"></dxo-editing>
+        <dxo-selection mode="multiple"></dxo-selection>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing type="custom"
+                           [enabled]="true"
+                           [customLoad]="loadState"
+                           [customSave]="saveState">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column type="selection" [width]="45"></dxi-column>
+        <dxi-column dataField="usr" [caption]="utilService.convert1('mm.user.id', '사용자ID')"></dxi-column>
+        <dxi-column dataField="name" [caption]="utilService.convert1('mm.user.name', '사용자명')"></dxi-column>
+        <dxi-column dataField="userType" [caption]="utilService.convert1('mm.user.userType', '유형')">
+          <dxo-lookup [dataSource]=dsUserType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="phone" [caption]="utilService.convert1('mm.user.phone', '핸드폰번호')"></dxi-column>
+        <dxi-column dataField="email" [caption]="utilService.convert1('mm.user.email', '이메일')"></dxi-column>
+        <dxi-column dataField="companyName" [caption]="utilService.convert1('mm.user.companyId', '소속회사')"></dxi-column>
+        <dxi-column dataField="permissionYn" alignment="center" [caption]="utilService.convert1('mm.user.permissionYn', '관리자인증여부')"></dxi-column>
+
+        <dxi-column dataField="remarks" [caption]="utilService.convert1('com.text.remarks', '비고')"></dxi-column>
+
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-accordion>
+</div>
+
+<!--메인 팝업-->
+<dx-popup #popup
+          [width]="1140"
+          maxHeight="80vh"
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          (onHidden)="onHiddenPopup($event)"
+>
+  <dxi-toolbar-item toolbar="bottom" location="before">
+    <dx-button type="danger"
+               [visible]="!isNewPopup"
+               [text]="utilService.convert1('com.btn.del', '삭제')"
+               (onClick)="onClickPopupDelete()">
+    </dx-button>
+  </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="success"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="onClickPopupSave()">
+    </dx-button>
+    <dx-button type="normal"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="onClickPopupCancel($event)">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           labelLocation="left"
+           [colCount]="3"
+           [showColonAfterLabel]="false"
+           (focusin)="setChangeMask($event)"
+           (focusout)="setChangeMask($event)"
+           scrollingEnabled="true"
+           class="non-horizenscroll"
+  >
+    <dxi-item itemType="group" caption="사용자관리" [colCount]="3" [colSpan]="3" cssClass="pop-item-box no-border">
+      <dxi-item dataField="usr"
+                [editorOptions]="{disabled: !isNewPopup}"
+                [label]="{text: utilService.convert1('mm.user.id', '사용자ID')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.id'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="password" [label]="{text: utilService.convert1('mm.user.password', '사용자 비밀번호')}">
+        <span class="btngroup page-button-group">
+          <dx-button type="form"
+                     [disabled]="isNewPopup"
+                     [text]="utilService.convert1('mm.user.changePwd.btn', '비밀번호 변경')"
+                     (onClick)="passwordPopupOpen()">
+          </dx-button>
+          <dx-button type="form"
+                     [disabled]="isNewPopup"
+                     [text]="utilService.convert1('com.btn.reset', '초기화')"
+                     (onClick)="resetPassword()">
+          </dx-button>
+        </span>
+      </dxi-item>
+      <dxi-item dataField="userType" [label]="{text: utilService.convert1('mm.user.userType', '유형')}"
+                editorType="dxSelectBox"
+                [editorOptions]="{
+                  disabled: !isNewPopup,
+                  items: dsUserType,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  showClearButton: true,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: utilService.convert('com.txt.noDataText')
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.userType'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="name" [label]="{text: utilService.convert1('mm.user.name', '사용자명')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.name'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="phone"
+                [label]="{text: utilService.convert1('mm.user.phone', '핸드폰번호')}"
+                [editorOptions]="phoneEditorOptions">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.phone'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="tel"
+                [label]="{text: utilService.convert1('mm.user.tel', '전화번호')}"
+                [editorOptions]="telEditorOptions">
+      </dxi-item>
+
+      <dxi-item dataField="email" [label]="{text: utilService.convert1('mm.user.email', '이메일')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.email'))">
+        </dxi-validation-rule>
+        <dxi-validation-rule
+          type="email"
+          [message]="utilService.convert('com.valid.maskInvalid', utilService.convert('mm.user.email'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="companyId"
+                [label]="{text: utilService.convert1('mm.user.companyId', '소속회사')}"
+                editorType="dxSelectBox"
+                [editorOptions]="{
+                  items: dsCompany,
+                  displayExpr: 'name',
+                  valueExpr: 'uid',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: utilService.convert('com.txt.noDataText')
+                }">
+      </dxi-item>
+      <dxi-item [label]="{text: utilService.convert1('mm.user.addrBookMark', '주소 즐겨찾기')}">
+        <dx-button type="form"
+                   [text]="utilService.convert1('mm.user.addrBookMark', '주소 즐겨찾기')"
+                   [visible]="!isNewPopup"
+                   (onClick)="addressPopupOpen()">
+        </dx-button>
+      </dxi-item>
+
+      <dxi-item itemType="group" [label]="{text: '인증여부'}" [colCount]="4" [colSpan]="2" cssClass="group-row">
+        <dxi-item dataField="selfAuthYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.selfAuthYn', '본인인증')}">
+        </dxi-item>
+        <dxi-item dataField="permissionYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.permissionYnChk', '관리자인증')}">
+        </dxi-item>
+      </dxi-item>
+      <dxi-item itemType="empty"></dxi-item>
+
+      <dxi-item itemType="group" [label]="{text: '알림수신동의'}" [colCount]="4" [colSpan]="2" cssClass="group-row">
+        <dxi-item dataField="smsYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.smsYn', 'SMS')}">
+        </dxi-item>
+        <dxi-item dataField="emailYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.emailYn', 'E-Mail')}">
+        </dxi-item>
+        <dxi-item dataField="appPushYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.appPushYn', 'AppPush')}">
+        </dxi-item>
+      </dxi-item>
+      <dxi-item itemType="empty"></dxi-item>
+
+      <dxi-item itemType="group" [label]="{text: '결제수단'}" [colCount]="4" [colSpan]="2" cssClass="group-row">
+        <dxi-item dataField="cardYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.cardYn', '카드결제')}">
+        </dxi-item>
+        <dxi-item dataField="billYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.billYn', '계산서')}">
+        </dxi-item>
+        <dxi-item dataField="preCardYn" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.user.preCardYn', '선불카드')}">
+        </dxi-item>
+      </dxi-item>
+      <dxi-item itemType="group" [colCount]="6" cssClass="form-group">
+        <dxi-item dataField="preCardId" [visible]="false"></dxi-item>
+        <dxi-item dataField="remainAmt"
+                  editorType="dxNumberBox"
+                  [colSpan]="6" [disabled]="true"
+                  [editorOptions]="{format:'#,##0.####', max:99999999999999, step: 0}"
+                  [label]="{text: utilService.convert1('mm.user.remainAmt', '선불카드 잔여금액')}">
+        </dxi-item>
+        <dxi-item cssClass="form-group-btn">
+          <dx-button type="form"
+                     [text]="utilService.convert1('mm.user.btn.remainAmt', '카드내역보기')"
+                     [visible]="!isNewPopup"
+                     (onClick)="preCardPopupOpen()">
+          </dx-button>
+        </dxi-item>
+      </dxi-item>
+    </dxi-item>
+
+    <dxi-item itemType="group" caption="결제수단관리" [colCount]="3" [colSpan]="3" cssClass="pop-item-box">
+      <dxi-item [colSpan]="3">
+        <dx-button type="border-sm"
+                   icon="add"
+                   text="카드등록"
+                   (onClick)="cardPopupOpen()">
+        </dx-button>
+      </dxi-item>
+      <dxi-item itemType="group" [colSpan]="3">
+        <div class="card-list-wrap">
+          <div class="user-card-list">
+            <ng-container *ngFor="let card of cardList; let i = index">
+              <div name="cards" class="user-card-item"
+                        *ngIf="card.operType !== 'remove'">
+                <div itemType="dxButton" id="card{{ i }}">
+                  <button class="dx-button-card-del" (click)="cardPopupDelete(card, i)">
+                    <i class="dx-icon dx-icon-close">카드삭제</i>
+                  </button>
+                  <img src="/src/assets/images/card2.png">
+                  <span class="card-number">{{ card.cardNo }}</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </dxi-item>
+    </dxi-item>
+
+    <dxi-item itemType="group" caption="계좌관리" [colCount]="1" [colSpan]="3" cssClass="pop-item-box">
+      <dxi-item>
+        <dx-button type="border-sm"
+                   icon="add"
+                   text="계좌추가"
+                   (onClick)="accountPopupOpen()" >
+        </dx-button>
+      </dxi-item>
+
+      <dxi-item class="bank-list-container">
+        <table id="bankTable">
+          <colgroup>
+            <col width="15%">
+            <col width="70%">
+            <col width="15%">
+          </colgroup>
+          <thead>
+          <tr>
+            <th colspan="2">은행 / 계좌번호 / 계좌명</th>
+            <th>삭제</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let account of accountList; let i = index">
+            <tr id="account{{ i }}" *ngIf="account.operType !== 'remove'">
+              <td><img src="/src/assets/images/icon_bank_kb.png" alt="{{ account.bank }}"></td>
+              <td>{{ account.bank }} {{ account.accountNo }} {{ account.accountNm }}</td>
+              <td>
+                <dx-button type="form"
+                           icon="trash"
+                           (onClick)="accountPopupDelete(account, i)">
+                </dx-button>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </dxi-item>
+    </dxi-item>
+
+    <dxi-item itemType="group" caption="차량관리" [colCount]="1" [colSpan]="3" cssClass="pop-item-box">
+      <dx-data-grid #popupGrid
+                    [allowColumnResizing]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"></dxo-editing>
+
+        <dxi-column dataField="uid"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="carNo" [caption]="utilService.convert1('mm.car.carNo', '차량번호')"></dxi-column>
+        <dxi-column dataField="carType" [caption]="utilService.convert1('mm.car.carType', '유형')">
+          <dxo-lookup [dataSource]=dsCarType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="carKind" [caption]="utilService.convert1('mm.car.carKind', '종류')">
+          <dxo-lookup [dataSource]=dsCarKind displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+
+        <dxi-column [caption]="utilService.convert1('mm.car.isOption', '옵션')">
+          <dxi-column dataField="isOption1" alignment="center" [caption]="utilService.convert1('mm.car.isOption1', '짐받이')"></dxi-column>
+          <dxi-column dataField="isOption2" alignment="center" [caption]="utilService.convert1('mm.car.isOption2', '무진동')"></dxi-column>
+          <dxi-column dataField="isOption3" alignment="center" [caption]="utilService.convert1('mm.car.isOption3', '리프트')"></dxi-column>
+          <dxi-column dataField="isOption4" alignment="center" [caption]="utilService.convert1('mm.car.isOption4', '양문개방')"></dxi-column>
+          <dxi-column dataField="isOption5" alignment="center" [caption]="utilService.convert1('mm.car.isOption5', '옆문개방')"></dxi-column>
+          <dxi-column dataField="isOption6" alignment="center" [caption]="utilService.convert1('mm.car.isOption6', '뒷문개방')"></dxi-column>
+          <dxi-column dataField="isOption7" alignment="center" [caption]="utilService.convert1('mm.car.isOption7', '차량덮개')"></dxi-column>
+        </dxi-column>
+
+        <dxi-column dataField="carRegiYn" cellTemplate="carRegiYnTemplate" alignment="center" [caption]="utilService.convert1('mm.car.carRegiYn', '인증여부')">
+          <div *dxTemplate="let data of 'carRegiYnTemplate'">
+            <dx-button icon="form" type="form-sm"
+                       (onClick)="carPopupOpen($event, data)"
+                       [text]="utilService.convert('mm.car.carRegiYn.'.concat(data.value))">
+            </dx-button>
+          </div>
+        </dxi-column>
+        <dxi-column dataField="actFlg" alignment="center" [caption]="utilService.convert1('mm.car.actFlg','사용여부')"></dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+<!--메인 팝업-->
+
+<!--비밀번호 팝업-->
+<app-password #password></app-password>
+
+<!--주소 즐겨찾기 팝업-->
+<app-userbookmark #usbookmark></app-userbookmark>
+
+<!--차주주소 즐겨찾기 팝업-->
+<app-caruserbookmark #cubookmark></app-caruserbookmark>
+
+<!--선불카드 팝업-->
+<app-prepaidcard #precard></app-prepaidcard>
+
+<!--카드등록 팝업-->
+<app-card #card (output)="getCards($event)"></app-card>
+
+<!--계좌 팝업-->
+<app-account #account (output)="getAccounts($event)"></app-account>
+
+<!--차량인증 팝업-->
+<app-vehicle #car (output)="getVehicle($event)"></app-vehicle>
+
+

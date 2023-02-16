@@ -1,0 +1,269 @@
+
+<div class="contents-header">
+    <dx-button #bookmarkBtn
+        class="bookmark-btn"
+        (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+    >
+    </dx-button>
+    <h2 class="content-block page-title">{{utilService.convert('/mm/menu')}}</h2>
+    <span class="page-breadcrumb">{{utilService.getPagePath()}}</span>
+    <span class="btngroup page-button-group">
+        <dx-button icon="save"
+                   type="default"
+                   [text]="utilService.convert('com_btn_save')"
+                   (onClick)="onSave()">
+        </dx-button>
+    </span>
+    <hr/>
+  </div>
+  <div class="contents-body">
+    <div class="search_foldable">
+      <div class="search-box">
+        <dx-form #mainForm
+                 class="search-form-box"
+                 [(formData)]="mainFormData"
+                 [minColWidth]="300"
+                 [colCount]="3"
+                 [showColonAfterLabel]="false"
+        >
+          <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+            <dxi-item dataField="tenant" [label]="{text: 'Tenant'}" [visible]="false"
+                      [editorOptions]="{ value: G_TENANT }"></dxi-item>
+            <dxi-item dataField="systemType"
+                      [label]="{text: utilService.convert1('mm_menu_systemType', '시스템 타입')}"
+                      editorType="dxSelectBox"
+                      [editorOptions]="{  items: dsSystemType,
+                                        displayExpr: 'display',
+                                        valueExpr: 'code',
+                                        searchMode:'contains',
+                                        searchEnabled: true,
+                                        openOnFieldClick: false,
+                                        minSearchLength: 0,
+                                        placeholder: '',
+                                        onSelectionChanged: onSelectionChanged,
+                                        noDataText: utilService.convert('com_txt_noDataText')
+                                      }">
+              <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="text1" [label]="{text: utilService.convert1('mm_menu_text1', 'MenuL1(메뉴명)')}">
+              <dxi-validation-rule type="stringLength" [max]="30"
+                                   message="어플리케이션코드는 30자 이하로 입력하세요."></dxi-validation-rule>
+            </dxi-item>
+          </dxi-item>
+        </dx-form>
+        <div class="search-btn-group">
+          <dx-button icon="search"
+                     type="form"
+                     class="search-btn"
+                     [focusStateEnabled]="false"
+                     [text]="utilService.convert('com_btn_search')"
+                     (onClick)="onSearch()">
+          </dx-button>
+        </div>
+      </div>
+      <div class="foldable-btn">
+        <dx-button #foldableBtn type="default"
+                   (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"></dx-button>
+      </div>
+    </div>
+
+    <dx-accordion [collapsible]="true"
+                  [multiple]="true"
+                  [animationDuration]="300">
+      <dxi-item [title]="utilService.convert1('mm_menu_mainGridTitle', '메뉴 리스트')">
+        <div class="flex-container">
+          <dx-data-grid
+            #grid1
+            [dataSource]="dataSource1"
+            (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick1, deleteClick1)"
+            [(selectedRowKeys)]="selectedRows1"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [focusedRowEnabled]="true"
+            (onFocusedRowChanged)="onFocusedRowChanging1($event)"
+            (onFocusedCellChanged)="onFocusedCellChanging1($event)"
+            [showRowLines]="true"
+            [rowAlternationEnabled]="true"
+            [allowColumnReordering]="true"
+            (onExporting)="gridUtil.onPageExportXlsx($event)"
+            columnResizingMode=nextColumn
+          >
+            <dxo-editing mode="batch"
+                         [allowUpdating]="true"
+                         [(changes)]="changes1"
+                         [selectTextOnEditStart]="true"
+                         [newRowPosition]="'last'"
+            ></dxo-editing>
+            <dxo-selection mode="single"></dxo-selection>    <!-- single, multiple -->
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel
+              [visible]="true"
+              [width]="240"
+              [placeholder]="''"></dxo-search-panel>
+            <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+            <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]=gridUtil.getAllowedPageSize()
+              [displayMode]="'full'"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true">
+            </dxo-pager>
+            <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadState1"
+                               [customSave]="saveState1"></dxo-state-storing>
+            <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="items" caption="items" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="text" [caption]="utilService.convert1('mm_menu_text', '메뉴명')"
+                        cssClass="grid-cell-required">
+              <!--                <dxi-validation-rule type="stringLength" [max]="30" message="메세지코드은 30자 이하로 입력하세요."></dxi-validation-rule>-->
+            </dxi-column>
+            <dxi-column dataField="path" [caption]="utilService.convert1('mm_menu_path', '경로')"
+                        cssClass="grid-cell-required">
+              <!--                <dxi-validation-rule type="stringLength" [max]="200" message="한국어 200자 이하로 입력하세요."></dxi-validation-rule>-->
+            </dxi-column>
+            <dxi-column dataField="icon" cellTemplate="cellTemplate"
+                        [editorOptions]="{itemTemplate: 'itemTemplete'}"
+                        [caption]="utilService.convert1('mm_menu_icon', 'icon')">
+              <dxo-lookup [dataSource]=dsIcon displayExpr="display" valueExpr="code"></dxo-lookup>
+            </dxi-column>
+            <div *dxTemplate="let cell of 'cellTemplate'">
+              <i class="dx-icon-{{cell.value}}"></i>
+              <span style="position: relative; top: -3px; left: 2px;">{{cell.value}}</span>
+            </div>
+
+            <div *dxTemplate="let cell of 'itemTemplete'">
+              <i class="dx-icon-{{cell.code}}"></i>
+              <span style="position: relative; top: -2px; left: 2px;">{{cell.code}}</span>
+            </div>
+
+            <dxi-column dataField="priorities"
+                        [caption]="utilService.convert1('mm_menu_priorities', '우선순위')"></dxi-column>
+          </dx-data-grid>
+
+          <dx-data-grid
+            #grid2
+            [dataSource]="dataSource2"
+            (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick2, deleteClick2)"
+            [(selectedRowKeys)]="selectedRows2"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [focusedRowEnabled]="true"
+            (onFocusedRowChanged)="onFocusedRowChanging2($event)"
+            (onFocusedCellChanged)="onFocusedCellChanging2($event)"
+            [showRowLines]="true"
+            [rowAlternationEnabled]="true"
+            [allowColumnReordering]="true"
+            (onExporting)="gridUtil.onPageExportXlsx($event)"
+            columnResizingMode=nextColumn
+          >
+            <dxo-editing mode="batch"
+                         [allowUpdating]="true"
+                         [(changes)]="changes2"
+                         [selectTextOnEditStart]="true"
+                         [newRowPosition]="'last'"
+            ></dxo-editing>
+            <dxo-selection mode="single"></dxo-selection>    <!-- single, multiple -->
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel
+              [visible]="true"
+              [width]="240"
+              [placeholder]="''"></dxo-search-panel>
+            <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+            <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]=gridUtil.getAllowedPageSize()
+              [displayMode]="'full'"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true">
+            </dxo-pager>
+            <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadState2"
+                               [customSave]="saveState2"></dxo-state-storing>
+            <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="items" caption="items" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="text" [caption]="utilService.convert1('mm_menu_text', '메뉴명')"
+                        cssClass="grid-cell-required">
+              <!--                <dxi-validation-rule type="stringLength" [max]="30" message="메세지코드은 30자 이하로 입력하세요."></dxi-validation-rule>-->
+            </dxi-column>
+            <dxi-column dataField="path" [caption]="utilService.convert1('mm_menu_path', '경로')"
+                        cssClass="grid-cell-required">
+              <!--                <dxi-validation-rule type="stringLength" [max]="200" message="한국어 200자 이하로 입력하세요."></dxi-validation-rule>-->
+            </dxi-column>
+            <dxi-column dataField="priorities"
+                        [caption]="utilService.convert1('mm_menu_priorities', '우선순위')"></dxi-column>
+          </dx-data-grid>
+
+          <dx-data-grid
+            #grid3
+            [dataSource]="dataSource3"
+            (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick3, deleteClick3)"
+            [(selectedRowKeys)]="selectedRows3"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [focusedRowEnabled]="true"
+            (onFocusedRowChanged)="onFocusedRowChanging3($event)"
+            (onFocusedCellChanged)="onFocusedCellChanging3($event)"
+            [showRowLines]="true"
+            [rowAlternationEnabled]="true"
+            [allowColumnReordering]="true"
+            (onExporting)="gridUtil.onPageExportXlsx($event)"
+            columnResizingMode=nextColumn
+          >
+
+            <dxo-editing mode="batch"
+                         [allowUpdating]="true"
+                         [(changes)]="changes3"
+                         [selectTextOnEditStart]="true"
+                         [newRowPosition]="'last'"
+            ></dxo-editing>
+            <dxo-selection mode="single"></dxo-selection>    <!-- single, multiple -->
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel
+              [visible]="true"
+              [width]="240"
+              [placeholder]="''"></dxo-search-panel>
+            <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+            <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]=gridUtil.getAllowedPageSize()
+              [displayMode]="'full'"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true">
+            </dxo-pager>
+            <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadState3"
+                               [customSave]="saveState3"></dxo-state-storing>
+            <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="app" [caption]="utilService.convert1('mm_menu_app', '어플리케이션키')"
+                        [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="title" [caption]="utilService.convert1('mm_menu_apptitle', '어플리케이션')"
+                        cssClass="grid-cell-required">
+              <!--                <dxi-validation-rule type="stringLength" [max]="30" message="메세지코드은 30자 이하로 입력하세요."></dxi-validation-rule>-->
+            </dxi-column>
+            <dxi-column dataField="url" [caption]="utilService.convert1('mm_menu_path', '경로')">
+              <!--                <dxi-validation-rule type="stringLength" [max]="200" message="경로는 200자 이하로 입력하세요."></dxi-validation-rule>-->
+            </dxi-column>
+            <dxi-column dataField="priorities"
+                        [caption]="utilService.convert1('mm_menu_priorities', '우선순위')"></dxi-column>
+          </dx-data-grid>
+        </div>
+      </dxi-item>
+    </dx-accordion>
+  </div>

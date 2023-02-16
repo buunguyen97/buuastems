@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (c) 2021 JFLab All rights reserved.
+  ~ File Name : user-panel.component.html
+  ~ Author : jbh5310
+  ~ Lastupdate : 2021-09-21 16:08:12
+  -->
+
+<div class="user-panel">
+  <div class="user-info">
+    <div class="image-container">
+<!--      <div class="user-image" [ngStyle]="{'background':getAvatarUrl()}"></div>-->
+    </div>
+    <div class="user-name">{{getUserName()}}</div>
+  </div>
+  <dx-context-menu
+    *ngIf="menuMode === 'context'"
+    [items]="menuItems"
+    target=".user-button"
+    showEvent="dxclick"
+    width="210px"
+    [position]="{ my: 'top center', at: 'bottom center' }"
+    cssClass="user-menu">
+  </dx-context-menu>
+  <dx-list
+    *ngIf="menuMode === 'list'"
+    class="dx-toolbar-menu-action"
+    [items]="menuItems">
+  </dx-list>
+</div>

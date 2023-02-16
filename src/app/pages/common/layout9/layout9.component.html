@@ -1,0 +1,797 @@
+<div class="contents-header">
+  <dx-button
+    #bookmarkBtn
+    class="bookmark-btn"
+    (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+  ></dx-button>
+  <h2 class="content-block page-title">운송과정 모니터링</h2>
+  <span class="page-breadcrumb">{{ utilService.getPagePath() }}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="share" type="point"> </dx-button>
+    <dx-button icon="print" type="point"> </dx-button>
+  </span>
+  <hr />
+</div>
+<div class="contents-body">
+  <!--검색조건-->
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form
+        #mainForm
+        class="search-form-box"
+        [(formData)]="mainFormData"
+        [minColWidth]="300"
+        [colCount]="3"
+        [showColonAfterLabel]="false"
+      >
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item
+            dataField="tenant"
+            [label]="{ text: 'Tenant' }"
+            [visible]="false"
+            [editorOptions]="{ value: G_TENANT }"
+          ></dxi-item>
+          <dxi-item
+            dataField="logisticsId"
+            [label]="{ text: 'Logisticsid' }"
+            [visible]="false"
+          ></dxi-item>
+          <dxi-item
+            itemType="group"
+            [label]="{ text: '운송일자' }"
+            cssClass="fromtocalendar"
+            [colCount]="2"
+            [colSpan]="1"
+          >
+            <dxi-item
+              dataField="fromShipSchDate"
+              editorType="dxDateBox"
+              cssClass="fromcalendar"
+              [label]="{ visible: false }"
+              [editorOptions]="{
+                useMaskBehavior: 'true',
+                displayFormat: 'yyyy-MM-dd',
+                dateSerializationFormat: 'yyyy-MM-dd'
+              }"
+            >
+            </dxi-item>
+            <dxi-item
+              dataField="toShipSchDate"
+              editorType="dxDateBox"
+              cssClass="tocalendar"
+              [label]="{ text: '~' }"
+              [editorOptions]="{
+                useMaskBehavior: 'true',
+                displayFormat: 'yyyy-MM-dd',
+                dateSerializationFormat: 'yyyy-MM-dd'
+              }"
+            >
+            </dxi-item>
+          </dxi-item>
+          <dxi-item
+            dataField="사용자"
+            [label]="{ text: '사용자' }"
+            [colSpan]="1"
+          ></dxi-item>
+
+          <dxi-item
+            dataField="배차상태"
+            [colSpan]="1"
+            editorType="dxSelectBox"
+            [label]="{ text: '배차상태' }"
+            [editorOptions]="{
+              items: dsSoStatus,
+              displayExpr: 'display',
+              valueExpr: 'code',
+              searchMode: 'contains',
+              searchEnabled: true,
+              showClearButton: true,
+              openOnFieldClick: false,
+              minSearchLength: 0,
+              placeholder: '',
+              noDataText: utilService.convert('com_txt_noDataText')
+            }"
+          >
+          </dxi-item>
+          <dxi-item
+            dataField="의뢰번호"
+            [label]="{ text: '의뢰번호' }"
+            [colSpan]="1"
+          ></dxi-item>
+        </dxi-item>
+      </dx-form>
+      <div class="search-btn-group">
+        <dx-button
+          icon="refresh"
+          type="form"
+          class="reset-btn"
+          [text]="utilService.convert('com_btn_reset')"
+          (onClick)="onReset()"
+        >
+        </dx-button>
+        <dx-button
+          icon="search"
+          type="form"
+          class="search-btn"
+          [focusStateEnabled]="false"
+          [text]="utilService.convert('com_btn_search')"
+          (onClick)="onSearch()"
+        >
+        </dx-button>
+      </div>
+    </div>
+    <div class="foldable-btn">
+      <dx-button
+        #foldableBtn
+        type="default"
+        (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"
+      ></dx-button>
+    </div>
+  </div>
+  <!-- //검색조건-->
+  <dx-form [labelMode]="'hidden'">
+    <dxi-item itemType="group" cssClass="card-summary">
+      <ul class="card-summary-list">
+        <li>
+          <span>총운송비 (선착불 포함)</span>
+          <b>166,268,000 원</b>
+        </li>
+        <li>
+          <span>오더 수</span>
+          <b>1,019</b>
+        </li>
+        <li>
+          <span>배차중</span>
+          <b>32</b>
+        </li>
+        <li>
+          <span>배차완료</span>
+          <b>958</b>
+        </li>
+      </ul>
+    </dxi-item>
+    <dxi-item itemType="group" cssClass="card-item" [colCount]="18">
+      <dxi-item
+        itemType="group"
+        cssClass="col-group col-group-first"
+        [colSpan]="2"
+      >
+        <div class="first-box">
+          <span class="order-num">00996059687787</span>
+          <span class="dx-badge green">운송중</span>
+        </div>
+      </dxi-item>
+      <dxi-item
+        itemType="group"
+        cssClass="col-group col-middle"
+        [colCount]="5"
+        [colSpan]="9"
+      >
+        <dxi-item itemType="group" [colSpan]="4">
+          <div class="route-box">
+            <div class="from">
+              <div class="from-box">
+                <b>알포터</b>
+                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                <span class="r-items">냉동/1톤/편도/가전제품/박스/독차</span>
+              </div>
+            </div>
+            <span class="arr-right"
+              ><i class="dx-icon dx-icon-arrowright"></i
+            ></span>
+            <div class="to">
+              <div class="to-box">
+                <b>알포터</b>
+                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                <span class="clock">상차일 : 2022/10/11 13:00</span>
+              </div>
+            </div>
+          </div>
+        </dxi-item>
+        <dxi-item itemType="group" [colSpan]="1" cssClass="route-sum">
+          <div class="route-sum-box">
+            <span>선불/카드결제</span>
+            <span class="currency">220,000</span>
+            <span class="co2">60.5Mt</span>
+          </div>
+        </dxi-item>
+      </dxi-item>
+      <dxi-item
+        itemType="group"
+        cssClass="col-group col-group-last"
+        [colCount]="3"
+        [colSpan]="7"
+      >
+        <div class="d-step-container">
+          <div class="d-step-list-container">
+            <div class="d-step-list">
+              <span class="d-step-transfer">경유+2</span>
+              <div class="d-step">
+                <span class="d-icon d-icon1"></span>
+                <span class="d-text">결제완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon2"></span>
+                <span class="d-text">배차완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon3"></span>
+                <span class="d-text">상차완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon4"></span>
+                <span class="d-text">운송중</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon5"></span>
+                <span class="d-text">하차완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon6"></span>
+                <span class="d-text">운송완료</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-btns">
+            <button class="card-btn">
+              <span class="dx-button-text">인수증</span>
+            </button>
+            <button class="card-btn">
+              <span class="dx-button-text" (click)="popupOpen()">상세보기</span>
+            </button>
+          </div>
+        </div>
+      </dxi-item>
+    </dxi-item>
+    <!-- card item-->
+    <dxi-item
+      itemType="group"
+      cssClass="card-item"
+      [colCount]="18"
+      *ngFor="let card of cardItems; let i = index"
+    >
+      <dxi-item
+        itemType="group"
+        cssClass="col-group col-group-first"
+        [colSpan]="2"
+      >
+        <div class="first-box">
+          <span class="order-num">00996059687787</span>
+          <span class="dx-badge blue">운송완료</span>
+        </div>
+      </dxi-item>
+      <dxi-item
+        itemType="group"
+        cssClass="col-group col-middle"
+        [colCount]="5"
+        [colSpan]="9"
+      >
+        <dxi-item itemType="group" [colSpan]="4">
+          <div class="route-box">
+            <div class="from">
+              <div class="from-box">
+                <b>알포터</b>
+                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                <span class="r-items">냉동/1톤/편도/가전제품/박스/독차</span>
+              </div>
+            </div>
+            <span class="arr-right"
+              ><i class="dx-icon dx-icon-arrowright"></i
+            ></span>
+            <div class="to">
+              <div class="to-box">
+                <b>알포터</b>
+                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                <span class="clock">상차일 : 2022/10/11 13:00</span>
+              </div>
+            </div>
+          </div>
+        </dxi-item>
+        <dxi-item itemType="group" [colSpan]="1" cssClass="route-sum">
+          <div class="route-sum-box">
+            <span>선불/카드결제</span>
+            <span class="currency">220,000</span>
+            <span class="co2">60.5Mt</span>
+          </div>
+        </dxi-item>
+      </dxi-item>
+      <dxi-item
+        itemType="group"
+        cssClass="col-group col-group-last"
+        [colCount]="3"
+        [colSpan]="7"
+      >
+        <div class="d-step-container">
+          <div class="d-step-list-container">
+            <div class="d-step-list">
+              <span class="d-step-transfer">경유+2</span>
+              <div class="d-step">
+                <span class="d-icon d-icon1"></span>
+                <span class="d-text">결제완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon2"></span>
+                <span class="d-text">배차완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon3"></span>
+                <span class="d-text">상차완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon4"></span>
+                <span class="d-text">운송중</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon5"></span>
+                <span class="d-text">하차완료</span>
+              </div>
+              <div class="d-step">
+                <span class="d-icon d-icon6"></span>
+                <span class="d-text">운송완료</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-btns">
+            <button class="card-btn">
+              <span class="dx-button-text">인수증</span>
+            </button>
+            <button class="card-btn">
+              <span class="dx-button-text" (click)="popupOpen()">상세보기</span>
+            </button>
+          </div>
+        </div>
+      </dxi-item>
+    </dxi-item>
+
+    <!--// card item-->
+    <!-- <dxi-item itemType="group" cssClass="card-item" [colCount]="18">
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="2">
+                <div class="first-box">
+                    <span class="order-num">00996059687787</span>
+                    <span class="dx-badge green">운송중</span>
+                </div>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-middle" [colCount]="5" [colSpan]="9">
+                <dxi-item itemType="group" [colSpan]="4">
+                    <div class="route-box">
+                        <div class="from">
+                            <div class="from-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                                <span class="r-items">냉동/1톤/편도/가전제품/박스/독차</span>
+                            </div>
+                        </div>
+                        <span class="arr-right"><i class="dx-icon dx-icon-arrowright"></i></span>
+                        <div class="to">
+                            <div class="to-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </dxi-item>
+                <dxi-item itemType="group" [colSpan]="1" cssClass="route-sum">
+                    <div class="route-sum-box">
+                        <span>선불/카드결제</span>
+                        <span class="currency">220,000</span>
+                        <span class="co2">60.5Mt</span>
+                    </div>
+
+                </dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="3" [colSpan]="7">
+                <div class="d-step-container">
+                    <div class="d-step-list-container">
+                        <div class="d-step-list">
+                            <span class="d-step-transfer">경유+2</span>
+                            <div class="d-step">
+                                <span class="d-icon d-icon1"></span>
+                                <span class="d-text">결제완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon2"></span>
+                                <span class="d-text">배차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon3"></span>
+                                <span class="d-text">상차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon4"></span>
+                                <span class="d-text">운송중</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon5"></span>
+                                <span class="d-text">하차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon6"></span>
+                                <span class="d-text">운송완료</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-btns">
+                        <dx-button class="card-btn" text="인수증"></dx-button>
+                        <dx-button class="card-btn" text="상세보기"></dx-button>
+                    </div>
+                </div>
+
+            </dxi-item>
+
+        </dxi-item>
+        <dxi-item itemType="group" cssClass="card-item" [colCount]="18">
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="2">
+                <div class="first-box">
+                    <span class="order-num">00996059687787</span>
+                    <span class="dx-badge green">운송중</span>
+                </div>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-middle" [colCount]="5" [colSpan]="9">
+                <dxi-item itemType="group" [colSpan]="4">
+                    <div class="route-box">
+                        <div class="from">
+                            <div class="from-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                                <span class="r-items">냉동/1톤/편도/가전제품/박스/독차</span>
+                            </div>
+                        </div>
+                        <span class="arr-right"><i class="dx-icon dx-icon-arrowright"></i></span>
+                        <div class="to">
+                            <div class="to-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </dxi-item>
+                <dxi-item itemType="group" [colSpan]="1" cssClass="route-sum">
+                    <div class="route-sum-box">
+                        <span>선불/카드결제</span>
+                        <span class="currency">220,000</span>
+                        <span class="co2">60.5Mt</span>
+                    </div>
+
+                </dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="3" [colSpan]="7">
+                <div class="d-step-container">
+                    <div class="d-step-list-container">
+                        <div class="d-step-list">
+                            <span class="d-step-transfer">경유+2</span>
+                            <div class="d-step">
+                                <span class="d-icon d-icon1"></span>
+                                <span class="d-text">결제완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon2"></span>
+                                <span class="d-text">배차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon3"></span>
+                                <span class="d-text">상차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon4"></span>
+                                <span class="d-text">운송중</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon5"></span>
+                                <span class="d-text">하차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon6"></span>
+                                <span class="d-text">운송완료</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-btns">
+                        <dx-button class="card-btn" text="인수증"></dx-button>
+                        <dx-button class="card-btn" text="상세보기"></dx-button>
+                    </div>
+                </div>
+
+            </dxi-item>
+
+        </dxi-item>
+         <dxi-item itemType="group" cssClass="card-item" [colCount]="18">
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="2">
+                <div class="first-box">
+                    <span class="order-num">00996059687787</span>
+                    <span class="dx-badge blue">운송완료</span>
+                </div>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-middle" [colCount]="5" [colSpan]="9">
+                <dxi-item itemType="group" [colSpan]="4">
+                    <div class="route-box">
+                        <div class="from">
+                            <div class="from-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                                <span class="r-items">냉동/1톤/편도/가전제품/박스/독차</span>
+                            </div>
+                        </div>
+                        <span class="arr-right"><i class="dx-icon dx-icon-arrowright"></i></span>
+                        <div class="to">
+                            <div class="to-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </dxi-item>
+                <dxi-item itemType="group" [colSpan]="1" cssClass="route-sum">
+                    <div class="route-sum-box">
+                        <span>선불/카드결제</span>
+                        <span class="currency">220,000</span>
+                        <span class="co2">60.5Mt</span>
+                    </div>
+
+                </dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="3" [colSpan]="7">
+                <div class="d-step-container">
+                    <div class="d-step-list-container">
+                        <div class="d-step-list">
+                            <span class="d-step-transfer">경유+2</span>
+                            <div class="d-step">
+                                <span class="d-icon d-icon1"></span>
+                                <span class="d-text">결제완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon2"></span>
+                                <span class="d-text">배차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon3"></span>
+                                <span class="d-text">상차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon4"></span>
+                                <span class="d-text">운송중</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon5"></span>
+                                <span class="d-text">하차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon6"></span>
+                                <span class="d-text">운송완료</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-btns">
+                        <dx-button class="card-btn" text="인수증"></dx-button>
+                        <dx-button class="card-btn" text="상세보기"></dx-button>
+                    </div>
+                </div>
+
+            </dxi-item>
+
+        </dxi-item>
+        <dxi-item itemType="group" cssClass="card-item" [colCount]="18">
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="2">
+                <div class="first-box">
+                    <span class="order-num">00996059687787</span>
+                    <span class="dx-badge blue">운송완료</span>
+                </div>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-middle" [colCount]="5" [colSpan]="9">
+                <dxi-item itemType="group" [colSpan]="4">
+                    <div class="route-box">
+                        <div class="from">
+                            <div class="from-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                                <span class="r-items">냉동/1톤/편도/가전제품/박스/독차</span>
+                            </div>
+                        </div>
+                        <span class="arr-right"><i class="dx-icon dx-icon-arrowright"></i></span>
+                        <div class="to">
+                            <div class="to-box">
+                                <b>알포터</b>
+                                <span class="truck">경기도 용인시 흥덕구(주소1)</span>
+                                <span class="clock">상차일 : 2022/10/11 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </dxi-item>
+                <dxi-item itemType="group" [colSpan]="1" cssClass="route-sum">
+                    <div class="route-sum-box">
+                        <span>선불/카드결제</span>
+                        <span class="currency">220,000</span>
+                        <span class="co2">60.5Mt</span>
+                    </div>
+
+                </dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="3" [colSpan]="7">
+                <div class="d-step-container">
+                    <div class="d-step-list-container">
+                        <div class="d-step-list">
+                            <span class="d-step-transfer">경유+2</span>
+                            <div class="d-step">
+                                <span class="d-icon d-icon1"></span>
+                                <span class="d-text">결제완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon2"></span>
+                                <span class="d-text">배차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon3"></span>
+                                <span class="d-text">상차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon4"></span>
+                                <span class="d-text">운송중</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon5"></span>
+                                <span class="d-text">하차완료</span>
+                            </div>
+                            <div class="d-step">
+                                <span class="d-icon d-icon6"></span>
+                                <span class="d-text">운송완료</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-btns">
+                        <dx-button class="card-btn" text="인수증"></dx-button>
+                        <dx-button class="card-btn" text="상세보기"></dx-button>
+                    </div>
+                </div>
+
+            </dxi-item>
+
+        </dxi-item> -->
+  </dx-form>
+  <div class="form-paging-wrap">
+    <button
+      *ngIf="5 >= cardItems.length"
+      class="card-more-btn"
+      (click)="addCardItem($event)"
+    >
+      <span class="dx-button-text">더보기</span>
+    </button>
+  </div>
+</div>
+
+<!--계좌등록 팝업-->
+<dx-popup
+  #popup
+  [closeOnOutsideClick]="false"
+  [dragEnabled]="true"
+  [visible]="false"
+  title="운송상태"
+  (onHidden)="popupClose()"
+  height="830px"
+  width="880px"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    location="after"
+    toolbar="bottom"
+    [options]="{
+      text: utilService.convert('com_btn_save'),
+      type: 'success',
+      onClick: popupClose
+    }"
+  ></dxi-toolbar-item>
+  <dxi-toolbar-item
+    widget="dxButton"
+    location="after"
+    toolbar="bottom"
+    [options]="{
+      text: utilService.convert('com_btn_close'),
+      stylingMode: 'outlined',
+      type: 'normal',
+      onClick: popupClose
+    }"
+  ></dxi-toolbar-item>
+
+  <div>
+    <div class="pop-top">
+      <span class="num">WTR20220921000008</span>
+      <dx-button text="인수증" type="grey"></dx-button>
+    </div>
+    <div class="pop-flex-wrap">
+      <div class="d-track-wrap">
+        <dx-form scrollingEnabled="true" class="non-horizenscroll">
+          <dxi-item itemType="group" cssClass="d-track-list">
+            <!--active class 추가시 왼쪽 보더 점선-->
+            <div class="border-card active">
+              <div class="card-title">
+                <span class="step1">의뢰등록</span>
+                <span class="time">2022-09-22 10:05:59</span>
+              </div>
+            </div>
+            <div class="border-card active">
+              <div class="card-title">
+                <span class="step2">배차완료</span>
+                <span class="time">2022-09-22 10:05:59</span>
+              </div>
+            </div>
+            <div class="border-card">
+              <div class="card-title">
+                <span class="from">상차지</span>
+                <span class="time">2022-09-22 10:05:59</span>
+              </div>
+              <b>(주) AA생산</b>
+              <span>서울시 금천구 가산디지털2</span>
+              <span>166 1층 101호</span>
+              <span>김상차, 010-1111-2222</span>
+
+              <span class="noti"> 상차지에서 물건 상차 후 30분 대기</span>
+            </div>
+            <div class="border-card">
+              <div class="card-title">
+                <span class="transit">경유지</span>
+                <span class="time">2022-09-22 10:05:59</span>
+              </div>
+              <b>(주) AA생산</b>
+              <span>서울시 금천구 가산디지털2</span>
+              <span>166 1층 101호</span>
+              <span>김상차, 010-1111-2222</span>
+
+              <span class="noti"> 상차지에서 물건 상차 후 30분 대기</span>
+            </div>
+            <div class="border-card">
+              <div class="card-title">
+                <span class="to">하차지</span>
+                <span class="time">2022-09-22 10:05:59</span>
+              </div>
+              <b>(주) AA생산</b>
+              <span>서울시 금천구 가산디지털2</span>
+              <span>166 1층 101호</span>
+              <span>김상차, 010-1111-2222</span>
+
+              <span class="noti"> 상차지에서 물건 상차 후 30분 대기</span>
+            </div>
+          </dxi-item>
+        </dx-form>
+      </div>
+      <div class="map-info-list">
+        <div class="map-container">
+          <dx-map #sMap></dx-map>
+        </div>
+        <div class="info-box">
+          <b class="info-title">차량정보</b>
+          <span>카고, 10톤, 독차, oo통운, 차량번호 </span>
+        </div>
+        <div class="info-box">
+          <b class="info-title">물품정보</b>
+          <ul>
+            <li><span>소형가전</span></li>
+            <li><span>10 Box</span></li>
+          </ul>
+          <ul>
+            <li><span>900kg </span></li>
+            <li><span>900x1000x500 </span></li>
+            <li><span>450000000 (m3)</span></li>
+          </ul>
+        </div>
+        <div class="info-box">
+          <div class="info-half-box">
+            <b class="info-title">운임 가격</b>
+            <span class="price">₩ 1,000,000</span>
+          </div>
+          <div class="info-half-box">
+            <b class="info-title">결제방식</b>
+            <span>계산서</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dx-popup>
+<!--//계좌등록 팝업-->

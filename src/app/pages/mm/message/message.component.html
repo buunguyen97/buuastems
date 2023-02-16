@@ -1,0 +1,174 @@
+<!-- 공통 > 메세지 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '메세지')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="save"
+               type="default"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="onClickSave()">
+    </dx-button>
+  </span>
+  <hr/>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item dataField="tenant"
+                    [visible]="false">
+          </dxi-item>
+          <dxi-item dataField="messageKey" [label]="{text: utilService.convert1('mm.mfmessage.messageKey', '메세지코드')}"></dxi-item>
+          <dxi-item dataField="ko" [label]="{text: utilService.convert1('mm.mfmessage.ko', '메시지(한국어)')}"></dxi-item>
+          <dxi-item dataField="remarks" [label]="{text: utilService.convert1('mm.mfmessage.remarks', '비고')}"></dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+
+  <dx-accordion [collapsible]="true"
+                [multiple]="true"
+                [animationDuration]="300">
+    <dxi-item [title]="utilService.convert1('mm.mfmessage.mainGridTitle', '메시지 리스트')">
+      <dx-data-grid #mainGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="false"
+                    [focusedRowEnabled]="true"
+                    [focusStateEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, this.addClick, this.deleteClick)"
+                    (onFocusedCellChanged)="onFocusedCellChanging($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"
+                     [(changes)]="changes"
+                     [allowUpdating]="true"
+                     [selectTextOnEditStart]="true"
+                     [newRowPosition]="'last'">
+        </dxo-editing>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true"
+                    [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing type="custom"
+                           [enabled]="true"
+                           [customLoad]="loadState"
+                           [customSave]="saveState">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant" caption="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column name="No" caption="No" cellTemplate="NoTemplate" alignment="center" [width]="40"></dxi-column>
+        <div *dxTemplate="let data of 'NoTemplate'">
+          {{ data.rowIndex + 1}}
+        </div>
+        <dxi-column dataField="messageKey"
+                    cssClass="grid-cell-required"
+                    [width]="200"
+                    [caption]="utilService.convert1('mm.mfmessage.messageKey', '메세지코드')">
+        </dxi-column>
+        <dxi-column dataField="ko"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.mfmessage.ko', '한국어')">
+        </dxi-column>
+        <dxi-column dataField="en" [caption]="utilService.convert1('mm.mfmessage.en', '영어')"></dxi-column>
+
+        <dxi-column dataField="cn"
+                    [visible]="false"
+                    [caption]="utilService.convert1('mm.mfmessage.cn', '중국어')">
+        </dxi-column>
+        <dxi-column dataField="jp"
+                    [visible]="false"
+                    [caption]="utilService.convert1('mm.mfmessage.jp', '일본어')">
+        </dxi-column>
+        <dxi-column dataField="etc1"
+                    [visible]="false"
+                    [caption]="utilService.convert1('mm.mfmessage.etc1', '기타언어1')">
+        </dxi-column>
+        <dxi-column dataField="etc2"
+                    [visible]="false"
+                    [caption]="utilService.convert1('mm.mfmessage.etc2', '기타언어2')">
+        </dxi-column>
+
+        <dxi-column dataField="remarks" [caption]="utilService.convert1('com.text.remarks', '비고')"></dxi-column>
+
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-accordion>
+</div>

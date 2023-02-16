@@ -1,0 +1,310 @@
+<div class="contents-header">
+    <dx-button #bookmarkBtn
+          class="bookmark-btn"
+          (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+    ></dx-button>
+    <h2 class="content-block page-title">운송현황</h2>
+    <span class="page-breadcrumb">{{utilService.getPagePath()}}</span>
+    <dx-toolbar>
+        <dxi-item widget="dxSelectBox" location="after">
+            <dx-select-box
+              #company
+              [items]="test"
+              placeholder=""
+              displayExpr="display"
+              width="140"
+             >
+            </dx-select-box>
+        </dxi-item>
+        <!-- 창고 cssClass="top-keyword-search"-->
+        <dxi-item widget="dxSelectBox" location="after">
+            <dx-select-box
+                #company
+                [items]="test"
+                placeholder=""
+                displayExpr="display"
+                width="240"
+            >
+            </dx-select-box>
+        </dxi-item>
+        
+    </dx-toolbar>
+    <span class="btngroup page-button-group">
+        <dx-button 
+            icon="print"
+            type="point">
+        </dx-button>
+    </span>
+    
+</div>
+<div class="contents-body">
+    <div>
+      <dx-form [labelMode]="'hidden'">
+        <!--component-->
+        <dxi-item itemType="group" cssClass="card-item" [colCount]="8">
+            
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+            <dxi-item dataField="q" cssClass="no">583-456825-46</dxi-item>
+            <dxi-item dataField="w" cssClass="date">5월 10일</dxi-item>
+            <dxi-item dataField="e" cssClass="time"><i class="dx-icon dx-icon-clock"></i>8:30 출발</dxi-item>
+            <dxi-item>
+                <span class="dx-badge blue">운송중</span>
+            </dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="신청일 2022.05.10" cssClass="col-group" [colCount]="2" [colSpan]="4">
+            <dxi-item itemType="group" [colSpan]="1">
+               
+                <dxi-item dataField="s"><i class="dx-icon dx-icon-tel"></i><b>상차지 연락처</b> 031-468-7895</dxi-item>
+                <dxi-item dataField="d"><i class="dx-icon dx-icon-delivery"></i>경기도 이천시 장호원읍 나래천로 131-127</dxi-item>
+                <dxi-item dataField="f"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 강호원, 010-5689-5612</dxi-item>
+                <dxi-item dataField="g"><i class="dx-icon dx-icon-money"></i>220,000원 (실시간계좌)</dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colSpan]="1">
+                <dxi-item dataField="x"><i class="dx-icon dx-icon-tel"></i><b>하차지</b> 연락처 031-489-8511</dxi-item>
+                <dxi-item dataField="c"><i class="dx-icon dx-icon-delivery"></i>경기도 안산시 단원구 신길동 1061 KR</dxi-item>
+                <dxi-item dataField="v"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 박나래, 010-1258-7812</dxi-item>
+            </dxi-item>
+          
+          </dxi-item>
+          
+          <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="4" [colSpan]="3">
+            <dxi-item itemType="group" [colSpan]="4">
+                <!--[value]: 프로그레스 진행 바
+                    [subvalues]: 타원모양 포인트 
+                -->
+                <dx-linear-gauge id="guage" [value]="20" [subvalues]="[0, 10, 20]">
+                    <dxo-subvalue-indicator type="circle" color="#3366ff">
+                    </dxo-subvalue-indicator>
+                    <dxo-scale [startValue]="0" [endValue]="40" [customTicks]="[0, 10, 20, 40]" [minorTickInterval]="2">
+                      <dxo-label [customizeText]="customizeText"></dxo-label>
+                    </dxo-scale>
+                  </dx-linear-gauge>
+          
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" cssClass="guage-sub-box">
+                <dxi-item itemType="group" [colSpan]="2"><span class="guage-sub-first">2톤 카고/윙</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-second">경기도 이천시</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-last">경기도 평택시</span></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" >
+                <div class="guage-sub-text">
+                    (탄소배출량 : 15.7만톤 CO2eq)
+                </div>
+            </dxi-item>
+          </dxi-item>
+        
+        </dxi-item>
+        <!--//component-->
+        <!--component-->
+        <dxi-item itemType="group" cssClass="card-item" [colCount]="8">
+            
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+            <dxi-item dataField="q" cssClass="no">583-456825-46</dxi-item>
+            <dxi-item dataField="w" cssClass="date">5월 10일</dxi-item>
+            <dxi-item dataField="e" cssClass="time"><i class="dx-icon dx-icon-clock"></i>8:30 출발</dxi-item>
+            <dxi-item>
+                <span class="dx-badge blue">운송중</span>
+            </dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="신청일 2022.05.10" cssClass="col-group" [colCount]="2" [colSpan]="4">
+            <dxi-item itemType="group" [colSpan]="1">
+               
+                <dxi-item dataField="s"><i class="dx-icon dx-icon-tel"></i><b>상차지 연락처</b> 031-468-7895</dxi-item>
+                <dxi-item dataField="d"><i class="dx-icon dx-icon-delivery"></i>경기도 이천시 장호원읍 나래천로 131-127</dxi-item>
+                <dxi-item dataField="f"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 강호원, 010-5689-5612</dxi-item>
+                <dxi-item dataField="g"><i class="dx-icon dx-icon-money"></i>220,000원 (실시간계좌)</dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colSpan]="1">
+                <dxi-item dataField="x"><i class="dx-icon dx-icon-tel"></i><b>하차지</b> 연락처 031-489-8511</dxi-item>
+                <dxi-item dataField="c"><i class="dx-icon dx-icon-delivery"></i>경기도 안산시 단원구 신길동 1061 KR</dxi-item>
+                <dxi-item dataField="v"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 박나래, 010-1258-7812</dxi-item>
+            </dxi-item>
+          
+          </dxi-item>
+          
+          <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="4" [colSpan]="3">
+            <dxi-item itemType="group" [colSpan]="4">
+                
+                <dx-linear-gauge id="guage" [value]="40" [subvalues]="[0, 10, 20,40]">
+                    <dxo-subvalue-indicator type="circle" color="#3366ff">
+                    </dxo-subvalue-indicator>
+                    <dxo-scale [startValue]="0" [endValue]="40" [customTicks]="[0, 10, 20, 40]" [minorTickInterval]="0">
+                      <dxo-label [customizeText]="customizeText"></dxo-label>
+                    </dxo-scale>
+                  </dx-linear-gauge>
+          
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" cssClass="guage-sub-box">
+                <dxi-item itemType="group" [colSpan]="2"><span class="guage-sub-first">2톤 카고/윙</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-second">경기도 이천시</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-last">경기도 평택시</span></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" >
+                <div class="guage-sub-text">
+                    (탄소배출량 : 15.7만톤 CO2eq)
+                </div>
+            </dxi-item>
+          </dxi-item>
+        
+        </dxi-item>
+        <!--//component-->
+        <!--component-->
+        <dxi-item itemType="group" cssClass="card-item" [colCount]="8">
+            
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+            <dxi-item dataField="q" cssClass="no">583-456825-46</dxi-item>
+            <dxi-item dataField="w" cssClass="date">5월 10일</dxi-item>
+            <dxi-item dataField="e" cssClass="time"><i class="dx-icon dx-icon-clock"></i>8:30 출발</dxi-item>
+            <dxi-item>
+                <span class="dx-badge blue">운송중</span>
+            </dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="신청일 2022.05.10" cssClass="col-group" [colCount]="2" [colSpan]="4">
+            <dxi-item itemType="group" [colSpan]="1">
+               
+                <dxi-item dataField="s"><i class="dx-icon dx-icon-tel"></i><b>상차지 연락처</b> 031-468-7895</dxi-item>
+                <dxi-item dataField="d"><i class="dx-icon dx-icon-delivery"></i>경기도 이천시 장호원읍 나래천로 131-127</dxi-item>
+                <dxi-item dataField="f"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 강호원, 010-5689-5612</dxi-item>
+                <dxi-item dataField="g"><i class="dx-icon dx-icon-money"></i>220,000원 (실시간계좌)</dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colSpan]="1">
+                <dxi-item dataField="x"><i class="dx-icon dx-icon-tel"></i><b>하차지</b> 연락처 031-489-8511</dxi-item>
+                <dxi-item dataField="c"><i class="dx-icon dx-icon-delivery"></i>경기도 안산시 단원구 신길동 1061 KR</dxi-item>
+                <dxi-item dataField="v"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 박나래, 010-1258-7812</dxi-item>
+            </dxi-item>
+          
+          </dxi-item>
+          
+          <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="4" [colSpan]="3">
+            <dxi-item itemType="group" [colSpan]="4">
+                
+                <dx-linear-gauge id="guage" [value]="20" [subvalues]="[0, 10, 20]">
+                    <dxo-subvalue-indicator type="circle" color="#3366ff">
+                    </dxo-subvalue-indicator>
+                    <dxo-scale [startValue]="0" [endValue]="40" [customTicks]="[0, 10, 20, 40]" [minorTickInterval]="0">
+                      <dxo-label [customizeText]="customizeText"></dxo-label>
+                    </dxo-scale>
+                  </dx-linear-gauge>
+          
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" cssClass="guage-sub-box">
+                <dxi-item itemType="group" [colSpan]="2"><span class="guage-sub-first">2톤 카고/윙</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-second">경기도 이천시</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-last">경기도 평택시</span></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" >
+                <div class="guage-sub-text">
+                    (탄소배출량 : 15.7만톤 CO2eq)
+                </div>
+            </dxi-item>
+          </dxi-item>
+        
+        </dxi-item>
+        <!--//component-->
+        <!--component-->
+        <dxi-item itemType="group" cssClass="card-item" [colCount]="8">
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+            <dxi-item dataField="q" cssClass="no">583-456825-46</dxi-item>
+            <dxi-item dataField="w" cssClass="date">5월 10일</dxi-item>
+            <dxi-item dataField="e" cssClass="time"><i class="dx-icon dx-icon-clock"></i>8:30 출발</dxi-item>
+            <dxi-item>
+              <span class="dx-badge green">배정중</span>
+            </dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="신청일 2022.05.10" cssClass="col-group" [colCount]="2" [colSpan]="4">
+            <dxi-item itemType="group" [colSpan]="1">
+               
+                <dxi-item dataField="s"><i class="dx-icon dx-icon-tel"></i><b>상차지 연락처</b> 031-468-7895</dxi-item>
+                <dxi-item dataField="d"><i class="dx-icon dx-icon-delivery"></i>경기도 이천시 장호원읍 나래천로 131-127</dxi-item>
+                <dxi-item dataField="f"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 강호원, 010-5689-5612</dxi-item>
+                <dxi-item dataField="g"><i class="dx-icon dx-icon-money"></i>220,000원 (실시간계좌)</dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colSpan]="1">
+                <dxi-item dataField="x"><i class="dx-icon dx-icon-tel"></i><b>하차지</b> 연락처 031-489-8511</dxi-item>
+                <dxi-item dataField="c"><i class="dx-icon dx-icon-delivery"></i>경기도 안산시 단원구 신길동 1061 KR</dxi-item>
+                <dxi-item dataField="v"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 박나래, 010-1258-7812</dxi-item>
+            </dxi-item>
+          
+          </dxi-item>
+          
+          <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="4" [colSpan]="3">
+            <dxi-item itemType="group" [colSpan]="4">
+                
+                <dx-linear-gauge id="guage" [value]="0" [subvalues]="[0]">
+                    <dxo-subvalue-indicator type="circle" color="#3366ff">
+                    </dxo-subvalue-indicator>
+                    <dxo-scale [startValue]="0" [endValue]="40" [customTicks]="[0, 10, 20, 40]" [minorTickInterval]="0">
+                      <dxo-label [customizeText]="customizeText"></dxo-label>
+                    </dxo-scale>
+                  </dx-linear-gauge>
+          
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" cssClass="guage-sub-box">
+                <dxi-item itemType="group" [colSpan]="2"><span class="guage-sub-first">2톤 카고/윙</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-second">경기도 이천시</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-last">경기도 평택시</span></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" >
+                <div class="guage-sub-text">
+                    (탄소배출량 : 15.7만톤 CO2eq)
+                </div>
+            </dxi-item>
+          </dxi-item>
+        </dxi-item>
+        <!--//component-->
+          <!--component-->
+          <dxi-item itemType="group" cssClass="card-item" [colCount]="8">
+            <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+            <dxi-item dataField="q" cssClass="no">583-456825-46</dxi-item>
+            <dxi-item dataField="w" cssClass="date">5월 10일</dxi-item>
+            <dxi-item dataField="e" cssClass="time"><i class="dx-icon dx-icon-clock"></i>8:30 출발</dxi-item>
+            <dxi-item>
+                <span class="dx-badge yellow">작성중</span>
+            </dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="신청일 2022.05.10" cssClass="col-group" [colCount]="2" [colSpan]="4">
+            <dxi-item itemType="group" [colSpan]="1">
+               
+                <dxi-item dataField="s"><i class="dx-icon dx-icon-tel"></i><b>상차지 연락처</b> 031-468-7895</dxi-item>
+                <dxi-item dataField="d"><i class="dx-icon dx-icon-delivery"></i>경기도 이천시 장호원읍 나래천로 131-127</dxi-item>
+                <dxi-item dataField="f"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 강호원, 010-5689-5612</dxi-item>
+                <dxi-item dataField="g"><i class="dx-icon dx-icon-money"></i>220,000원 (실시간계좌)</dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colSpan]="1">
+                <dxi-item dataField="x"><i class="dx-icon dx-icon-tel"></i><b>하차지</b> 연락처 031-489-8511</dxi-item>
+                <dxi-item dataField="c"><i class="dx-icon dx-icon-delivery"></i>경기도 안산시 단원구 신길동 1061 KR</dxi-item>
+                <dxi-item dataField="v"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> 박나래, 010-1258-7812</dxi-item>
+            </dxi-item>
+          
+          </dxi-item>
+          
+          <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="4" [colSpan]="3">
+            <dxi-item itemType="group" [colSpan]="4">
+                
+                <dx-linear-gauge id="guage" [value]="" [subvalues]="">
+                    <dxo-subvalue-indicator type="circle" color="#3366ff">
+                    </dxo-subvalue-indicator>
+                    <dxo-scale [startValue]="0" [endValue]="40" [customTicks]="[0, 10, 20, 40]" [minorTickInterval]="3">
+                      <dxo-label [customizeText]="customizeText"></dxo-label>
+                    </dxo-scale>
+                  </dx-linear-gauge>
+          
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" cssClass="guage-sub-box">
+                <dxi-item itemType="group" [colSpan]="2"><span class="guage-sub-first">2톤 카고/윙</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-second">경기도 이천시</span></dxi-item>
+                <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-last">경기도 평택시</span></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="4" >
+                <div class="guage-sub-text">
+                    (탄소배출량 : 15.7만톤 CO2eq)
+                </div>
+            </dxi-item>
+          </dxi-item>
+        </dxi-item>
+        <!--//component-->
+      </dx-form>
+    </div>
+  </div>
+  
+  

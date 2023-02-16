@@ -1,0 +1,20 @@
+::ng-deep {
+
+
+  //아래 간격 조절 css css파일에서 선택자 검색해서 수정해주시거나 제일 아래로 달아주세요.
+
+  .dx-datagrid-headers .dx-datagrid-table .dx-row > td{
+    background: #ffffff;
+  }
+  .dx-datagrid-headers,
+  .dx-treelist-headers{
+    background: #ffffff;
+    border-bottom-color: #d0d5dc !important; //보더 아래만
+  }
+
+
+  .dx-datagrid .dx-row-alt > td, .dx-datagrid .dx-row-alt > tr > td{
+    background: #f7f7fe; //테이블 짝수번째로우 배경색상
+  }
+
+}

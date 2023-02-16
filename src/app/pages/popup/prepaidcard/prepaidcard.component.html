@@ -1,0 +1,115 @@
+<dx-popup #popup
+          [dragEnabled]="true"
+          [title]="utilService.convert1('mm.user.preCardPopup.title', '선불카드내역')"
+          (onHidden)="onHidden()"
+          [height]="770"
+          [width]="800"
+>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="border"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="close()">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           scrollingEnabled="true"
+  >
+    <dxi-item itemType="group"
+              caption="사용내역"
+              cssClass="fromtocalendar pop-item-box"
+    >
+      <dxi-item itemType="group" [label]="{text: utilService.convert1('mm.preCard.procDateTime', '처리일자')}"
+                cssClass="fromtocalendar" [colCount]="3">
+        <dxi-item dataField="fromProcDate" editorType="dxDateBox"
+                  cssClass="fromcalendar"
+                  [label]="{visible: false}"
+                  [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+        </dxi-item>
+        <dxi-item dataField="toProcDate" editorType="dxDateBox"
+                  cssClass="tocalendar"
+                  [label]="{text: '~'}"
+                  [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+        </dxi-item>
+        <dxi-item itemType="button" horizontalAlignment="right">
+          <dxo-button-options
+            icon="search"
+            type="form"
+            class="search-btn"
+            [text]="utilService.convert1('com.btn.search', '조회')"
+            [onClick]="onClickSearch"
+          >
+          </dxo-button-options>
+        </dxi-item>
+      </dxi-item>
+    </dxi-item>
+
+    <dxi-item itemType="group" cssClass="pop-item-box no-border">
+      <dx-data-grid #popupGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    [height]="450"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-selection mode="single"></dxo-selection>    <!-- single, multiple -->
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing type="custom"
+                           [enabled]="true">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false">
+        </dxi-column>
+
+        <dxi-column dataField="procDateTime" alignment="center"
+                    [caption]="utilService.convert1('mm.preCard.procDateTime', '처리일시')">
+        </dxi-column>
+        <dxi-column dataField="procType" alignment="center"
+                    [caption]="utilService.convert1('mm.preCard.procType.process', '처리유형')">
+          <dxo-lookup [dataSource]=dsProcType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="procAmt" format="#,##0.####"
+                    [caption]="utilService.convert1('mm.preCard.procAmt', '금액')">
+        </dxi-column>
+        <dxi-column dataField="remainAmt" format="#,##0.####"
+                    [caption]="utilService.convert1('mm.preCard.remainAmt.after', '잔액')">
+        </dxi-column>
+        <dxi-column dataField="procUser" alignment="center"
+                    [caption]="utilService.convert1('mm.preCard.procUser', '처리자')">
+          <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="remark" alignment="center"
+                    [caption]="utilService.convert1('mm.preCard.remark', '사유')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-form>
+</dx-popup>

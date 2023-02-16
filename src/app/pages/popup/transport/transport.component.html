@@ -1,0 +1,73 @@
+<dx-popup #popup
+          [dragEnabled]="true"
+          [title]="utilService.convert1('mm.user.transportPopup.title', '차량제원')"
+          (onHidden)="onHidden()"
+          height="770px"
+          width="570px"
+>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="success"
+               [text]="utilService.convert1('mm.user.registration', '등록')"
+               (onClick)="registration()">
+    </dx-button>
+    <dx-button type="border"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="close()">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           labelLocation="left"
+           class="transport-form"
+  >
+    <dxi-item itemType="group" [colCount]="4" cssClass="transport-list">
+      <ng-container *ngFor="let carType of carTypeList; let i = index">
+        <dxi-item itemType="group" name="cards" class="transport-card">
+          <dx-button class="transport-item"
+                     [class.selected]="selectedNum === i"
+                     (onClick)="onSelectItem(i, carType)">
+            <img src="{{ carType.etcColumn1 }}">
+            <span>{{ carType.codeName }}</span>
+          </dx-button>
+        </dxi-item>
+      </ng-container>
+    </dxi-item>
+    <dxi-item itemType="group" [colCount]="2" cssClass="table-custom">
+      <dxi-item dataField="tranCarKind"
+                [label]="{text: utilService.convert1('mm.tranord.tranCarKind', '차량종류')}"
+                cssClass="table-item"
+                editorType="dxSelectBox"
+                [editorOptions]="{
+                  items: dsTranCarKind,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  showClearButton: true,
+                  noDataText: utilService.convert('com.txt.noDataText')
+                }">
+      </dxi-item>
+
+      <dxi-item itemType="group" cssClass="table-input-group">
+        <dxi-item dataField="tranCarCnt"
+                  editorType="dxNumberBox"
+                  cssClass="table-item"
+                  [label]="{text: utilService.convert1('mm.tranord.tranCarCnt', '차량대수')}"
+                  [editorOptions]="{
+                    disabled: !input ? false : !input.checkWayPoint,
+                    format: '#,##0.####',
+                    min: 1,
+                    max: 99999999999999,
+                    step: 0
+                  }">
+        </dxi-item>
+        <dxi-item cssClass="table-unit">대</dxi-item>
+      </dxi-item>
+      <dxi-item dataField="tranCarType" [visible]="false"></dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>

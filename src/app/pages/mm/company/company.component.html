@@ -1,0 +1,313 @@
+<!-- 공통 > 운송사 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '운송사')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="add"
+               type="default"
+               [text]="utilService.convert1('com.btn.new', '신규')"
+               (onClick)="onNew($event)">
+    </dx-button>
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+      >
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item dataField="tenant"
+                    [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }">
+          </dxi-item>
+
+          <dxi-item dataField="company" [label]="{text: utilService.convert1('mm.company.company', '운송사코드')}"></dxi-item>
+          <dxi-item dataField="name" [label]="{text: utilService.convert1('mm.company.name', '운송사명')}"></dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(this.mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+
+  <dx-accordion [collapsible]="true"
+                [multiple]="false"
+                [animationDuration]="300"
+  >
+    <dxi-item [title]="utilService.convert1('mm.company.mainGridTitle', '운송사 리스트')">
+      <dx-data-grid #mainGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                    (onRowDblClick)="onRowDblClick($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"></dxo-editing>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="200"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing [enabled]="true"
+                           type="custom"
+                           [customLoad]="loadStateMain"
+                           [customSave]="saveStateMain">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant" caption="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column dataField="company" [caption]="utilService.convert1('mm.company.company', '운송사코드')"></dxi-column>
+        <dxi-column dataField="name" [caption]="utilService.convert1('mm.company.name', '운송사명')"></dxi-column>
+        <dxi-column dataField="tranFee" [caption]="utilService.convert1('mm.company.tranFee', '수수료')"></dxi-column>
+        <dxi-column dataField="actFlg" alignment="center" [caption]="utilService.convert1('mm.company.actFlg', '사용여부')">
+          <dxo-lookup [dataSource]=dsYN displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-accordion>
+</div>
+
+<!-- Grid popup-->
+<dx-popup #popup
+          [width]="1140"
+          [height]="850"
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          (onHidden)="onHiddenPopup($event)"
+>
+
+  <dxi-toolbar-item widget="dxButton"
+                    location="before"
+                    toolbar="bottom"
+                    [visible]="!isNewPopup"
+                    [options]="{
+                      text: utilService.convert1('com.btn.del', '삭제'),
+                      stylingMode: 'Contained',
+                      type: 'danger',
+                      onClick: onClickPopupDelete
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.save', '저장'),
+                      type: 'success',
+                      onClick: onClickPopupSave
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.close', '닫기'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: onClickPopupCancel
+                    }">
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           (focusin)="setChangeMask($event)"
+           (focusout)="setChangeMask($event)"
+           [colCountByScreen]="{
+                lg:3, md: 3, sm:2, xs:1
+           }"
+  >
+    <dxi-item itemType="group" cssClass="pop-item-box"
+              [colCount]="3" [colSpan]="3"
+              [caption]="utilService.convert(pageInfo.path)">
+      <dxi-item dataField="tenant"
+                [visible]="false">
+      </dxi-item>
+      <dxi-item dataField="uid"
+                [visible]="false">
+      </dxi-item>
+
+      <dxi-item dataField="company"
+                [editorOptions]="{disabled: !isNewPopup}"
+                [label]="{text: utilService.convert1('mm.company.company', '운송사코드')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.company.company', '운송사코드'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="name" [label]="{text: utilService.convert1('mm.company.name', '운송사명')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.company.name', '운송사명'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="actFlg" editorType="dxSelectBox"
+                [label]="{text: utilService.convert1('mm.company.actFlg', '사용여부')}"
+                [editorOptions]="{
+                  items: dsYN,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  showClearButton: true,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.company.actFlg', '사용여부'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="repNm" [label]="{text: utilService.convert1('mm.company.repNm', '대표자명')}"></dxi-item>
+      <dxi-item dataField="bsNo" [label]="{text: utilService.convert1('mm.company.bsNo', '사업자번호')}"></dxi-item>
+      <dxi-item dataField="phone1"
+                [label]="{text: utilService.convert1('mm.company.phone1', '전화번호')}"
+                [editorOptions]="telEditorOptions">
+      </dxi-item>
+
+      <dxi-item dataField="refName" [label]="{text: utilService.convert1('mm.company.refNm', '담당자명')}"></dxi-item>
+      <dxi-item dataField="email" [label]="{text: utilService.convert1('mm.company.email', 'Email')}"></dxi-item>
+      <dxi-item dataField="phone2"
+                [label]="{text: utilService.convert1('mm.company.phone2', '핸드폰번호')}"
+                [editorOptions]="phoneEditorOptions">
+      </dxi-item>
+
+      <dxi-item itemType="group" cssClass="form-group2" [colSpan]="2">
+        <dxi-item dataField="address1" [label]="{text: utilService.convert1('mm.company.address1', '주소1')}"></dxi-item>
+        <dxi-item cssClass="form-group-btn2">
+          <button [ngClass]="getButtonClass()"
+                  (click)="onLoadFindAddress($event, this)">
+            <div class="dx-button-content">
+              <span class="dx-button-text">{{ utilService.convert1('com.text.search.address', '주소검색') }}</span>
+            </div>
+          </button>
+        </dxi-item>
+      </dxi-item>
+      <dxi-item dataField="tranFee" [label]="{text: utilService.convert1('mm.company.tranFee', '수수료')}"></dxi-item>
+
+      <dxi-item dataField="address2" [colSpan]="2" [label]="{text: utilService.convert1('mm.company.address2', '주소2')}"></dxi-item>
+      <dxi-item itemType="empty"></dxi-item>
+
+      <dxi-item itemType="group" [colSpan]="3">
+        <div class="dropzone-title">등록서류</div>
+        <div class="dropzone-container">
+          <div class="dropzone-list">
+            <ng-container *ngFor="let data of imgUploadList; let i = index">
+              <div class="dropzone-wrapper">
+
+                <div class="dropzone-button-wrap" *ngIf="data.checkPath">
+
+                  <div class="top-buttons">
+                    <button class="dropzone-top-button"><i class="dx-icon dx-icon-trash"></i></button>
+<!--                    <button class="dropzone-top-button"><i class="dx-icon dx-icon-download"></i></button>-->
+<!--                    <button class="dropzone-delete-button">-->
+<!--                      <i class="dx-icon dx-icon-close"></i>-->
+<!--                    </button>-->
+                  </div>
+
+                  <button class="dropzone-download-button"
+                          *ngIf="data.checkPath"
+                          (click)="downloadImage(data)">
+                    <i class="dx-icon dx-icon-download"></i>
+                  </button>
+                  <button class="dropzone-image-button fullscreen"
+                          *ngIf="data.checkPath"
+                          (click)="openImageModal(data)">
+                    <i class="dx-icon dx-icon-search"></i>
+                  </button>
+                </div>
+
+                <label class="dropzone-external flex-box" for="imgCompany{{ data.code }}">
+                  <div class="dropzone-img-box">
+                    <img class="dropzone-image"/>
+                  </div>
+                  <span>{{ data.codeName }}</span>
+                  <input id="imgCompany{{ data.code }}" hidden
+                         type="file" accept="image/*"
+                         (change)="onValueChangedImg($event, data)"/>
+                </label>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+<form id="companyForm" enctype="multipart/form-data"></form>
+
+<div class="image-modal">
+  <span class="image-modal-close" (click)="closeImageModal($event)">&times;</span>
+  <img class="image-modal-content" id="fullImage">
+</div>
+<a id="downloadImageEl" href="#"></a>

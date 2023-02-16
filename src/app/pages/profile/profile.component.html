@@ -1,0 +1,165 @@
+<!-- 공통 > 프로필 -->
+<div class="contents-header">
+  <h2 class="content-block page-title">{{utilService.convert('/mm/profile', '프로필')}}</h2> <!-- 다국어 -->
+  <span class="page-breadcrumb"></span>
+  <span class="btngroup page-button-group">
+     <dx-button icon="add"
+                type="success"
+                [text]="utilService.convert('com_btn_save')"
+                (onClick)="Save()"
+     ></dx-button>
+  </span>
+  <hr/>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               [(formData)]="mainFormData"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:4, md: 4, sm:2, xs:2}"
+      >
+        <dxi-item itemType="group" [colCount]="4" [colSpan]="4">
+          <dxi-item dataField="tenant" [label]="{text: 'Tenant'}" [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }" [disabled]="true"></dxi-item>
+
+          <dxi-item dataField="usr" [disabled]="true" [label]="{text: utilService.convert('mm_user_id')}">
+          </dxi-item>
+          <dxi-item dataField="password" [label]="{text: utilService.convert('mm_user_pwd')}">
+            <dx-button #pwdBtn
+                       type="default"
+                       [text]="utilService.convert('mm_user_btn_chnPwd')"
+                       (onClick)="pwdPopupOpenClick()"
+            ></dx-button>
+          </dxi-item>
+          <dxi-item dataField="companyId"
+                    editorType="dxSelectBox" [disabled]="true"
+                    [label]="{text: utilService.convert('mm_user_companyId')}"
+                    [editorOptions]="{  items: dsOwnerId,
+                                            displayExpr: 'display',
+                                            valueExpr: 'uid',
+                                            searchMode:'contains',
+                                            searchEnabled: true,
+                                            openOnFieldClick: false,
+                                            showClearButton: true,
+                                            minSearchLength: 0,
+                                            noDataText: utilService.convert('com_txt_noDataText')
+                                         }">
+          </dxi-item>
+
+          <dxi-item dataField="actFlg" [label]="{text:utilService.convert('com_code_actFlg')}" editorType="dxSelectBox"
+                    [editorOptions]="{  items: dsActFlg,
+                                            displayExpr: 'codeName',
+                                            valueExpr: 'code',
+                                            searchMode:'contains',
+                                            searchEnabled: true,
+                                            openOnFieldClick: false,
+                                            minSearchLength: 0,
+                                            placeholder: '',
+                                            noDataText: utilService.convert('com_txt_noDataText')
+                                         }"
+          >
+          </dxi-item>
+
+          <dxi-item dataField="name" [label]="{text: utilService.convert('mm_user_name')}">
+          </dxi-item>
+          <dxi-item dataField="shortName" [label]="{text: utilService.convert('mm_user_shortName')}">
+          </dxi-item>
+
+          <dxi-item dataField="userGroup" [label]="{text:utilService.convert('mm_user_userGroup')}"
+                    editorType="dxSelectBox" [disabled]="true"
+                    [editorOptions]="{  items: dsUserGroup,
+                                            displayExpr: 'display',
+                                            valueExpr: 'code',
+                                            searchMode:'contains',
+                                            searchEnabled: true,
+                                            openOnFieldClick: false,
+                                            minSearchLength: 0,
+                                            placeholder: '',
+                                            noDataText: utilService.convert('com_txt_noDataText')
+                                         }"
+          >
+          </dxi-item>
+          <dxi-item dataField="email" [label]="{text: utilService.convert('mm_user_email')}">
+          </dxi-item>
+          <dxi-item dataField="tel" [label]="{text: utilService.convert('mm_user_tel')}"
+                    [editorOptions]="{mask: '+ccc) ccccccccccccccccc',  maskChar: ' ', maskInvalidMessage: 'The input value does not match the mask'}">
+          </dxi-item>
+          <dxi-item dataField="fax" [label]="{text: utilService.convert('mm_user_fax')}"
+                    [editorOptions]="{mask: '+ccc) ccccccccccccccccc',  maskChar: ' ', maskInvalidMessage: 'The input value does not match the mask'}">
+          </dxi-item>
+          <dxi-item itemType="empty" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="remarks" [colSpan]="4" editorType="dxTextArea"
+                    [label]="{text: utilService.convert('com_text_remarks')}"
+                    [editorOptions]="{placeholder: utilService.convert('com_txt_noContent')}"></dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <!--      <div class="search-btn-group">-->
+      <!--        <dx-button icon="check"-->
+      <!--                   type="default"-->
+      <!--                   [text]="utilService.convert1('com_btn_reset', '초기화', 'Reset')"-->
+      <!--                   class="reset-btn"-->
+      <!--                   (onClick)="onReset()"-->
+      <!--        ></dx-button>-->
+      <!--        <dx-button icon="check"-->
+      <!--                   type="default"-->
+      <!--                   [text]="utilService.convert('com_btn_search')"-->
+      <!--                   class="search-btn"-->
+      <!--                   [focusStateEnabled]="false"-->
+      <!--                   (onClick)="onSearch()"-->
+      <!--        ></dx-button>-->
+      <!--      </div>-->
+    </div>
+  </div>
+</div>
+
+
+<dx-popup #pwdPopup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          [title]="utilService.convert('mm_user_btn_chnPwd')"
+          height="300px"
+          width="400px"
+>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert('com_btn_save'),
+                      type: 'success',
+                      onClick: pwdPopupSaveClick
+                    }"></dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert('com_btn_close'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: pwdPopupCancelClick
+                    }"></dxi-toolbar-item>
+
+  <div *dxTemplate="let data of 'content'">
+    <dx-form #pwdPopupForm
+             [(formData)]="pwdPopupData"
+             [showColonAfterLabel]="true"
+             labelLocation="left"
+    >
+      <dxi-item dataField="password" [editorOptions]="{mode: 'password'}"
+                [label]="{text: utilService.convert('mm_user_pop_currentPwd')}"></dxi-item>
+      <dxi-item dataField="changePassword" [editorOptions]="{mode: 'password'}"
+                [label]="{text: utilService.convert('mm_user_pop_newPwd')}"></dxi-item>
+      <dxi-item dataField="checkPassword" [editorOptions]="{mode: 'password'}"
+                [label]="{text: utilService.convert('mm_user_pop_confirmPwd')}">
+        <dxi-validation-rule type="compare"
+                             [comparisonTarget]="passwordComparison"
+                             [message]="utilService.convert('mm_user_confirmMsg')"
+        ></dxi-validation-rule>
+      </dxi-item>
+    </dx-form>
+  </div>
+</dx-popup>

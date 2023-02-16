@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "themes/generated/variables.additional.scss";
+
+.shrinked{
+    .menu-container .dx-searchbox {
+        .dx-icon-search{
+            left: 15% !important;
+        }
+        
+        .dx-placeholder{
+            display: none;
+        }
+    }
+}

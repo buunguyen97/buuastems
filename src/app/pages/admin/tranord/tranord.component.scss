@@ -1,0 +1,81 @@
+.isSelected:hover {
+  background-color: #fcffd2;
+}
+
+
+::ng-deep{
+
+//아래 간격 조절 css css파일에서 선택자 검색해서 수정해주시거나 제일 아래로 달아주세요. 
+
+
+
+  // .con1 : 왼쪽 폼
+// width padding, margin 간격
+
+  .map-drawer-wrapper .left-side .con1 {
+    width: 580px;
+  }
+  .map-drawer-wrapper .left-side .con1 .contents-header{
+    padding: 12px 25px;
+  }
+
+  //하단버튼 영역
+  .map-drawer-wrapper .left-side .con1 .contents-bottom{
+    padding: 15px 30px;
+  }
+  //버튼 높이
+  .map-drawer-wrapper .left-side .con1 .contents-bottom .bottom-btn-group .dx-button,
+  .map-drawer-wrapper .left-side .con1 .contents-bottom .dx-button-signup{
+    height:34px;
+  }
+ 
+
+
+  .map-drawer-wrapper .left-side .con1 .contents-body .contents-list{
+    padding: 10px 25px;
+  }
+  .map-drawer-wrapper .left-side .con1 .table-group{
+    margin-bottom: 0px;
+  }
+
+  //경유지 추가 버튼 영역
+  .con1 .btn-tool{ 
+    margin-bottom: 0;
+  }
+   //경유지 추가 버튼
+  .con1 .btn-tool button{
+    height: 30px;
+  }
+  .con1 .btn-tool .dx-button .dx-button-text, .con1 .btn-tool button .dx-button-text{
+    font-size: .875rem;
+  }
+ 
+  
+  
+
+  //폼 인풋 높이 커스텀
+  .table-custom .dx-layout-manager .dx-field-item.table-item{ //인풋 컨테이너
+    height: 38px; 
+  }
+  .table-item .dx-field-item-content-location-right{ 
+    padding: 4px 10px;
+  }
+
+  .table-item .dx-texteditor-input{ //인풋
+    min-height: 28px !important;
+  }
+  .table-btn-group .table-btn-md .dx-button, //인풋그룹 버튼
+   .table-btn-group .table-btn-md button{
+    height: 28px;
+  }
+
+  
+  //.con2 오른쪽 정보패널 width 조절
+  .map-drawer-wrapper .left-side .con2 {
+    width: 320px;
+  }
+  .con2-list{
+    padding: 28px 15px;
+  }
+
+}

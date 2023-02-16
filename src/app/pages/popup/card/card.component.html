@@ -1,0 +1,67 @@
+<dx-popup #popup
+          [dragEnabled]="true"
+          [title]="utilService.convert1('mm.user.cardPopup.title', '결제정보등록')"
+          (onHidden)="onHidden()"
+          height="610px"
+          width="400px"
+>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="success"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="decide()">
+    </dx-button>
+    <dx-button type="border"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="close()">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           labelLocation="top"
+           [colCount]="2"
+  >
+    <dxi-item itemType="group" [colCount]="2" [colSpan]="2" cssClass="pop-item-box no-border label-top-form">
+
+      <dxi-item itemType="group" cssClass="group-row"
+                [label]="{text: utilService.convert1('mm.user.cardType', '카드유형')}">
+        <dxi-item editorType="dxRadioGroup" dataField="cardType"
+                  [label]="{visible: false}"
+                  [editorOptions]="{
+                    items: dsCardType,
+                    displayExpr: 'codeName',
+                    valueExpr: 'code',
+                    layout: 'horizontal'
+                  }">
+        </dxi-item>
+      </dxi-item>
+      <dxi-item itemType="empty"></dxi-item>
+      <dxi-item dataField="cardNo" [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.user.cardNo', '카드번호')}"
+                [editorOptions]="{ mask: '0000 - 0000 - 0000 - 0000'}">
+      </dxi-item>
+      <dxi-item dataField="validMonth" [colCount]="2"
+                [label]="{text: utilService.convert1('mm.user.validMonth', '유효기간')}"
+                [editorOptions]="{ mask: '00 / 00', laceholder:'MM/YY' }">
+      </dxi-item>
+      <dxi-item dataField="cardPassword" [colSpan]="1"
+                [label]="{text: utilService.convert1('mm.user.cardPassword', '카드비밀번호')}"
+                [editorOptions]="{ mask: '00 **' }">
+      </dxi-item>
+      <dxi-item dataField="birth" [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.user.birth', '생년월일')}"
+                [editorOptions]="{ placeholder:'년월일만 입력해주세요. 예)990101' }">
+      </dxi-item>
+      <dxi-item dataField="email" [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.user.email', '결제 안내 이메일')}"
+                [editorOptions]="{ placeholder:'이메일 입력' }">
+      </dxi-item>
+      <dxi-item dataField="mainYn" editorType="dxCheckBox" [colSpan]="2"
+                [label]="{visible: false}"
+                [editorOptions]="{
+                  text: '위 내용을 확인하였으며, 결제 약관에 동의합니다.'
+                }">
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>

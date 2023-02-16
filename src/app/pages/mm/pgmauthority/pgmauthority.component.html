@@ -1,0 +1,382 @@
+<!-- 공통 > 권한 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '권한')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="save"
+               type="default"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="saveClick()">
+    </dx-button>
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [(formData)]="mainFormData"
+               [minColWidth]="300"
+               [showColonAfterLabel]="false"
+               [colCount]="4"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+      >
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item dataField="tenant"
+                    [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }">
+          </dxi-item>
+
+          <dxi-item dataField="usr"
+                    [label]="{text: utilService.convert1('mm.pgmauthority.usr', '사용자ID')}"></dxi-item>
+          <dxi-item dataField="name"
+                    [label]="{text: utilService.convert1('mm.pgmauthority.name', '사용자명')}"></dxi-item>
+
+          <dxi-item dataField="companyId" [label]="{text: utilService.convert1('mm.pgmauthority.companyId', '소속회사')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{
+                                      items: dsCompany,
+                                      displayExpr: 'name',
+                                      valueExpr: 'uid',
+                                      searchMode:'contains',
+                                      searchEnabled: true,
+                                      openOnFieldClick: false,
+                                      showClearButton: true,
+                                      minSearchLength: 0,
+                                      placeholder: '',
+                                      noDataText: utilService.convert('com.txt.noDataText'),
+                                      dropDownOptions: {container: '.contents-list'}
+                                      }">
+          </dxi-item>
+          <dxi-item dataField="userType"
+                    [label]="{text: utilService.convert1('mm.pgmauthority.userType', '사용자타입')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{  items: dsUserType,
+                                        displayExpr: 'display',
+                                        valueExpr: 'code',
+                                        searchMode:'contains',
+                                        searchEnabled: true,
+                                        openOnFieldClick: false,
+                                        minSearchLength: 0,
+                                        placeholder: '',
+                                        onSelectionChanged: onSelectionChanged,
+                                        showClearButton: true,
+                                        noDataText: utilService.convert('com.txt.noDataText')
+                                      }">
+          </dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch('mainGrid')">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+
+  <!--Grid-->
+  <dx-accordion [collapsible]="true"
+                [multiple]="true"
+                [animationDuration]="300">
+    <dxi-item [title]="utilService.convert1('mm.pgmauthority.mainGridTitle', '권한 리스트')">
+      <div class="flex-container">
+        <!--Grid-->
+        <dx-data-grid
+          #mainGrid
+          [dataSource]="mainGridDataSource"
+          (onToolbarPreparing)="onToolbarPreparing($event)"
+          [(selectedRowKeys)]="selectedRows1"
+          [allowColumnResizing]="true"
+          [columnAutoWidth]="false"
+          [focusedRowEnabled]="true"
+          (onFocusedRowChanged)="onFocusedRowChanging($event, this.mainGrid)"
+          (onFocusedCellChanged)="onFocusedCellChanging($event, this.mainGrid)"
+          [rowAlternationEnabled]="true"
+          [showRowLines]="true"
+          [allowColumnReordering]="true"
+          (onExporting)="gridUtil.onPageExportXlsx($event)"
+          columnResizingMode=nextColumn
+        >
+          <dxo-editing mode="batch"
+                       [allowUpdating]="true"
+                       [(changes)]="changes1"
+                       [selectTextOnEditStart]="true"
+          ></dxo-editing>
+          <dxo-load-panel [enabled]="true"></dxo-load-panel>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+          <dxo-search-panel
+            [visible]="true"
+            [width]="240"
+            [placeholder]="''"></dxo-search-panel>
+          <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+          <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]=gridUtil.getAllowedPageSize()
+            [displayMode]="'full'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+          >
+          </dxo-pager>
+          <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadStateMain"
+                             [customSave]="saveStateMain"></dxo-state-storing>
+
+          <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="usr" [caption]="utilService.convert1('mm.pgmauthority.usr', '사용자ID')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="name"
+                      [caption]="utilService.convert1('mm.pgmauthority.name', '사용자명')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="userType"
+                      [caption]="utilService.convert1('mm.pgmauthority.userType', '사용자타입')"
+                      [allowEditing]="false" alignment="center">
+            <dxo-lookup [dataSource]=dsUserType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="companyId" [caption]="utilService.convert1('mm.pgmauthority.companyId', '소속회사')"
+                      [allowEditing]="false">
+            <dxo-lookup [dataSource]=dsCompany displayExpr="name" valueExpr="uid"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="isAdmin" [caption]="utilService.convert1('mm.pgmauthority.isAdmin', '관리자여부')"
+                      alignment="center">
+            <dxo-lookup [dataSource]=dsYN displayExpr="codeName" valueExpr="code"></dxo-lookup>
+          </dxi-column>
+        </dx-data-grid>
+
+        <dx-tree-list
+          #subTreeList
+          [dataSource]="subGridDataSource"
+          keyExpr="keyExpr"
+          parentIdExpr="parentIdExpr"
+          [allowColumnResizing]="true"
+          [columnAutoWidth]="false"
+          [focusedRowEnabled]="true"
+          (onToolbarPreparing)="onToolbarPreparingForTreeList($event)"
+          (onFocusedRowChanged)="onFocusedRowChanging($event, this.subTreeList)"
+          (onFocusedCellChanged)="onFocusedCellChanging($event, this.subTreeList)"
+          (onRowDblClick)="onTreeListDblClick($event)"
+          [showRowLines]="true"
+          [rowAlternationEnabled]="true"
+          [allowColumnReordering]="true"
+          (onEditingStart)="onEditingStart($event)"
+          columnResizingMode=nextColumn
+        >
+          <dxo-selection mode="multiple" [recursive]="true"></dxo-selection>
+          <dxo-editing mode="batch"
+                       [allowUpdating]="true"
+                       [(changes)]="changes2"
+          ></dxo-editing>
+          <dxo-load-panel [enabled]="true"></dxo-load-panel>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+          <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadStateSub"
+                             [customSave]="saveStateSub"></dxo-state-storing>
+          <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="appId" caption="appId" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+
+          <dxi-column dataField="userType" [caption]="utilService.convert1('mm.pgmauthority.userType', '사용자타입')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="menuL1Text" [caption]="utilService.convert1('mm.pgmauthority.menuL1Text', '대메뉴')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="menuL2Text" [caption]="utilService.convert1('mm.pgmauthority.menuL2Text', '중메뉴')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="app" [caption]="utilService.convert1('mm.pgmauthority.app', '어플리케이션')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="authSearch" [caption]="utilService.convert1('mm.pgmauthority.authSearch', '메뉴표시')"
+                      alignment="center" [allowEditing]="true">
+            <dxo-lookup [dataSource]=dsYN displayExpr="codeName" valueExpr="code"></dxo-lookup>
+          </dxi-column>
+        </dx-tree-list>
+      </div>
+    </dxi-item>
+  </dx-accordion>
+</div>
+
+<!-- Grid popup-->
+<dx-popup
+  [(title)]="popupMode"
+  [closeOnOutsideClick]="false"
+  [dragEnabled]="true"
+  [resizeEnabled]="true"
+  [(visible)]="popupVisible"
+  [height]="770"
+  (onShown)="popupShown($event)"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    location="after"
+    toolbar="bottom"
+    [options]="{
+      text: utilService.convert1('com.btn.save', '저장'),
+      type: 'success',
+      onClick: popupSaveClick
+    }"></dxi-toolbar-item>
+  <dxi-toolbar-item
+    widget="dxButton"
+    location="after"
+    toolbar="bottom"
+    [options]="{
+      text: utilService.convert1('com.btn.close', '닫기'),
+      stylingMode: 'outlined',
+      type: 'normal',
+      onClick: popupCancelClick
+    }"></dxi-toolbar-item>
+
+  <div *dxTemplate="let data of 'content'">
+    <dx-form #popupForm
+             [(formData)]="popupData"
+             labelLocation="left"
+             [scrollingEnabled]="true"
+             [showColonAfterLabel]="false"
+             [colCountByScreen]="{
+                  lg:6, md: 6, sm:2, xs:2
+               }"
+    >
+      <dxi-item itemType="group"
+                [colCount]="6"
+                [colSpan]="6"
+                >
+        <dxi-item dataField="tenant" [colSpan]="2" [label]="{text: 'Tenant'}" [visible]="false"
+                  [editorOptions]="{ value: G_TENANT }"></dxi-item>
+        <dxi-item dataField="userId" [colSpan]="2" [label]="{text: '사용자ID'}" [visible]="false"></dxi-item>
+        <dxi-item dataField="popupUserId" [colSpan]="2" [label]="{text: '메인유저ID'}" [visible]="false"></dxi-item>
+      </dxi-item>
+      <dxi-item itemType="group"
+                caption="권한부여 대상 목록"
+                [colCount]="6"
+                [colSpan]="6"
+                cssClass="pop-item-box">
+        <dx-data-grid
+          #popupMainGrid
+          [dataSource]="popupMainGridDataSource"
+          (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+          [(selectedRowKeys)]="selectedRows1"
+          [allowColumnResizing]="true"
+          [columnAutoWidth]="false"
+          [focusedRowEnabled]="true"
+          (onFocusedRowChanged)="onFocusedRowChanging($event, this.popupMainGrid)"
+          (onFocusedCellChanged)="onFocusedCellChanging($event, this.popupMainGrid)"
+          [showRowLines]="true"
+          [allowColumnReordering]="true"
+          [height]="239"
+          scrollingEnabled="true"
+          (onExporting)="gridUtil.onPageExportXlsx($event)"
+          columnResizingMode=nextColumn
+        >
+          <dxo-editing mode="batch"
+                       [allowUpdating]="false"
+                       [(changes)]="changes1"
+                       [selectTextOnEditStart]="true"
+          ></dxo-editing>
+          <dxo-selection mode="single"></dxo-selection>    <!-- single, multiple -->
+          <dxo-load-panel [enabled]="true"></dxo-load-panel>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+          <dxo-search-panel
+            [visible]="true"
+            [width]="240"
+            [placeholder]="''"></dxo-search-panel>
+          <dxo-paging [enabled]="true" [pageSize]=gridUtil.getMainGridPageSize()></dxo-paging>
+          <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]=gridUtil.getMainGridAllowedSize()
+            [displayMode]="'full'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+          >
+          </dxo-pager>
+          <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadStatePopupMain"
+                             [customSave]="saveStatePopupMain"></dxo-state-storing>
+          <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="usr" [caption]="utilService.convert1('mm.pgmauthority.usr', '사용자ID')"></dxi-column>
+          <dxi-column dataField="name" [caption]="utilService.convert1('mm.pgmauthority.name', '사용자명')"></dxi-column>
+          <dxi-column dataField="companyId" [caption]="utilService.convert('mm.pgmauthority.companyId')">
+            <dxo-lookup [dataSource]=dsCompany displayExpr="name" valueExpr="uid"></dxo-lookup>
+          </dxi-column>
+        </dx-data-grid>
+        <dx-tree-list
+          #popupSubTreeList
+          [dataSource]="popupSubGridDataSource"
+          keyExpr="keyExpr"
+          parentIdExpr="parentIdExpr"
+          [allowColumnResizing]="true"
+          [columnAutoWidth]="false"
+          [focusedRowEnabled]="true"
+          (onFocusedRowChanged)="onFocusedRowChanging($event, this.popupSubTreeList)"
+          (onFocusedCellChanged)="onFocusedCellChanging($event, this.popupSubTreeList)"
+          (onRowDblClick)="onTreeListDblClick($event)"
+          [rowAlternationEnabled]="true"
+          [allowColumnReordering]="true"
+          [showRowLines]="true"
+          columnResizingMode=nextColumn
+        >
+          <dxo-editing mode="batch"
+                       [allowUpdating]="false"
+          ></dxo-editing>
+          <dxo-load-panel [enabled]="true"></dxo-load-panel>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+          <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadStatePopupSub"
+                             [customSave]="saveStatePopupSub"></dxo-state-storing>
+          <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="appId" caption="appId" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="userType" [caption]="utilService.convert1('mm.pgmauthority.userType', '사용자타입')" [width]="100"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="menuL1Text" [caption]="utilService.convert1('mm.pgmauthority.menuL1Text', '대메뉴')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="menuL2Text" [caption]="utilService.convert1('mm.pgmauthority.menuL2Text', '중메뉴')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="app" [caption]="utilService.convert1('mm.pgmauthority.app', '어플리케이션')"
+                      [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="authSearch" [caption]="utilService.convert1('mm.pgmauthority.authSearch', '메뉴표시')"
+                      alignment="center" [allowEditing]="true">
+          </dxi-column>
+        </dx-tree-list>
+      </dxi-item>
+      <hr/>
+    </dx-form>
+  </div>
+</dx-popup>
+

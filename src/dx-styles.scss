@@ -1,0 +1,188 @@
+@import "./themes/generated/variables.additional.scss";
+
+
+
+html, body {
+  margin: 0px;
+  min-height: 100%;
+  height: 100%;
+}
+.dx-viewport{
+  min-width: 1600px; 
+}
+* {
+  box-sizing: border-box;
+}
+.content {
+  padding: 20px 3vw;
+}
+@media (min-width: 1920px) { 
+  .content {
+    padding: 24px 60px;
+  }
+}
+
+.content-block {
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 20px;
+
+  .screen-x-small & {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+.responsive-paddings {
+  padding: 20px;
+
+  .screen-large & {
+    padding: 40px;
+  }
+}
+
+.dx-card.wide-card {
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 0;
+  border-right: 0;
+  border-left: 0;
+}
+
+.with-footer > .dx-scrollable-wrapper >
+.dx-scrollable-container > .dx-scrollable-content {
+  height: 100%;
+
+  & > .dx-scrollview-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+}
+
+$side-panel-min-width: 65px;
+
+@media print {
+  header,
+  footer,
+  .dx-drawer-panel-content,
+  .dx-toast-wrapper {
+    display: none !important;
+  }
+
+  .dx-drawer-wrapper {
+    height: fit-content;
+  }
+}
+
+.report_wrapper .dx-form .dx-texteditor-input, .report_wrapper .dx-form .dx-field-item-label-text{
+  font-size: 12px;
+}
+.report_wrapper #under_form input {
+  text-align: right;
+}
+
+.report_wrapper .dx-form .dx-texteditor-input-container {
+  height: 30px;
+}
+
+
+.header-toolbar.dx-toolbar {
+  .dx-toolbar-items-container{
+    height: 55px !important;
+    overflow: visible;
+  }
+}
+.my-button{
+  padding: 0; margin: 0; 
+  border: 0; 
+  margin-right: 5px;
+  .dx-button-content{
+    padding: 0 !important; 
+  }
+}
+
+
+// .dx-button-form{
+//   border: 0;
+//   background: #e8e8ff; 
+//   text-align: center;
+//   border-radius: 4px;
+//   font-size: 0.875rem; 
+//   color: #5e5af7; 
+//   min-width: 35px;
+//   height: 35px;
+//   margin: 0 4px; 
+  
+//   .dx-icon{
+//     font-size: 1.188rem !important; 
+//     color: #5e5af7 !important; 
+//     width: auto !important; height: auto !important;
+//     margin-right: 0 !important;
+//   }
+//   .dx-button-text{
+//     margin-left: 3px !important;
+//   }
+// }
+// .dx-button-form:hover{
+//   background: #e8e8ff; 
+//   opacity: .9;
+// }
+// .dx-button-default{
+//   min-width: 40px;
+//   height: 40px; 
+//   border-radius: 6px;
+//   background-color: #fff; 
+//   border: 0; 
+//   font-size: 0.938rem; 
+//   color: #302f79;
+//   .dx-icon{
+//     font-size: 1.5em !important; 
+//     color: #302f79; 
+//     width: auto !important; height: auto !important;
+//     margin-right: 8px !important;
+//   }
+// }
+// .dx-button-success{
+//   min-width: 40px;
+//   height: 40px; 
+//   border-radius: 6px;
+//   background-color: #5e5af7; 
+//   border: 0; 
+//   font-size: 0.938rem; 
+//   color: #fff;
+//   .dx-icon{
+//     font-size: 1.5em !important; 
+//     color: #fff !important; 
+//     width: auto !important; height: auto !important;
+
+//   }
+
+//   &:hover{
+//     background-color: #6460f7;
+//   }
+// }
+// .page-button-group{
+//   .dx-button-default,.dx-button-point{
+//     margin-left: 8px; 
+//   }
+// }
+// .reset-btn{
+//   .dx-button-text{
+//     display: none;
+//   }
+// }
+/*icon customize*/
+
+.dx-accordion-item{
+  .dx-texteditor-input{
+    min-height: 22px; 
+    font-size: 0.813rem;
+  }
+}
+
+.shrinked{
+  .dx-tabpanel-tabs{
+    display: none !important;
+  }
+}

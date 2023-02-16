@@ -1,0 +1,63 @@
+@import "../../../../themes/generated/variables.base.scss";
+@import "../../../../dx-styles.scss";
+
+:host {
+  flex: 0 0 auto;
+  z-index: 1;
+  position:absolute;
+  left: 0; top: 0; width: 100%;
+  ::ng-deep .dx-toolbar .dx-toolbar-item.menu-button>.dx-toolbar-item-content .dx-icon {
+    color: $base-accent;
+  }
+
+}
+
+::ng-deep .dx-toolbar.header-toolbar .dx-toolbar-items-container .dx-toolbar-after {
+  padding: 0 12px;
+
+  :host-context(.screen-x-small) & {
+    padding: 0 20px;
+  }
+}
+
+::ng-deep .dx-toolbar .dx-toolbar-item.menu-button {
+  
+  text-align: center;
+  padding: 0;
+  .dx-dropdownbutton{
+    width: 45px; height: 45px;
+  }
+
+}
+::ng-deep .dx-toolbar {
+
+  .dx-toolbar-item.logout-button,
+  .dx-toolbar-item.toggle-button{
+    .dx-button-mode-contained{
+      border: 0; 
+      border-radius: 0; 
+      width: 45px; 
+      height: 45px;
+    }
+    
+    .dx-icon{
+      width: 100% !important; 
+      height: 100% !important; 
+      position: relative; 
+    }
+  }
+}
+
+::ng-deep .header-title .dx-item-content {
+  padding: 0;
+  margin: 0;
+}
+
+// :host-context(.dx-theme-generic) {
+//   .dx-toolbar {
+//     padding: 10px 0;
+//   }
+//   .user-button>.dx-button-content {
+//     padding: 3px;
+//   }
+// }

@@ -1,0 +1,399 @@
+<div class="dashboard-wrap">
+  <div class="row">
+    <div class="flex1-box">
+      <div class="main-card-wrap">
+        <div class="main-card navy">
+          <div class="main-card-header">
+            <h2>현재 진행중인<br>운송차량</h2>
+            <button class="card-refresh">
+              <i class="dx-icon dx-icon-refresh"></i>
+            </button>
+          </div>
+          <b class="orange">81.7만건</b>
+          <span class="red">+180 (2.3%)</span>
+        </div>
+      </div>
+    </div>
+      <div class="flex1-box">
+        <div class="main-card-wrap">
+          <div class="main-card">
+            <div class="main-card-header">
+              <h2>수도권역</h2>
+              <button class="card-refresh">
+                <i class="dx-icon dx-icon-refresh"></i>
+              </button>
+            </div>
+            <div class="main-card-box">
+              <div class="img-box">
+                <img src="/assets/images/map_1.png" alt="충청권역">
+              </div>
+              <div class="right-box">
+                <b>39.1%</b>
+                <span class="orange">(32만건)</span>
+                <span>운송차량</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex1-box">
+        <div class="main-card-wrap">
+          <div class="main-card">
+            <div class="main-card-header">
+              <h2>경상권역</h2>
+              <button class="card-refresh">
+                <i class="dx-icon dx-icon-refresh"></i>
+              </button>
+            </div>
+            <div class="main-card-box">
+              <div class="img-box">
+                <img src="/assets/images/map_2.png" alt="경상권역">
+              </div>
+              <div class="right-box">
+                <b>39.1%</b>
+                <span class="orange">(32만건)</span>
+                <span>운송차량</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex1-box">
+        <div class="main-card-wrap">
+          <div class="main-card">
+            <div class="main-card-header">
+              <h2>충청권역</h2>
+              <button class="card-refresh">
+                <i class="dx-icon dx-icon-refresh"></i>
+              </button>
+            </div>
+            <div class="main-card-box">
+              <div class="img-box">
+                <img src="/assets/images/map_3.png" alt="충청권역">
+              </div>
+              <div class="right-box">
+                <b>39.1%</b>
+                <span class="orange">(32만건)</span>
+                <span>운송차량</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex1-box">
+        <div class="main-card-wrap">
+          <div class="main-card">
+            <div class="main-card-header">
+              <h2>전라권역</h2>
+              <button class="card-refresh">
+                <i class="dx-icon dx-icon-refresh"></i>
+              </button>
+            </div>
+            <div class="main-card-box">
+              <div class="img-box">
+                <img src="/assets/images/map_4.png" alt="전라권역">
+              </div>
+              <div class="right-box">
+                <b>39.1%</b>
+                <span class="orange">(32만건)</span>
+                <span>운송차량</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex1-box">
+        <div class="main-card-wrap">
+          <div class="main-card">
+            <div class="main-card-header">
+              <h2>강원권역</h2>
+              <button class="card-refresh">
+                <i class="dx-icon dx-icon-refresh"></i>
+              </button>
+            </div>
+            <div class="main-card-box">
+              <div class="img-box">
+                <img src="/assets/images/map_5.png" alt="강원권역">
+              </div>
+              <div class="right-box">
+                <b>39.1%</b>
+                <span class="orange">(32만건)</span>
+                <span>운송차량</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+  </div>
+  <div class="row">
+    <!--left-->
+    <div class="flex1-box">
+      <div class="main-card-wrap">
+        <div class="main-card grey">
+          <div class="main-card-header">
+            <h2>7월 운송현황</h2>
+            <button class="card-refresh">
+              <i class="dx-icon dx-icon-refresh"></i>
+            </button>
+          </div>
+          <div class="main-card-inner">
+            <ul class="d-state-list">
+              <li><b>426</b><span>운송 예약</span></li>
+              <li><b>426</b><span>운송 진행중</span></li>
+              <li><b>426</b><span>운송 완료</span></li>
+            </ul>
+            <div class="inner-weather-box">
+              <img src="/assets/images/icon_weather.png">
+              <b>32°</b>
+              <div>
+                <span>맑음, 어제보다 1˚ 낮아요</span>
+                <span class="sub">2022-08-04 13:09 PM 기준</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main-card-wrap">
+        <div class="main-card calendar-card">
+          <div class="calendar-wrap">
+            <dx-calendar
+              #calendar
+              id="calendar-container"
+              [min]="minDateValue"
+              [max]="maxDateValue"
+              [disabledDates]="disabledDates"
+              [firstDayOfWeek]="firstDay"
+              [disabled]="false"
+              [(value)]="currentValue"
+              [zoomLevel]="zoomLevels[0]"
+              [cellTemplate]="cellTemplate"
+            >
+              <span
+                *dxTemplate="let cell of 'custom'"
+                [ngClass]="getCellCssClass(cell)"
+              >
+                {{ cell.text }}
+              </span>
+            </dx-calendar>
+          </div>
+          
+          <div class="todo-list">
+            <div class="todo-item">
+              <div>
+                <span class="todo-num">02</span>
+                <span>차량 정기 점검 예정</span>
+              </div>
+              <!--active class 유무로 스타일 변경-->
+              <span class="todo-check active"><i class="dx-icon dx-icon-check"></i></span>
+            </div>
+            <div class="todo-item">
+              <div>
+                <span class="todo-num">01</span>
+                <span>차량 정기 점검 예정</span>
+              </div>
+              <span class="todo-check"><i class="dx-icon dx-icon-check"></i></span>
+            </div>
+            <div class="todo-item">
+              <div>
+                <span class="todo-num">03</span>
+                <span>차량 정기 점검 예정</span>
+              </div>
+              <span class="todo-check"><i class="dx-icon dx-icon-check"></i></span>
+            </div>
+            <div class="todo-item">
+              <div>
+                <span class="todo-num">04</span>
+                <span>차량 정기 점검 예정</span>
+              </div>
+              <span class="todo-check"><i class="dx-icon dx-icon-check"></i></span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <!-- //left-->
+    <!--right-->
+    <div class="flex2-box">
+      <div class="row">
+        <div class="flex1-box w-100">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>일자별 운송 건수</h2>
+                <button class="card-refresh">
+                  <i class="dx-icon dx-icon-refresh"></i>
+                </button>
+              </div>
+              <div class="main-card-inner">
+                <dx-chart id="chart1" [dataSource]="dataSource">
+                  <dxi-series
+                    argumentField="day"
+                    valueField="운송비"
+                    name="운송비"
+                    type="bar"
+                    color="#ffaa66"
+                  >
+                  </dxi-series>
+                </dx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1-box w-50">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>일자별 운송비</h2>
+                <button class="card-refresh">
+                  <i class="dx-icon dx-icon-refresh"></i>
+                </button>
+              </div>
+              <div class="main-card-inner">
+                <dx-chart id="chart2" [dataSource]="dataSource">
+                  <dxi-series
+                    argumentField="day"
+                    valueField="운송비"
+                    name="운송비"
+                    type="bar"
+                    color="#ffaa66"
+                  >
+                  </dxi-series>
+                </dx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex1-box w-50">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>일자별 탄소배출량<span class="h-sub">(단위:t)</span></h2>
+                <button class="card-refresh">
+                  <i class="dx-icon dx-icon-refresh"></i>
+                </button>
+              </div>
+              <div class="main-card-inner">
+                <dx-chart id="chart3" [dataSource]="lineSource" >
+                  <dxi-series argumentField="day"></dxi-series>
+                  <dxo-argument-axis>
+                    <dxo-label wordWrap="none" overlappingBehavior="stagger"></dxo-label>
+                  </dxo-argument-axis>
+                  <dxo-legend [visible]="false"></dxo-legend>
+                </dx-chart>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1-box w-25">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>일자별 운송건수</h2>
+                <span class="h-sub">단위: 십만</span>
+              </div>
+              <div class="main-card-inner">
+                <dx-chart id="chart4" [dataSource]="dataSource">
+                  <dxi-series
+                    argumentField="day"
+                    valueField="운송비"
+                    name="운송비"
+                    type="bar"
+                    color="#ffaa66"
+                  >
+                  </dxi-series>
+                </dx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex1-box w-25">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>지역별 운송건수</h2>
+              </div>
+              <div class="main-card-inner">
+                <dx-pie-chart
+                  id="chart5"
+                  type="doughnut"
+                  palette="Soft Pastel"
+                  [dataSource]="donutSource"
+                  (onPointClick)="pointClickHandler($event)"
+                >
+                  <dxo-legend
+                    [margin]="0"
+                    horizontalAlignment="right"
+                    verticalAlignment="top"
+                  ></dxo-legend>
+                  <dxi-series argumentField="country" valueField="medals">
+                    <dxo-hover-style color="#ffd700"></dxo-hover-style>
+                  </dxi-series>
+                </dx-pie-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex1-box w-25">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>차량 제원별 운송건수</h2>
+              </div>
+              <div class="main-card-inner">
+                <dx-pie-chart
+                  id="chart6"
+                  type="doughnut"
+                  palette="Soft Pastel"
+                  [dataSource]="donutSource"
+                  (onPointClick)="pointClickHandler($event)"
+                >
+                  <dxo-export [enabled]="true"></dxo-export>
+                  <dxo-legend
+                    [margin]="0"
+                    horizontalAlignment="right"
+                    verticalAlignment="top"
+                  ></dxo-legend>
+                  <dxi-series argumentField="country" valueField="medals">
+                    <dxo-hover-style color="#ffd700"></dxo-hover-style>
+                  </dxi-series>
+                </dx-pie-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex1-box w-25">
+          <div class="main-card-wrap">
+            <div class="main-card">
+              <div class="main-card-header">
+                <h2>기타 운송건수</h2>
+              </div>
+              <div class="main-card-inner">
+                <dx-chart id="chart7" [dataSource]="dataSource">
+                  <dxi-series
+                    argumentField="day"
+                    valueField="운송비"
+                    name="운송비"
+                    type="bar"
+                    color="#ffaa66"
+                  >
+                  </dxi-series>
+                </dx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--//right-->
+   
+      
+  </div>
+</div>

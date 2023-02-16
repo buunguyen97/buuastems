@@ -1,0 +1,428 @@
+<!-- 관리자 > 배차요청 -->
+<div class="map-drawer-wrapper">
+  <div class="map-drawer-inner">
+    <div class="left-side">
+      <div class="con1">
+        <div class="contents-header">
+          <dx-button #bookmarkBtn
+                     class="bookmark-btn"
+                     [icon]="'star'"
+                     (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+          </dx-button>
+          <h2 class="content-block page-title">운송예약(배차요청)</h2>
+        </div>
+
+        <div class="contents-body">
+
+          <dx-form #mainForm
+                   [minColWidth]="200"
+                   [colCount]="5"
+                   labelMode="outside"
+                   labelLocation="top"
+                   [showColonAfterLabel]="false"
+          >
+            <dxi-item itemType="group" cssClass="card-box point-start" [colCount]="5" [colSpan]="5">
+              <dxi-item [colSpan]="4" [label]="{text: '상차지'}">
+                <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+              </dxi-item>
+              <dxi-item [colSpan]="1">
+                <label id="start" class="modal-label" (click)="onClickSideFormOpen($event)">{{ startPointCompanyName }}</label>
+              </dxi-item>
+              <dxi-item dataField="startPoint"
+                        *ngFor="let data of startPoint"
+                        [colSpan]="5"
+                        [label]="{visible: false}">
+                <span class="name">{{ data.companyNm }}</span>
+                <span class="officer">{{ data.refNm }}, {{ data.refTellNo }}</span>
+                <span class="date">{{ data.address1 }}</span>
+              </dxi-item>
+            </dxi-item>
+
+            <dxi-item dataField="wayPoint" itemType="group" cssClass="card-box"
+                      [visible]="this.wayPoint.length > 0"
+                      [colCount]="5" [colSpan]="5"
+                      [label]="{text: '경유지'}">
+              <dxi-item itemType="group"
+                        *ngFor="let data of wayPoint; let i = index"
+                        [colCount]="5" [colSpan]="5">
+                <dxi-item [colSpan]="3"
+                          [label]="{visible: false}">
+                  <div *ngIf="data.companyNm">
+                    <span class="name">{{ data.companyNm }}</span>
+                    <span class="officer">{{ data.refNm }}, {{ data.refTellNo }}</span>
+                    <span class="date">{{ data.address1 }}</span>
+                  </div>
+                </dxi-item>
+                <dxi-item [colSpan]="2">
+                  <label id="way_{{ i }}" class="modal-label" (click)="onClickSideFormOpen($event)">
+                    {{ data.companyNm && data.checkRegister ? data.companyNm : "등록" }}
+                  </label>
+                  <label id="way_delete_{{ i }}" class="modal-label" (click)="onClickDeleteWayPoint($event)">
+                    {{ "삭제" }}
+                  </label>
+                </dxi-item>
+              </dxi-item>
+            </dxi-item>
+
+            <dxi-item itemType="group" [colCount]="5" [colSpan]="5">
+              <label class="modal-label" (click)="onClickAddWayPoint($event)" style="width: 99%; margin-bottom: 20px">경유지추가</label>
+            </dxi-item>
+
+            <dxi-item itemType="group" cssClass="card-box point-end" [colCount]="5" [colSpan]="5">
+              <dxi-item [colSpan]="4" [label]="{text: '하차지'}">
+                <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+              </dxi-item>
+              <dxi-item [colSpan]="1">
+                <label id="end" class="modal-label" (click)="onClickSideFormOpen($event)">{{ endPointCompanyName }}</label>
+              </dxi-item>
+              <dxi-item dataField="endPoint"
+                        *ngFor="let data of endPoint"
+                        [colSpan]="5"
+                        [label]="{visible: false}">
+                <span class="name">{{ data.companyNm }}</span>
+                <span class="officer">{{ data.refNm }}, {{ data.refTellNo }}</span>
+                <span class="date">{{ data.address1 }}</span>
+                <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+              </dxi-item>
+            </dxi-item>
+
+            <dxi-item itemType="buttons" [colSpan]="5">
+              <dx-button icon="add"
+                         type="success"
+                         [text]="'경로검색'"
+                         (onClick)="onClickSearchRoute()">
+              </dx-button>
+            </dxi-item>
+
+            <dxi-item itemType="group"
+                      [label]="{text: '물품정보'}"
+                      [colCount]="5" [colSpan]="5">
+              <dxi-item dataField="itemInfo"
+                        itemType="group" cssClass="card-box"
+                        [label]="{visible: false}"
+                        [colCount]="5" [colSpan]="5">
+                <dxi-item *ngFor="let data of itemInfo" [colSpan]="4" >
+                  <b>{{ data.tranItemOption }}</b> <!-- 물품 적재 옵션 -->
+                  <b>{{ data.tranItemCategoryNm }}</b> <!-- 물품분류명 -->
+                  <span class="txt">
+                    {{ data.tranItemWeight }},
+                    {{ data.tranItemHeight }} X {{ data.tranItemWidth }} X {{ data.tranItemLength }}, {{ data.tranItemCbm }},
+                    {{ data.tranItemAmt }}
+                  </span>
+                </dxi-item>
+                <dxi-item [colSpan]="1" >
+                  <label id="item" class="modal-label" (click)="onClickSideFormOpen($event)">{{ "품목" }}</label>
+                </dxi-item>
+              </dxi-item>
+              <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+            </dxi-item>
+
+            <dxi-item itemType="group"
+                      [label]="{text: '차량정보'}"
+                      [colCount]="5" [colSpan]="5">
+              <dxi-item dataField="carInfo"
+                        itemType="group" cssClass="card-box"
+                        [label]="{visible: false}"
+                        [colCount]="5" [colSpan]="5">
+                <dxi-item *ngFor="let data of carInfo" [colSpan]="4" >
+                  <b>{{ data.tranCarKind }}</b>
+                  <b>{{ data.tranCarType }}</b>
+                </dxi-item>
+                <dxi-item [colSpan]="1" >
+                  <label id="car" class="modal-label" (click)="onClickSideFormOpen($event)">{{ "차량" }}</label>
+                </dxi-item>
+              </dxi-item>
+              <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+            </dxi-item>
+
+            <dxi-item itemType="group" [label]="{text: '전달사항'}" [colCount]="5" [colSpan]="5" >
+              <dxi-item editorType="dxTextArea" [colSpan]="5"  [editorOptions]="{placeholder: '전달사항을 입력해주세요.'}">
+
+              </dxi-item>
+            </dxi-item>
+          </dx-form>
+          <dx-button type="defalut"
+                     text="카카오 주소 검색"
+                     (onClick)="onLoadFindAddress($event)">
+          </dx-button>
+          <dx-button type="defalut"
+                     text="저장"
+                     (onClick)="onClickSave($event)">
+          </dx-button>
+        </div>
+      </div>
+      <!--//기본 상하차 정보 패널-->
+      <!--side form (수정버튼 눌렀을때 펼쳐짐) -->
+      <div class="con2">
+        <div class="side-form-header">
+          <div class="title">
+            <dx-button type="back" class="hide-btn"
+                       (onClick)="onClickSideFormClose()">
+            </dx-button>
+            <h3>{{ this.sideFormInfo.title }}</h3>
+            <h3>{{ this.sideFormInfo.type }}</h3>
+          </div>
+          <div class="btn-group">
+            <dx-button class="location-btn"
+                       icon="refresh"
+                       (onClick)="onClickSideFormReset($event)">
+            </dx-button>
+            <dx-button class="register-btn"
+                       text="등록"
+                       (onClick)="onClickSideFormRegister($event)">
+            </dx-button>
+          </div>
+        </div>
+        <div class="side-form-contents">
+          <div class="side-form-scroll">
+            <div class="side-form-outer">
+
+              <dx-form #deliveryForm
+                       [minColWidth]="200"
+                       labelMode="outside"
+                       labelLocation="top"
+                       [showColonAfterLabel]="false"
+              >
+                <dxi-item dataField="companyNm" [label]="{text: '회사명'}"></dxi-item>
+
+                <dxi-item itemType="group" [label]="{text: '주소'}" cssClass="addr-group">
+
+                  <div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+                    <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" (onClick)="foldDaumPostcode($event)" alt="접기 버튼">
+                  </div>
+
+                  <dxi-item dataField="address1" [label]="{visible: false}"></dxi-item>
+                  <dxi-item dataField="address2" [label]="{visible: false}"></dxi-item>
+
+                  <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item itemType="group" cssClass="btn-position">
+                  <dx-button
+                    type="border"
+                    text="주소검색"
+                    (onClick)="onClickSearchAddress($event)"
+                  ></dx-button>
+                </dxi-item>
+                <dxi-item itemType="group" cssClass="card-box">
+                  <dxi-item itemtype="text" class="desc">
+                    운송지별 특이사항을 등록할 수 있어요!
+                  </dxi-item>
+                  <dx-button
+                    icon="add"
+                    class="add-btn"
+                    text="특이사항 등록하기"
+                  ></dx-button>
+                </dxi-item>
+
+                <dxi-item dataField="userId" [visible]="false"></dxi-item>
+                <dxi-item dataField="refNm" [label]="{text: '담당자명'}"></dxi-item>
+                <dxi-item dataField="refTellNo" [label]="{text: '담당자연락처'}"></dxi-item>
+                <dxi-item dataField="expectedDateTime"
+                          editorType="dxDateBox"
+                          [label]="{text: '상차예정일시'}"
+                          [editorOptions]="{
+                            type: 'datetime',
+                            displayFormat:'yyyy-MM-dd HH:mm:dd',
+                            dateSerializationFormat: 'yyyy-MM-dd HH:mm:dd'
+                          }">
+                </dxi-item>
+                <dxi-item itemType="group" cssClass="group-row mt-10">
+                  <dxi-item dataField="check1"
+                            [label]="{text: '이 정보를 기본 상차지로 등록'}"
+                            editorType="dxCheckBox"></dxi-item>
+                </dxi-item>
+                <dxi-item itemType="group" cssClass="group-row">
+                  <dxi-item dataField="check2"
+                            [label]="{text: '즐겨찾는 운송지로 등록'}"
+                            editorType="dxCheckBox"></dxi-item>
+
+                </dxi-item>
+                <dxi-item dataField="tranPointType"></dxi-item>
+                <dxi-item dataField="wayPointIndex"></dxi-item>
+              </dx-form>
+
+              <dx-form #itemForm
+                       labelMode="outside"
+                       labelLocation="top"
+                       [minColWidth]="200"
+                       [showColonAfterLabel]="false"
+              >
+                <dxi-item dataField="tranItemOption" [label]="{text: '물품적재옵션'}"></dxi-item>
+                <dxi-item dataField="tranItemCategoryId" [label]="{text: '물품분류'}"></dxi-item>
+                <dxi-item dataField="tranItemCategoryNm" [label]="{text: '물품분류명'}"></dxi-item>
+                <dxi-item dataField="tranItemPackType" [label]="{text: '물품포장유형'}"></dxi-item>
+
+                <dxi-item dataField="tranItemPackCnt" [label]="{text: '물품포장개수'}"></dxi-item>
+
+                <dxi-item dataField="tranItemWeight" [label]="{text: '물품중량'}"></dxi-item>
+                <dxi-item dataField="tranItemHeight" [label]="{text: '물품높이'}"></dxi-item>
+                <dxi-item dataField="tranItemWidth" [label]="{text: '물품가로길이'}"></dxi-item>
+                <dxi-item dataField="tranItemLength" [label]="{text: '물품세로길이'}"></dxi-item>
+                <dxi-item dataField="tranItemCbm" [label]="{text: '물품CBM'}"></dxi-item>
+
+                <dxi-item dataField="tranItemAmt" [label]="{text: '물품금액'}"></dxi-item>
+              </dx-form>
+
+              <dx-form #carForm
+                       labelMode="outside"
+                       labelLocation="top"
+                       [minColWidth]="200"
+                       [showColonAfterLabel]="false"
+              >
+                <dxi-item dataField="tranOrdType" [label]="{text: '배차오더유형'}"></dxi-item>
+                <dxi-item dataField="tranOrdCategory" [label]="{text: '배차오더분류'}"></dxi-item>
+                <dxi-item dataField="tranCarType" [label]="{text: '차량유형'}"></dxi-item>
+                <dxi-item dataField="tranCarKind" [label]="{text: '차량종류'}"></dxi-item>
+                <dxi-item dataField="tranCarCnt" [label]="{text: '차량대수'}"></dxi-item>
+                <dxi-item dataField="sts" [label]="{text: '배차오더상태'}"></dxi-item>
+              </dx-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-content">
+      <!--map-->
+<!--      <div class="map-container">-->
+<!--        <dx-map #sMap></dx-map>-->
+<!--      </div>-->
+      <div>
+        <div id="maps" style="position:absolute;" ></div>
+      </div>
+      <!-- //map-->
+      <!--즐겨찾기-->
+      <div class="map-bookmark-wrap" [class.expanded]="isBookmakExpanded">
+        <div *ngIf="isBookmakExpanded" class="box top">
+          <div class="box-header">
+            <b>서울 종로구 사직동</b>
+            <span>
+                            현위치로 수정
+                            <dx-button icon="location"
+                                       class="location-btn"
+                            ></dx-button>
+                        </span>
+          </div>
+          <div class="box-contents">
+            <div class="flex">
+              <div>
+                <b class="weahter">
+                  <i class="dx-icon dx-icon-weather dx-icon-cloud"></i>
+                  29℃
+                </b>
+                <span>19시 현재흐림</span>
+              </div>
+              <div>
+                <span>어제보다 2℃ 높아요</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box middle">
+          <div class="box-header">
+            <h4>즐겨찾는 운송지</h4>
+            <dx-button
+              class="underline-btn"
+              text="주소록 관리"
+            ></dx-button>
+          </div>
+          <div class="box-contents">
+            <div class="btn-group">
+              <dx-button type="circle"
+                         class="yellow"
+                         icon="home"
+                         text="test"
+              ></dx-button>
+              <dx-button type="circle"
+                         class="orange"
+                         icon="text"
+                         text="test"
+
+              ></dx-button>
+              <dx-button type="circle"
+                         class="pink"
+                         icon="text"
+                         text="test"
+
+              ></dx-button>
+              <dx-button type="circle"
+                         icon="add"
+                         text="추가하기"
+              ></dx-button>
+              <dx-button type="circle"
+                         icon="add"
+                         text="추가하기"
+              ></dx-button>
+              <!--펼쳤을 때 보이는 전체 버튼-->
+              <dx-button *ngIf="isBookmakExpanded" type="circle"
+                         class="border"
+                         icon="listAll"
+                         text="전체"
+              ></dx-button>
+              <!--펼쳤을 때 보이는 전체 버튼-->
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isBookmakExpanded" class="box bottom">
+          <dx-list
+            [dataSource]="recent"
+            [itemDeleteMode]="itemDeleteMode"
+          >
+          </dx-list>
+        </div>
+        <dx-button #bookmarkToggleBtn
+                   class="toggle-btn"
+                   (onClick)="onBookmarkAdjust()"
+        ></dx-button>
+      </div>
+      <!-- // 즐겨찾기-->
+    </div>
+  </div>
+  <dx-load-panel #loadPanel
+                 shadingColor="rgba(0,0,0,0.4)"
+                 indicatorSrc="./assets/images/sample.gif"
+                 [position]="{ of: '.content' }"
+                 [showIndicator]="true"
+                 [showPane]="true"
+                 [shading]="true">
+  </dx-load-panel>
+</div>
+<!--<form name="formxxx" method="post" enctype="application/x-www-form-urlencoded">-->
+
+<!--</form>-->
+<!--<input name="appKey" value="l7xx46f9c83cb35e4db9abd67c564f44181e"/>-->
+<!--<input name="startX" value="127.004591"/>-->
+<!--<input name="startY" value="37.608541"/>-->
+<!--<input name="endX" value="126.999786"/>-->
+<!--<input name="endY" value="37.587793"/>-->
+<!--<input name="reqCoordType" value="WGS84GEO"/>-->
+<!--<input name="resCoordType" value="EPSG3857"/>-->
+<!--<input name="angle" value="172"/>-->
+<!--<input name="searchOption" value="0"/>-->
+<!--<input name="trafficInfo" value="Y"/>-->
+<!--<input name="truckType" value="1"/>-->
+<!--<input name="truckWidth" value="100"/>-->
+<!--<input name="truckHeight" value="100"/>-->
+<!--<input name="truckWeight" value="35000"/>-->
+<!--<input name="truckTotalWeight" value="35000"/>-->
+<!--<input name="truckLength" value="200"/>-->
+
+
+<!--mapData.set('appKey', 'l7xx46f9c83cb35e4db9abd67c564f44181e');-->
+<!--mapData.set('startX', '127.004591');-->
+<!--mapData.set('startY', '37.608541');-->
+<!--mapData.set('endX', '126.999786');-->
+<!--mapData.set('endY', '37.587793');-->
+<!--mapData.set('reqCoordType', 'WGS84GEO');-->
+<!--mapData.set('resCoordType', 'EPSG3857');-->
+<!--mapData.set('angle', '172');-->
+<!--mapData.set('searchOption', '0');-->
+<!--mapData.set('trafficInfo', 'Y');-->
+<!--mapData.set('truckType', '1');-->
+<!--mapData.set('truckWidth', '100');-->
+<!--mapData.set('truckHeight', '100');-->
+<!--mapData.set('truckWeight', '35000');-->
+<!--mapData.set('truckTotalWeight', '35000');-->
+<!--mapData.set('truckLength', '200');-->
+
+
+

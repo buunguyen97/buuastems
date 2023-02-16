@@ -1,0 +1,23 @@
+//<dxi-item itemType="group" caption="{{ imgName }}" cssClass="pop-item-box">
+//<div class="dropzone-container">
+//<!--리스트에 사진이 여러장이 아닌 한 장일 경우  dropzone-single-list 클래스 추가로 가운데 정렬-->
+//<div class="dropzone-list dropzone-single-list">
+//<!--
+//태그내 인라인 스타일로 width, height 조절
+//<div class="flex-box dropzone-external" style="width: 500px; height: 500px"> -->
+//<div class="flex-box dropzone-external">
+//<div class="dropzone-img-box">
+//<img id="previewImage" class="dropzone-image1"/>
+//</div>
+//</div>
+//</div>
+//<button class="preview-prev"
+//(click)="carPopupPrev()">
+//<i class="dx-icon dx-icon-chevronleft"></i>
+//</button>
+//<button class="preview-next"
+//(click)="carPopupNext()">
+//<i class="dx-icon dx-icon-chevronright"></i>
+//</button>
+//</div>
+//</dxi-item>

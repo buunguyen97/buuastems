@@ -1,0 +1,41 @@
+<dx-popup #popup
+          [dragEnabled]="true"
+          [title]="utilService.convert1('mm.user.accountPopup.title', '결제계좌등록')"
+          (onHidden)="onHidden()"
+          height="510px"
+          width="400px"
+>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="success"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="decide()">
+    </dx-button>
+    <dx-button type="border"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="close()">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           labelLocation="top"
+           [showColonAfterLabel]="false"
+           [colCount]="2"
+  >
+    <dxi-item itemType="group" [colSpan]="2" cssClass="pop-item-box no-border label-top-form">
+      <dxi-item dataField="accountNm"
+                [label]="{text: utilService.convert1('mm.user.accountNm', '예금주')}">
+      </dxi-item>
+      <dxi-item dataField="test1" [colSpan]="2"
+                [label]="{text: '생년월일'}"
+                [editorOptions]="{ placeholder:'년월일만 입력해주세요. 예)990101' }">
+      </dxi-item>
+      <dxi-item dataField="bank"
+                [label]="{text: utilService.convert1('mm.user.bank', '은행명')}">
+      </dxi-item>
+      <dxi-item dataField="accountNo"
+                [label]="{text: utilService.convert1('mm.user.accountNo', '계좌번호')}"
+                [editorOptions]="{ placeholder:'계좌번호를 입력해 주세요.(‘-’ 제외)' }">
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>

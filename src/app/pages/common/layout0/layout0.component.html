@@ -1,0 +1,597 @@
+<div class="contents-header">
+  <!-- Header Title START -->
+  <dx-button #bookmarkBtn
+              class="bookmark-btn"
+              (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+              >
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert('/common/layout0')}}</h2>
+  <span class="page-breadcrumb">{{utilService.getPagePath()}}</span>
+  <!-- Header Title END -->
+  <!-- 버튼 그룹 START (조회 버튼 제외 - 조회버튼은 조회영역에 삽입) -->
+  <span class="btngroup page-button-group">
+    <!-- 신규버튼  -->
+    <dx-button icon="stack"
+               type="default"
+               [text]="utilService.convert1('executeInstruct', '적치지시', 'Instruct')"></dx-button>
+    <dx-button icon="add"
+               type="default"
+               [text]="utilService.convert('com_btn_new')"></dx-button>
+    <dx-button icon="save"
+          type="default"
+          [text]="utilService.convert('com_btn_save')" > </dx-button>
+    <dx-button icon="change"
+          type="default"
+          [text]="utilService.convert1('separate_button','속성변경')"></dx-button>
+    
+    <dx-button #newBtn id="Open" type="default" text="디폴트팝업"
+                (onClick)="defaultPopupOpenClick(this.defaultPopup)" ></dx-button>
+    <dx-button #newBtn id="Open" type="default" text="디폴트스크롤팝업"
+                (onClick)="defaultPopupOpenClick(this.defaultScrollPopup)" ></dx-button>
+    <dx-button #newBtn id="Open" type="default" text="팝업 S"
+                (onClick)="pwdPopupOpenClick()" ></dx-button>
+    <dx-button #newBtn id="Open" type="default" text="팝업 XL"
+                (onClick)="onPopupOpen($event)"></dx-button>
+    <dx-button 
+              icon="print"
+              type="success">
+    </dx-button>
+    <dx-button 
+              icon="share"
+              type="success">
+    </dx-button>
+
+    <dx-button icon="download"
+        type="success"
+    ></dx-button>
+    <!-- ...추가 버튼들 -->
+  </span>
+  <!-- 버튼 그룹 END -->
+  <hr/>
+</div>
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <!-- Search Form START-->
+      <dx-form #mainForm
+                  class="search-form-box"
+                  [(formData)]="mainFormData"
+                  [minColWidth]="200"
+                  [colCount]="3"
+                  [showColonAfterLabel]="false"
+        >
+            <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+                <dxi-item dataField="acceptKey" [label]="{text: '입고접수번호'}">
+                    <!-- <dxi-validation-rule type="required" message="AcceptKey is required"></dxi-validation-rule> -->
+                </dxi-item>
+                <dxi-item dataField="rcvKey" [label]="{text: 'disabled TextBox'}"
+                          [disabled]="true"></dxi-item>
+                <dxi-item dataField="rcvKey" [label]="{text: '접수유형'}"></dxi-item>
+                <dxi-item dataField="sts" [label]="{text: '접수유형'}" editorType="dxSelectBox"
+                          [editorOptions]="{
+                          items: dsAcceptType,
+                          displayExpr: 'name',
+                          valueExpr: 'code',
+                          searchMode:'contains',
+                          searchEnabled: true,
+                          showClearButton: true,
+                          openOnFieldClick: false,
+                          minSearchLength: 0,
+                          placeholder: '',
+                          noDataText: 'No found data.'
+                          }">
+                    <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+                </dxi-item>
+               
+                <dxi-item dataField="sts" [label]="{text: '접수그룹'}" editorType="dxSelectBox"
+                          [editorOptions]="{
+                          items: dsAcceptGroup,
+                          displayExpr: 'name',
+                          valueExpr: 'code',
+                          searchMode:'contains',
+                          searchEnabled: true,
+                          showClearButton: true,
+                          openOnFieldClick: false,
+                          minSearchLength: 0,
+                          placeholder: '',
+                          noDataText: 'No found data.'
+                          }"></dxi-item>
+                <dxi-item dataField="warehouseId" [label]="{text: '창고'}"
+                          editorType="dxSelectBox"
+                          [editorOptions]="{
+                          items: dsWarehouse,
+                          displayExpr: 'name',
+                          valueExpr: 'code',
+                          searchMode:'contains',
+                          searchEnabled: true,
+                          showClearButton: true,
+                          openOnFieldClick: false,
+                          minSearchLength: 0,
+                          placeholder: '',
+                          noDataText: 'No found data.'
+                          }"></dxi-item>
+                  <dxi-item itemType="group" cssClass="fromtocalendar"
+                          [label]="{text: '입고예정일자'}" 
+                          [colCount]="2"
+                          [colSpan]="1">
+                    <dxi-item dataField="fromRcvSchDate"
+                              cssClass="fromcalendar"
+                              editorType="dxDateBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+                              
+                    </dxi-item>
+                    <dxi-item dataField="toRcvSchDate"
+                              cssClass="tocalendar"
+                              editorType="dxDateBox"
+                              [label]="{text: '~'}"
+                              [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+                              
+                    </dxi-item>
+                </dxi-item>
+
+                <dxi-item dataField="fromsoSchDate" editorType="dxDateBox" 
+                          [label]="{text: '출고예정일자'}"
+                          [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+                </dxi-item>
+            </dxi-item>
+        </dx-form>
+     
+      <!-- 조회 버튼-->
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   [text]="utilService.convert1('com_btn_reset', '초기화', 'Reset')"
+                   class="reset-btn"
+                   (onClick)="onReset()"
+        ></dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   [text]="utilService.convert('com_btn_search')"
+                   class="search-btn"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()"
+        ></dx-button>
+      </div>
+      <!-- 조회 버튼 END -->
+    </div>
+    <!-- Search Form END-->
+    <!-- 펼치기 버튼 START (기본 조회영역보다 벗어나는 컴포넌트들을 |SHOW|HIDE| -> 조회영역 높이 조정을 위한 버튼) -->
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"></dx-button>
+    </div>
+  </div>
+
+  <!-- 펼치기 버튼 END -->
+
+
+
+</div>
+<!--팝업 default [width]="500" -->
+<dx-popup #defaultPopup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          title="부서정보등록"
+          height="310px"
+          width="500px"
+>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+
+    <dx-button type="border"
+              [text]="utilService.convert('com_btn_close')"
+              (onClick)="defaultPopupcloseClick(this.defaultPopup)"
+    ></dx-button>
+    <dx-button type="success"
+        [text]="utilService.convert('com_btn_save')"
+        (onClick)="defaultPopupcloseClick(this.defaultPopup)"
+    ></dx-button>
+  </dxi-toolbar-item>
+  <dx-form #mainForm
+    [(formData)]="mainFormData"
+    [showColonAfterLabel]="false"
+  >
+  <dxi-item itemType="group" cssClass="pop-item-box">
+    <dxi-item dataField="부서ID" label="부서정보등록">
+      <dxi-validation-rule type="required"
+      message="{}"></dxi-validation-rule>
+    </dxi-item>
+    <dxi-item dataField="부서명" label="부서명">
+      <dxi-validation-rule type="required"
+      message="{}"></dxi-validation-rule>
+    </dxi-item>
+    <dxi-item dataField="사용여부" label="사용여부">
+      <dxi-validation-rule type="required"
+      message="{}"></dxi-validation-rule>
+    </dxi-item>
+  </dxi-item>
+  </dx-form>
+ 
+</dx-popup>
+<!--// 핍압 default -->
+
+<!--팝업 defaultscroll [width]="500" -->
+<dx-popup #defaultScrollPopup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          title="부서정보등록"
+          maxHeight="80vh"
+          width="500px"
+          (onHidden)="pwdPopupAfterClose()"
+>
+<dxi-toolbar-item toolbar="bottom" location="after">
+
+  <dx-button type="border"
+            [text]="utilService.convert('com_btn_close')"
+            (onClick)="defaultPopupcloseClick(this.defaultScrollPopup)"
+  ></dx-button>
+  <dx-button type="success"
+      [text]="utilService.convert('com_btn_save')"
+      (onClick)="defaultPopupcloseClick(this.defaultScrollPopup)"
+  ></dx-button>
+</dxi-toolbar-item>
+
+  <dx-form #mainForm
+            [(formData)]="mainFormData"
+            [showColonAfterLabel]="false"
+            scrollingEnabled="true"
+            class="non-horizenscroll"
+  >
+    <dxi-item itemType="group" caption="title" cssClass="pop-item-box">
+        <dxi-item dataField="acceptKey" [label]="{text: '입고접수번호'}">
+            <!-- <dxi-validation-rule type="required" message="AcceptKey is required"></dxi-validation-rule> -->
+        </dxi-item>
+        <dxi-item dataField="rcvKey" [label]="{text: 'disabled TextBox'}"
+                  [disabled]="true"></dxi-item>
+        <dxi-item dataField="rcvKey" [label]="{text: '접수유형'}"></dxi-item>
+        <dxi-item dataField="sts" [label]="{text: '접수유형'}" editorType="dxSelectBox"
+                  [editorOptions]="{
+                  items: dsAcceptType,
+                  displayExpr: 'name',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  showClearButton: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: 'No found data.'
+                  }">
+            <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="sts" [label]="{text: '접수그룹'}" editorType="dxSelectBox"
+                  [editorOptions]="{
+                  items: dsAcceptGroup,
+                  displayExpr: 'name',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  showClearButton: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: 'No found data.'
+                  }"></dxi-item>
+        <dxi-item dataField="warehouseId" [label]="{text: '창고'}"
+                  editorType="dxSelectBox"
+                  [editorOptions]="{
+                  items: dsWarehouse,
+                  displayExpr: 'name',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  showClearButton: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: 'No found data.'
+                  }"></dxi-item>
+        
+        <dxi-item dataField="fromsoSchDate" editorType="dxDateBox" 
+                  [label]="{text: '출고예정일자'}"
+                  [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+        </dxi-item>
+    </dxi-item>
+    <dxi-item itemType="group" caption="title2" cssClass="pop-item-box">
+      <dxi-item dataField="acceptKey" [label]="{text: '입고접수번호'}">
+          <!-- <dxi-validation-rule type="required" message="AcceptKey is required"></dxi-validation-rule> -->
+      </dxi-item>
+      <dxi-item dataField="rcvKey" [label]="{text: 'disabled TextBox'}"
+                [disabled]="true"></dxi-item>
+      <dxi-item dataField="rcvKey" [label]="{text: '접수유형'}"></dxi-item>
+      <dxi-item dataField="sts" [label]="{text: '접수유형'}" editorType="dxSelectBox"
+                [editorOptions]="{
+                items: dsAcceptType,
+                displayExpr: 'name',
+                valueExpr: 'code',
+                searchMode:'contains',
+                searchEnabled: true,
+                showClearButton: true,
+                openOnFieldClick: false,
+                minSearchLength: 0,
+                placeholder: '',
+                noDataText: 'No found data.'
+                }">
+          <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="sts" [label]="{text: '접수그룹'}" editorType="dxSelectBox"
+                [editorOptions]="{
+                items: dsAcceptGroup,
+                displayExpr: 'name',
+                valueExpr: 'code',
+                searchMode:'contains',
+                searchEnabled: true,
+                showClearButton: true,
+                openOnFieldClick: false,
+                minSearchLength: 0,
+                placeholder: '',
+                noDataText: 'No found data.'
+                }"></dxi-item>
+      <dxi-item dataField="warehouseId" [label]="{text: '창고'}"
+                editorType="dxSelectBox"
+                [editorOptions]="{
+                items: dsWarehouse,
+                displayExpr: 'name',
+                valueExpr: 'code',
+                searchMode:'contains',
+                searchEnabled: true,
+                showClearButton: true,
+                openOnFieldClick: false,
+                minSearchLength: 0,
+                placeholder: '',
+                noDataText: 'No found data.'
+                }"></dxi-item>
+      
+      <dxi-item dataField="fromsoSchDate" editorType="dxDateBox" 
+                [label]="{text: '출고예정일자'}"
+                [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+      </dxi-item>
+    </dxi-item>
+    <dxi-item itemType="group" cssClass="pop-item-box">
+      <dxi-item dataField="acceptKey" [label]="{text: '입고접수번호'}">
+      </dxi-item>
+      <dxi-item dataField="rcvKey" [label]="{text: 'disabled TextBox'}"
+                [disabled]="true"></dxi-item>
+      <dxi-item dataField="rcvKey" [label]="{text: '접수유형'}"></dxi-item>
+      <dxi-item dataField="sts" [label]="{text: '접수유형'}" editorType="dxSelectBox"
+                [editorOptions]="{
+                items: dsAcceptType,
+                displayExpr: 'name',
+                valueExpr: 'code',
+                searchMode:'contains',
+                searchEnabled: true,
+                showClearButton: true,
+                openOnFieldClick: false,
+                minSearchLength: 0,
+                placeholder: '',
+                noDataText: 'No found data.'
+                }">
+          <dxi-validation-rule type="required" message="Status is required"></dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="sts" [label]="{text: '접수그룹'}" editorType="dxSelectBox"
+                [editorOptions]="{
+                items: dsAcceptGroup,
+                displayExpr: 'name',
+                valueExpr: 'code',
+                searchMode:'contains',
+                searchEnabled: true,
+                showClearButton: true,
+                openOnFieldClick: false,
+                minSearchLength: 0,
+                placeholder: '',
+                noDataText: 'No found data.'
+                }"></dxi-item>
+      <dxi-item dataField="warehouseId" [label]="{text: '창고'}"
+                editorType="dxSelectBox"
+                [editorOptions]="{
+                items: dsWarehouse,
+                displayExpr: 'name',
+                valueExpr: 'code',
+                searchMode:'contains',
+                searchEnabled: true,
+                showClearButton: true,
+                openOnFieldClick: false,
+                minSearchLength: 0,
+                placeholder: '',
+                noDataText: 'No found data.'
+                }"></dxi-item>
+      
+      <dxi-item dataField="fromsoSchDate" editorType="dxDateBox" 
+                [label]="{text: '출고예정일자'}"
+                [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+<!--// 팝업 defaultscroll  -->
+<!--팝업 s [width]="400" (비밀번호)-->
+<dx-popup #pwdPopup
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [visible]="false"
+          [title]="utilService.convert('mm_user_btn_chnPwd')"
+          (onHidden)="pwdPopupAfterClose()"
+          height="310px"
+          width="400px"
+>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert('com_btn_close'),
+                      stylingMode: 'outlined',
+                      type: 'border',
+                      onClick: pwdPopupCancelClick
+                    }"></dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: '변경하기',
+                      type: 'success',
+                      onClick: pwdPopupSaveClick
+                    }"></dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <dx-form #pwdPopupForm
+             [(formData)]="pwdPopupData"
+             [showColonAfterLabel]="false"
+             labelLocation="left"
+
+    >
+      <dxi-item itemType="group" cssClass="pop-item-box">
+        <dxi-item dataField="password" [editorOptions]="{mode: 'password'}"
+                  [label]="{text: utilService.convert('mm_user_pop_currentPwd')}"></dxi-item>
+        <dxi-item dataField="changePassword" [editorOptions]="{mode: 'password'}"
+                  [label]="{text: utilService.convert('mm_user_pop_newPwd')}"></dxi-item>
+        <dxi-item dataField="checkPassword" [editorOptions]="{mode: 'password'}"
+                  [label]="{text: utilService.convert('mm_user_pop_confirmPwd')}">
+          <dxi-validation-rule type="compare"
+                              [comparisonTarget]="passwordComparison"
+                              [message]="utilService.convert('mm_user_confirmMsg')"
+          ></dxi-validation-rule>
+        </dxi-item>
+      </dxi-item>
+    </dx-form>
+  </div>
+</dx-popup>
+<!--//팝업 s-->
+<!--팝업 xl [width]="1140" 신규 사용자-->
+<dx-popup #popup
+          [width]="1140"
+          [height]="470"
+          title="신규추가"
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          (onShown)="onPopupAfterOpen()"
+          (onHidden)="onPopupAfterClose()"
+>
+  <dxi-toolbar-item toolbar="bottom" location="before">
+    <dx-button #deleteBtn
+               type="danger"
+               [text]="utilService.convert('com_btn_del')"
+               (onClick)="onPopupDelete()"
+    ></dx-button>
+  </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+
+    <dx-button type="border"
+               [text]="utilService.convert('com_btn_close')"
+               (onClick)="onPopupClose()"
+    ></dx-button>
+    <dx-button type="success"
+        [text]="utilService.convert('com_btn_save')"
+        (onClick)="onPopupSave()"
+    ></dx-button>
+  </dxi-toolbar-item>
+  
+  <div *dxTemplate="let data of 'content'">
+    <dx-form #popupForm
+             [(formData)]="popupFormData"
+             labelLocation="left"
+             [showColonAfterLabel]="false"
+             [colCount]="3"
+    >
+      <!-- Master -->
+      <dxi-item itemType="group" caption="Master" [colCount]="3" [colSpan]="3" cssClass="pop-item-box">
+        <dxi-item dataField="usr" [label]="{text: utilService.convert('mm_user_id')}">
+          <dxi-validation-rule type="required"
+                               [message]="utilService.convert('com_valid_required', utilService.convert('mm_user_id'))"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="password" [label]="{text: utilService.convert('mm_user_pwd')}">
+          <span class="btngroup page-button-group">
+          <dx-button #pwdBtn
+                     type="form"
+                     [text]="utilService.convert('mm_user_btn_chnPwd')"
+                     (onClick)="pwdPopupOpenClick()"
+          ></dx-button>
+          <dx-button #resetPwdBtn
+                     type="form"
+                     [visible]="false"
+                     text="초기화"
+                     (onClick)="resetPassword()"
+          ></dx-button>
+          </span>
+        </dxi-item>
+        <dxi-item dataField="companyId"
+                  editorType="dxSelectBox"
+                  [label]="{text: utilService.convert('mm_user_companyId')}"
+                  [editorOptions]="{  items: dsOwnerId,
+                                      displayExpr: 'display',
+                                      valueExpr: 'uid',
+                                      searchMode:'contains',
+                                      searchEnabled: true,
+                                      openOnFieldClick: false,
+                                      showClearButton: true,
+                                      minSearchLength: 0,
+                                      noDataText: utilService.convert('com_txt_noDataText')
+                                   }">
+        <dxi-validation-rule type="required"
+                             [message]="utilService.convert('com_valid_required', utilService.convert('mm_user_companyId'))"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="actFlg" [label]="{text:utilService.convert('com_code_actFlg')}"
+                  editorType="dxSelectBox"
+                  [editorOptions]="{  items: dsActFlg,
+                                      displayExpr: 'codeName',
+                                      valueExpr: 'code',
+                                      searchMode:'contains',
+                                      searchEnabled: true,
+                                      openOnFieldClick: false,
+                                      minSearchLength: 0,
+                                      placeholder: '',
+                                      noDataText: utilService.convert('com_txt_noDataText')
+                                   }"
+        >
+          <dxi-validation-rule type="required"
+                               [message]="utilService.convert('com_valid_required', utilService.convert('com_code_actFlg'))"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="name" [label]="{text: utilService.convert('mm_user_name')}">
+          <dxi-validation-rule type="required"
+                               [message]="utilService.convert('com_valid_required', utilService.convert('mm_user_name'))"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="shortName" [label]="{text: utilService.convert('mm_user_shortName')}">
+          <dxi-validation-rule type="required"
+                               [message]="utilService.convert('com_valid_required', utilService.convert('mm_user_shortName'))"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="userGroup" [label]="{text:utilService.convert('mm_user_userGroup')}"
+                  editorType="dxSelectBox"
+                  [editorOptions]="{  items: dsUserGroup,
+                                      displayExpr: 'display',
+                                      valueExpr: 'code',
+                                      searchMode:'contains',
+                                      searchEnabled: true,
+                                      openOnFieldClick: false,
+                                      minSearchLength: 0,
+                                      placeholder: '',
+                                      noDataText: utilService.convert('com_txt_noDataText')
+                                   }"
+        >
+          <dxi-validation-rule type="required"
+                               [message]="utilService.convert('com_valid_required', utilService.convert('mm_user_userGroup'))"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="email" [label]="{text: utilService.convert('mm_user_email')}">
+          <dxi-validation-rule type="required"
+                               [message]="utilService.convert('com_valid_required', utilService.convert('mm_user_email'))"></dxi-validation-rule>
+          <dxi-validation-rule type="email"
+                               [message]="utilService.convert('mm_user_valid_emil')"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="tel" [label]="{text: utilService.convert('mm_user_tel')}"
+                  [editorOptions]="{mask: '+ccc) ccccccccccccccccc',  maskChar: ' ', maskInvalidMessage: 'The input value does not match the mask'}">
+        </dxi-item>
+        <dxi-item dataField="fax" [label]="{text: utilService.convert('mm_user_fax')}"
+                  [editorOptions]="{mask: '+ccc) ccccccccccccccccc',  maskChar: ' ', maskInvalidMessage: 'The input value does not match the mask'}">
+        </dxi-item>
+        <dxi-item itemType="empty" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="remarks" [colSpan]="3" editorType="dxTextArea"
+        [label]="{text: utilService.convert('com_text_remarks')}"
+        [editorOptions]="{placeholder: utilService.convert('com_txt_noContent')}"></dxi-item>
+      </dxi-item>
+     
+    </dx-form>
+  </div>
+</dx-popup>
+<!--// 팝업 xl -->

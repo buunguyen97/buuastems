@@ -1,0 +1,504 @@
+
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+              class="bookmark-btn"
+              (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+              >
+  </dx-button>
+    <h2 class="content-block page-title">{{utilService.convert('/mm/company')}}</h2> <!-- 다국어 -->
+    <span class="page-breadcrumb">{{utilService.getPagePath()}}</span>
+    <span class="btngroup page-button-group">
+        <dx-button #newBtn
+                   icon="add"
+                   type="default"
+                   [text]="utilService.convert('com_btn_new')"
+                   (onClick)="onNew($event)">
+        </dx-button>
+    </span>
+    <hr/>
+  </div>
+  
+  <div class="contents-body">
+    <div class="search_foldable">
+      <div class="search-box">
+        <dx-form #mainForm
+                 class="search-form-box"
+                 [(formData)]="mainFormData"
+                 [minColWidth]="300"
+                 [colCount]="6"
+                 [showColonAfterLabel]="false"
+        >
+          <dxi-item itemType="group" [colCount]="6" [colSpan]="6">
+            <dxi-item dataField="tenant" [label]="{text: 'Tenant'}" [visible]="false"
+                      [editorOptions]="{ value: G_TENANT }"></dxi-item>
+            <dxi-item dataField="company"
+                      [label]="{text: utilService.convert('mm_company_companyid')}" [colSpan]="2"></dxi-item>
+            <dxi-item dataField="name" [label]="{text: utilService.convert('mm_company_name')}"
+                      [editorOptions]="{disabled: false}" [colSpan]="2"></dxi-item>
+            <dxi-item dataField="actFlg" [label]="{text: utilService.convert('mm_company_actFlg')}"
+                      editorType="dxSelectBox" [colSpan]="2"
+                      [editorOptions]="{  items: dsActFlg,
+                                        displayExpr: 'codeName',
+                                        valueExpr: 'code',
+                                        searchMode:'contains',
+                                        searchEnabled: true,
+                                        openOnFieldClick: false,
+                                        minSearchLength: 0,
+                                        placeholder: '',
+                                        noDataText: utilService.convert('com_txt_noDataText'),
+                                        showClearButton: true
+                                      }">
+            </dxi-item>
+          
+            <dxi-item itemType="group" [label]="{text: '구분'}" [colCount]="8" [colSpan]="6" cssClass="group-row">
+              <dxi-item dataField="isOwner"
+                        [label]="{text: utilService.convert('mm_company_isOwner')}"
+                        editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="isCustomer"
+                        [label]="{text: utilService.convert('mm_company_isCustomer')}"
+                        editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="isShipTo"
+                        [label]="{text: utilService.convert('mm_company_isShipTo')}"
+                        editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="isSupplier"
+                        [label]="{text: utilService.convert('mm_company_isSupplier')}"
+                        editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="isWarehouse"
+                        [label]="{text: utilService.convert('mm_company_isWarehouse')}"
+                        editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="isCarrier"
+                        [label]="{text: utilService.convert('mm_company_isCarrier')}"
+                        editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="isEtc" [label]="{text: 'Etc'}" editorType="dxCheckBox"></dxi-item>
+              <dxi-item dataField="transportPriority" [label]="{text: 'transportPriority'}"
+                        [visible]="false"></dxi-item>
+            </dxi-item>
+          </dxi-item>
+        </dx-form>
+        <div class="search-btn-group">
+          <dx-button icon="refresh"
+                     type="form"
+                     [text]="utilService.convert1('com_btn_reset', '초기화', 'Reset')"
+                     class="reset-btn"
+                     (onClick)="onReset()"
+          ></dx-button>
+          <dx-button icon="search"
+                     type="form"
+                     class="search-btn"
+                     [focusStateEnabled]="false"
+                     [text]="utilService.convert('com_btn_search')"
+                     (onClick)="onSearch()">
+          </dx-button>
+        </div>
+      </div>
+  
+      <div class="foldable-btn">
+        <dx-button #foldableBtn type="default"
+                   (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"></dx-button>
+      </div>
+    </div>
+    <!--Grid-->
+    <dx-accordion [collapsible]="true"
+                  [multiple]="true"
+                  [animationDuration]="300">
+      <dxi-item [title]="utilService.convert('mm_company_mainGridTitle')">
+        <dx-data-grid #mainGrid
+                      [dataSource]="mainGridDataSource"
+                      (onRowDblClick)="onPopupOpen($event)"
+                      [allowColumnResizing]="true"
+                      [columnAutoWidth]="true"
+                      (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                      [focusedRowEnabled]="true"
+                      [rowAlternationEnabled]="true"
+                      [showRowLines]="true"
+                      (onFocusedCellChanged)="onFocusedCellChanging($event, this.mainGrid)"
+                      [allowColumnReordering]="true"
+                      (onExporting)="gridUtil.onPageExportXlsx($event)"
+                      columnResizingMode=nextColumn
+        >
+          <dxo-editing mode="batch"></dxo-editing>
+          <dxo-selection mode="single"></dxo-selection>
+          <dxo-load-panel [enabled]="true"></dxo-load-panel>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+          <dxo-search-panel [visible]="true"
+                            [width]="200"
+                            [placeholder]="''">
+          </dxo-search-panel>
+          <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+          <dxo-pager [visible]="true"
+                     [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                     [displayMode]="'full'"
+                     [showPageSizeSelector]="true"
+                     [showInfo]="true"
+                     [showNavigationButtons]="true">
+          </dxo-pager>
+          <dxo-state-storing [enabled]="true"
+                             type="custom"
+                             [customLoad]="loadStateMain"
+                             [customSave]="saveStateMain"
+          ></dxo-state-storing>
+  
+          <!-- Columns
+           <dxi-validation-rule type="required"></dxi-validation-rule> -->
+          <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+          <dxi-column name="No" caption="No" cellTemplate="NoTemplate" alignment="center"></dxi-column>
+          <div *dxTemplate="let data of 'NoTemplate'">
+            {{ data.rowIndex + 1}}
+          </div>
+          <dxi-column dataField="company" caption="ID" alignment="left"></dxi-column>
+          <!--    <dxi-column dataField="companyGroupcd" caption="companyGroupcd"></dxi-column>-->
+          <dxi-column dataField="name" [caption]="utilService.convert('mm_company_name')"></dxi-column>
+          <dxi-column dataField="shortName"
+                      [caption]="utilService.convert('mm_company_shortName')"></dxi-column>
+          <dxi-column dataField="actFlg" [caption]="utilService.convert('mm_company_actFlg')"
+                      alignment="center"></dxi-column>
+          <!--    <dxi-column dataField="bsNo" caption="BsNo"></dxi-column>-->
+          <dxi-column dataField="zip" [caption]="utilService.convert('mm_company_zip')"></dxi-column>
+          <dxi-column dataField="address1"
+                      [caption]="utilService.convert('mm_company_address1')"></dxi-column>
+          <dxi-column dataField="address2"
+                      [caption]="utilService.convert('mm_company_address2')"></dxi-column>
+          <dxi-column dataField="countrycd" [caption]="utilService.convert('mm_company_countrycd')">
+            <dxo-lookup [dataSource]=dsCountry displayExpr="display" valueExpr="code"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="phone1"
+                      [caption]="utilService.convert('mm_company_phone1')"></dxi-column>
+          <!--    <dxi-column dataField="phone2" caption="phone2"></dxi-column>-->
+          <dxi-column dataField="fax1" [caption]="utilService.convert('mm_company_fax1')"></dxi-column>
+          <!--    <dxi-column dataField="fax2" caption="fax2"></dxi-column>-->
+          <dxi-column dataField="refName"
+                      [caption]="utilService.convert('mm_company_refName')"></dxi-column>
+          <dxi-column dataField="email" [caption]="utilService.convert('mm_company_email')"></dxi-column>
+          <dxi-column dataField="url" [caption]="utilService.convert('mm_company_url')"></dxi-column>
+          <!--    <dxi-column dataField="isOwner" caption="IsOwner"></dxi-column>-->
+          <!--    <dxi-column dataField="isCustomer" caption="IsCustomer"></dxi-column>-->
+          <!--    <dxi-column dataField="isShipTo" caption="IsShipTo"></dxi-column>-->
+          <!--    <dxi-column dataField="isSupplier" caption="IsSupplier"></dxi-column>-->
+          <!--    <dxi-column dataField="isWarehouse" caption="IsWarehouse"></dxi-column>-->
+          <!--    <dxi-column dataField="isCarrier" caption="IsCarrier"></dxi-column>-->
+          <!--    <dxi-column dataField="isEtc" caption="IsEtc"></dxi-column>-->
+          <dxi-column dataField="remarks"
+                      [caption]="utilService.convert('com_text_remarks')"></dxi-column>
+          <dxi-column dataField="rowVersion" caption="RowVersion" [visible]="false" [allowSearch]="false"
+                      [showInColumnChooser]="false"></dxi-column>
+  
+          <dxi-column dataField="createdBy" [caption]="utilService.convert('com_text_createdBy')"
+                      [visible]="false">
+            <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="createdDatetime"
+                      [caption]="utilService.convert('com_text_createdDatetime')"
+                      [visible]="false"></dxi-column>
+          <dxi-column dataField="modifiedBy" [caption]="utilService.convert('com_text_modifiedBy')"
+                      [visible]="false">
+            <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="modifiedDatetime"
+                      [caption]="utilService.convert('com_text_modifiedDatetime')"
+                      [visible]="false"></dxi-column>
+        </dx-data-grid>
+      </dxi-item>
+    </dx-accordion>
+  </div>
+  
+  <!-- Grid popup-->
+  <dx-popup #popup
+            [width]="1140"
+            [maxHeight]="800"
+            [(title)]="popupMode"
+            [dragEnabled]="true"
+            [resizeEnabled]="true"
+            scrollingEnabled="true"
+            [(visible)]="popupVisible"
+            [closeOnOutsideClick]="false"
+            (onShown)="onPopupAfterOpen()"
+            (onHidden)="onPopupAfterClose()"
+  >
+  
+    <dxi-toolbar-item widget="dxButton" location="after" toolbar="top"
+                      [options]="{
+        text: '좌표검색',
+        type: 'border',
+        onClick: openMapLine
+      }"></dxi-toolbar-item>
+  
+    <dxi-toolbar-item toolbar="bottom" location="before">
+      <dx-button #deleteBtn
+                 type="danger"
+                 [text]="utilService.convert('com_btn_del')"
+                 (onClick)="onPopupDelete()"
+      ></dx-button>
+    </dxi-toolbar-item>
+    <dxi-toolbar-item toolbar="bottom" location="after">
+  
+      <dx-button type="border"
+                 [text]="utilService.convert('com_btn_close')"
+                 (onClick)="onPopupClose()"
+      ></dx-button>
+      <dx-button type="success"
+          #saveBtn
+          [text]="utilService.convert('com_btn_save')"
+          (onClick)="popupSaveClick($event)"
+      ></dx-button>
+    </dxi-toolbar-item>
+  
+    <div *dxTemplate="let data of 'content'">
+      <dx-form #popupForm
+               [(formData)]="popupFormData"
+               labelLocation="left"
+               scrollingEnabled="true"
+               [showColonAfterLabel]="false"
+               [colCount]="3"
+               class="non-horizenscroll"
+      >
+        <!-- Master -->
+        <dxi-item itemType="group" caption="Basic Infomation" [colCount]="3" [colSpan]="3" cssClass="pop-item-box">
+          <dxi-item dataField="company" [label]="{text: 'ID'}">
+            <dxi-validation-rule type="required"
+                                 [message]="utilService.convert('com_valid_required', utilService.convert('mm_company_company'))"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="name" [label]="{text: utilService.convert('mm_company_name')}">
+            <dxi-validation-rule type="required"
+                                 [message]="utilService.convert('com_valid_required', utilService.convert('mm_company_name'))"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="engName" [label]="{text: utilService.convert1('mm_company_name2','거래처명(Eng)')}">
+            <dxi-validation-rule type="required"
+                                 [message]="utilService.convert('com_valid_required', utilService.convert('mm_company_name2'))"></dxi-validation-rule>
+          </dxi-item>
+          <!-- <dxi-item itemType="empty" [colSpan]="1"></dxi-item> -->
+          <dxi-item dataField="shortName" [label]="{text: utilService.convert('mm_company_shortName')}">
+            <dxi-validation-rule type="required"
+                                 [message]="utilService.convert('com_valid_required', utilService.convert('mm_company_shortName'))"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="engShortName"
+                    [label]="{text: utilService.convert1('mm_company_shortName2', '약어(Eng)')}">
+            <dxi-validation-rule type="required"
+                                 [message]="utilService.convert('com_valid_required', utilService.convert('mm_company_shortName2'))"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="actFlg" [label]="{text:utilService.convert('mm_company_actFlg')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{  items: dsActFlg,
+                                        displayExpr: 'codeName',
+                                        valueExpr: 'code',
+                                        searchMode:'contains',
+                                        searchEnabled: true,
+                                        openOnFieldClick: false,
+                                        minSearchLength: 0,
+                                        placeholder: '',
+                                        noDataText: utilService.convert('com_txt_noDataText')
+                                     }"
+          >
+            <dxi-validation-rule type="required"
+                                 [message]="utilService.convert('com_valid_required', utilService.convert('mm_company_actFlg'))"></dxi-validation-rule>
+          </dxi-item>
+        </dxi-item>
+  
+        <dxi-item itemType="group" caption="Contents" [colCount]="3" [colSpan]="3" cssClass="pop-item-box">
+          <!-- <dxi-item dataField="itemAdminId" [label]="{text: '관리자코드'}">
+            <dxi-validation-rule type="required" message="itemAdminId is required"></dxi-validation-rule>
+          </dxi-item> -->
+          <!-- <dxi-item dataField="companyGroupcd" [label]="{text: '거래처그룹'}"></dxi-item> -->
+          <dxi-item dataField="countrycd" [label]="{text: utilService.convert('mm_company_countrycd')}"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{  items: dsCountry,
+                                        displayExpr: 'display',
+                                        valueExpr: 'code',
+                                        searchMode:'contains',
+                                        searchEnabled: true,
+                                        openOnFieldClick: false,
+                                        minSearchLength: 0,
+                                        noDataText: utilService.convert('com_txt_noDataText'),
+                                        onValueChanged: onChangedCountry
+                                     }"></dxi-item>
+          <dxi-item dataField="zip" [label]="{text: utilService.convert('mm_company_zip')}"></dxi-item>
+          <dxi-item dataField="refName" [label]="{text: utilService.convert('mm_company_refName')}"></dxi-item>
+          <dxi-item dataField="email" [label]="{text: utilService.convert1('mm_company_email','Email')}">
+            <dxi-validation-rule type="email"
+                                 [message]="utilService.convert1('mm_company_email_vali', 'email 형식에 맞지 않습니다.')"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item itemType="empty" [colSpan]="2"></dxi-item> 
+          <dxi-item dataField="address1AutoComplete" [label]="{text: utilService.convert('mm_company_address1')}"
+                    [colSpan]="2"></dxi-item>
+          <dxi-item>
+             <span class="btngroup form-button-group">
+                <dx-button #pwdBtn
+                          type="form"
+                          [text]="utilService.convert1('주소 검색', '주소 검색')"
+                          (onClick)="comfirmAddress()"
+                ></dx-button>
+            </span>
+          </dxi-item>
+  
+          <!-- <dxi-item itemType="empty" [colSpan]="2"></dxi-item> -->
+          <dxi-item dataField="address2" [label]="{text: utilService.convert('mm_company_address2')}"
+                    [colSpan]="2"></dxi-item>
+          <dxi-item itemType="empty" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="engAddress1"
+                    [label]="{text: utilService.convert1('mm_company_address1_2','주소1(Eng)')}"
+                    [colSpan]="2"></dxi-item>
+          <dxi-item itemType="empty" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="engAddress2"
+                    [label]="{text: utilService.convert1('mm_company_address2_2', '주소2(Eng)')}"
+                    [colSpan]="2"></dxi-item>
+          <dxi-item itemType="empty" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="phone1" [label]="{text: utilService.convert('mm_company_phone1')}">
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="phonePattern"
+              [message]="utilService.convert1('전화번호 형식이 아닙니다.', '전화번호 형식이 아닙니다.')"
+            ></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="phone2"
+                    [label]="{text: utilService.convert1('mm_company_phone2', '전화번호2', 'phone2')}">
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="phonePattern"
+              [message]="utilService.convert1('전화번호 형식이 아닙니다.', '전화번호 형식이 아닙니다.')"
+            ></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="fax1" [label]="{text: utilService.convert('mm_company_fax1')}">
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="phonePattern"
+              [message]="utilService.convert1('전화번호 형식이 아닙니다.', '전화번호 형식이 아닙니다.')"
+            ></dxi-validation-rule>
+          </dxi-item>
+          <!-- <dxi-item dataField="fax2" [label]="{text: 'fax2'}"></dxi-item> -->
+          <dxi-item dataField="url" [label]="{text: utilService.convert('mm_company_url')}"></dxi-item>
+  
+          <dxi-item dataField="bsNo" [label]="{text: utilService.convert1('company.bsNo', '등록번호')}"></dxi-item>
+          <dxi-item dataField="repNm" [label]="{text: utilService.convert1('company.repNm', '대표')}"></dxi-item>
+          <dxi-item dataField="supplierNm"
+                    [label]="{text: utilService.convert1('company.supplierNm', '공급자')}"></dxi-item>
+          <dxi-item dataField="bizType"
+                    [label]="{text: utilService.convert1('company.bizType', '업태')}"></dxi-item>
+          <dxi-item dataField="bizItem"
+                    [label]="{text: utilService.convert1('company.bizItem', '종목')}"></dxi-item>
+  
+          <dxi-item dataField="gps_lat" [label]="{text: utilService.convert('mm_company_gps_lat')}"></dxi-item>
+          <dxi-item dataField="gps_long" [label]="{text: utilService.convert('mm_company_gps_long')}"></dxi-item>
+        </dxi-item>
+  
+        <dxi-item itemType="group" caption="Type" [colCount]="3" [colSpan]="3" cssClass="pop-item-box">
+          <dxi-item itemType="group" [label]="{text: '구분'}" [colCount]="7" [colSpan]="3" cssClass="group-row">
+            <dxi-item dataField="isOwner" [label]="{text: utilService.convert('mm_company_isOwner')}"
+                      editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="isCustomer" [label]="{text: utilService.convert('mm_company_isCustomer')}"
+                      editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="isShipTo" [label]="{text: utilService.convert('mm_company_isShipTo')}"
+                      editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="isSupplier" [label]="{text: utilService.convert('mm_company_isSupplier')}"
+                      editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="isWarehouse" [label]="{text: utilService.convert('mm_company_isWarehouse')}"
+                      editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="isCarrier" [label]="{text: utilService.convert('mm_company_isCarrier')}"
+                      editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="isEtc" [label]="{text: 'Etc'}" editorType="dxCheckBox"></dxi-item>
+            <dxi-item dataField="transportPriority" [label]="{text: 'transportPriority'}"
+                      [visible]="false"></dxi-item>
+          </dxi-item>
+          
+        </dxi-item>
+  
+        <dxi-item itemType="group" [caption]="utilService.convert('mm_company_companyXWh')" [colCount]="3"
+                  [colSpan]="3" cssClass="pop-item-box">
+          <dx-data-grid
+            #popupGrid
+            [dataSource]="popupDataSource"
+            [heihgt]="350"
+            (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
+            [(selectedRowKeys)]="selectedRows"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="false"
+            [focusedRowEnabled]="true"
+            (onFocusedCellChanged)="onFocusedCellChanging($event, this.popupGrid)"
+            [showRowLines]="true"
+            [allowColumnReordering]="true"
+            (onExporting)="gridUtil.onPageExportXlsx($event)"
+            columnResizingMode=nextColumn
+          >
+            <dxo-editing mode="batch"
+                         [allowUpdating]="isAllowEditing"
+                         [(changes)]="changes"
+                         [selectTextOnEditStart]="true"
+            ></dxo-editing>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel
+              [visible]="true"
+              [width]="240"
+              [placeholder]="''"></dxo-search-panel>
+            <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+            <dxo-pager
+              [showPageSizeSelector]="true"
+              [allowedPageSizes]=gridUtil.getAllowedPageSize()
+              [showInfo]="true">
+            </dxo-pager>
+            <dxo-state-storing [enabled]="true" type="custom" [customLoad]="loadStatePopup"
+                               [customSave]="saveStatePopup"></dxo-state-storing>
+            <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="tenant" caption="tenant" [visible]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>
+            <dxi-column name="No" caption="No" cellTemplate="NoTemplate" alignment="center"></dxi-column>
+            <div *dxTemplate="let data of 'NoTemplate'">
+              {{ data.rowIndex + 1}}
+            </div>
+            <dxi-column dataField="warehouseId" [caption]="utilService.convert('mm_company_warehouseId')"
+                        [setCellValue]="setWarehouseValue">
+              <dxo-lookup [dataSource]="dsWarehouseId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="urcvIngLocId" [caption]="utilService.convert('mm_company_urcvIngLocId')">
+              <dxo-lookup [dataSource]="getFilteredLocId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="badReturnLocId" [caption]="utilService.convert('mm_company_badReturnLocId')">
+              <dxo-lookup [dataSource]="getFilteredLocId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="cancelLocId" [caption]="utilService.convert('mm_company_cancelLocId')">
+              <dxo-lookup [dataSource]="getFilteredLocId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="sortLocId" [caption]="utilService.convert('mm_company_sortLocId')">
+              <dxo-lookup [dataSource]="getFilteredLocId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="produceLocId"
+                        [caption]="utilService.convert1('mm_company_produceLocId', '생산로케이션')">
+              <dxo-lookup [dataSource]="getFilteredLocId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="finishedLocId"
+                        [caption]="utilService.convert1('mm_company_finishedLocId', '완제품로케이션')">
+              <dxo-lookup [dataSource]="getFilteredLocId" displayExpr="display" valueExpr="uid">
+              </dxo-lookup>
+            </dxi-column>
+  
+            <dxi-column dataField="remarks" [caption]="utilService.convert('com_text_remarks')"></dxi-column>
+  
+            <dxi-column dataField="createdBy" [caption]="utilService.convert('com_text_createdBy')"
+                        [allowEditing]="false"
+                        alignment="center" [visible]="false">
+              <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="createdDatetime" [caption]="utilService.convert('com_text_createdDatetime')"
+                        [allowEditing]="false" [visible]="false"></dxi-column>
+            <dxi-column dataField="modifiedBy" [caption]="utilService.convert('com_text_modifiedBy')"
+                        [allowEditing]="false" alignment="center" [visible]="false">
+              <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="modifiedDatetime"
+                        [caption]="utilService.convert('com_text_modifiedDatetime')"
+                        [allowEditing]="false" [visible]="false"></dxi-column>
+          </dx-data-grid>
+        </dxi-item>
+      </dx-form>
+    </div>
+  </dx-popup>
+  

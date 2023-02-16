@@ -1,0 +1,376 @@
+<!--
+  ~ Copyright (c) 2021 JFLab All rights reserved.
+  ~ File Name : login-form.component.html
+  ~ Author : jbh5310
+  ~ Lastupdate : 2021-09-01 14:00:58
+  -->
+
+<div class="div-buttons-logins-wrap" *ngIf="checkUserType">
+  <h1 class="bi"></h1>
+  <div>
+    <b>회원 타입을 선택해주세요</b>
+    <div class="div-buttons-logins">
+      <div>
+        <div class="login-card" (click)="onClickUserType($event, 'ADMIN')">
+          <img src="/assets/images/login_card_1.png" alt="관리자">
+          <h2>관리자</h2>
+          <span>물류의 모든 과정을<br>스마트하게 관리하세요</span>
+          <span class="point">로그인 <i class="dx-icon dx-icon-arrowright"></i></span>
+        </div>
+      </div>
+      <div>
+        <div class="login-card" (click)="onClickUserType($event, 'OWNER')">
+          <img src="/assets/images/login_card_2.png" alt="화주">
+          <h2>화주 </h2>
+          <span>운송 예약부터 관리까지<br>손쉽게 이용해보세요.</span>
+          <span class="point">로그인 <i class="dx-icon dx-icon-arrowright"></i></span>
+        </div>
+      </div>
+      <div>
+        <div class="login-card" (click)="onClickUserType($event, 'CAROWNER')">
+          <img src="/assets/images/login_card_3.png" alt="차주">
+          <h2>차주</h2>
+          <span>오라이로 쉽고 편하게 배차받고<br> 오더를 관리해보세요.</span>
+          <span class="point">로그인 <i class="dx-icon dx-icon-arrowright"></i></span>
+        </div>
+      </div>
+      <div>
+        <div class="login-card" (click)="onClickUserType($event, 'CARRIER')">
+          <img src="/assets/images/login_card_4.png" alt="운송사">
+          <h2>운송사</h2>
+          <span>새로운 화주사와<br> 손쉽게 만나보세요.</span>
+          <span class="point">로그인 <i class="dx-icon dx-icon-arrowright"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="login-copyright"> Copyrightⓒ 2019-2022 ALLRIGHT Inc. All right reserved. </p>
+</div>
+
+<dx-scroll-view height="100%" width="100%" class="with-footer single-card login-wrap" *ngIf="!checkUserType">
+  <div class="dx-card-wrap">
+    <h2 (click)="changeUserType()" class="page-back-btn"><i class="dx-icon-back"></i>뒤로가기</h2>
+    <div class="dx-card content">
+      <h2>BI</h2>
+      <div class="login-content-box">
+        <div class="login-contnet-form">
+          <div class="header">
+            <div class="title">Welcome !</div>
+            <div class="description">Now, rent exporting pallets with R-to</div>
+          </div>
+
+          <dx-form #loginForm
+                   class="login-form"
+                   labelMode="outside"
+                   labelLocation="top"
+                   [showColonAfterLabel]="false"
+                   (onEditorEnterKey)="onEnterKey($event)">
+            <dxi-item dataField="usr"
+                      editorType="dxTextBox"
+                      [label]="{text: 'ID'}"
+                      [editorOptions]="{
+                        stylingMode: 'filled',
+                        placeholder: '&nbsp;&nbsp;&nbsp;ID'
+                      }">
+              <dxi-validation-rule
+                type="required"
+                [message]="utilService.convert('com.valid.required', utilService.convert1('com.user.id', 'ID'))">
+              </dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="password"
+                      editorType="dxTextBox"
+                      [label]="{text: 'Password'}"
+                      [editorOptions]="{
+                        stylingMode: 'filled',
+                        placeholder: '&nbsp;&nbsp;&nbsp;Password',
+                        mode: 'password'
+                      }">
+              <dxi-validation-rule
+                type="required"
+                [message]="utilService.convert('com.valid.required', utilService.convert1('com.user.password', '비밀번호'))">
+              </dxi-validation-rule>
+            </dxi-item>
+
+            <dxi-item itemType="group" colCount="2" cssClass="sign-group">
+              <dxi-item dataField="check1"
+                        editorType="dxCheckBox"
+                        [label]="{text: '아이디 저장'}">
+              </dxi-item>
+<!--                <dxi-item [colSpan]="1">-->
+<!--                  <div class="link">-->
+<!--                    <a (click)="returnMSG()">패스워드 초기화</a>-->
+<!--                  </div>-->
+<!--                </dxi-item>-->
+            </dxi-item>
+
+            <dxi-item itemType="button" cssClass="signin-btn">
+              <dxo-button-options
+                text="Sign In"
+                width="100%"
+                type="default"
+                [onClick]="onSignIn">
+              </dxo-button-options>
+            </dxi-item>
+
+            <dxi-item itemType="button" cssClass="signup-btn">
+              <dxo-button-options text="회원가입" [onClick]="onCreateAccountClick"></dxo-button-options>
+            </dxi-item>
+            <dxi-item>
+              <div class="sns-sign-group">
+                <b>SNS 로그인</b>
+                <div class="sns-row">
+<!--                    <dx-button type="sns" icon="google" id="btnGoogle"></dx-button>-->
+                  <div type="sns" icon="google" id="btnGoogle"></div>
+<!--                    <dx-button type="sns" icon="google" id="btnGoogle"></dx-button>-->
+<!--                    <dx-button type="sns" icon="facebook"></dx-button>-->
+                  <dx-button type="sns" icon="kakao" id="kakao-login-btn" (onClick)="loginWithKakao()"></dx-button>
+                  <dx-button type="sns" icon="naver" id="naverIdLogin"></dx-button>
+<!--                    <div type="sns" icon="naver" id="naverIdLogin"></div>-->
+                </div>
+              </div>
+            </dxi-item>
+          </dx-form>
+          <p class="login-copyright"> Copyrightⓒ 2019-2022 ALLRIGHT Inc. All right reserved. </p>
+        </div>
+      </div>
+      <p class="login-copyright">AllRight 화면 해상도는 1920 x 1080 에 최적화 되어 있습니다.</p>
+    </div>
+  </div>
+</dx-scroll-view>
+
+<dx-popup #signUp
+          (onHidden)="onHiddenSignUp()"
+          height="100%"
+          width="100vw"
+>
+  <dx-form #signUpForm
+           labelLocation="top"
+           class="signup-popup non-horizenscroll"
+           scrollingEnabled="true"
+           [showColonAfterLabel]="false"
+           (focusin)="setChangeMask($event)"
+           (focusout)="setChangeMask($event)"
+  >
+    <dxi-item class="top-line">
+      <a (click)="signUpClose()"><i class="dx-icon-back"></i>뒤로가기</a>
+      <a (click)="signUpClose()"><i class="dx-icon-close"></i></a>
+    </dxi-item>
+
+    <dxi-item  itemType="group" cssClass="step-container" >
+      <!--title-->
+      <dxi-item cssClass="step-title">
+        <h2>회원가입</h2>
+        <div class="sign-step">
+          <span [ngClass]="{'active':currentStep == 1}">약관동의</span>
+          <i class="dx-icon-chevronright"></i>
+          <span [ngClass]="{'active':currentStep == 2}">정보입력</span>
+          <i class="dx-icon-chevronright"></i>
+          <span [ngClass]="{'active':currentStep == 3}">가입완료</span>
+        </div>
+      </dxi-item>
+      <!--//title-->
+
+      <!--약관동의-->
+      <dxi-item *ngIf="currentStep === 1" itemType="group" cssClass="signup-step1">
+        <div>
+          <dxi-item itemType="group" cssClass="sign-check" [label]="{text: '전체동의'}">
+            <dxi-item class="sign-check">
+              <dx-check-box
+                [(value)]="allCheckValue"
+                text="이용약관 및 개인정보수집 및 이용에 모두 동의합니다."
+                (click)="allValueChanged($event)"></dx-check-box>
+            </dxi-item>
+          </dxi-item>
+
+          <dxi-item itemType="group" *ngFor="let term of signUpForm.formData.termList">
+            <dxi-item class="sign-check">
+              <dx-check-box text="{{ term.termTitle }}" [(value)]="term.termValue" (onValueChanged)="valueChanged($event)"></dx-check-box>
+              <span class="point">{{ term.requiredYn === 'Y' ? '(필수)' : '(선택)' }}</span>
+            </dxi-item>
+            <dxi-item>
+              <dx-html-editor class="policy-box" [readOnly]="true" value="{{ term.termContent }}" ></dx-html-editor>
+            </dxi-item>
+          </dxi-item>
+        </div>
+
+        <dxi-item class="signup-bottom">
+          <dx-button
+            type="signup"
+            text="본인인증"
+            (onClick)="onActiveStep(2)">
+          </dx-button>
+        </dxi-item>
+      </dxi-item>
+      <!--//약관동의-->
+
+      <!--가입 폼-->
+      <dxi-item *ngIf="currentStep === 2" itemType="group" cssClass="signup-step2">
+        <dxi-item itemType="group" cssClass="form-group2">
+          <dxi-item dataField="usr"
+                    [editorOptions]="{onKeyDown: changeId}"
+                    [label]="{text: utilService.convert1('mm.user.id', '사용자ID')}">
+            <dxi-validation-rule
+              type="required"
+              [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.id'))">
+            </dxi-validation-rule>
+            <dxi-validation-rule
+              type="pattern"
+              [pattern]="idPattern"
+              [message]="idPatternMsg">
+            </dxi-validation-rule>
+          </dxi-item>
+          <dxi-item cssClass="form-group-right">
+            <dx-button [type]="signUpForm.formData.checkedId ? 'signUpForm-green' : 'signUpForm-red'"
+                       [text]="signUpForm.formData.checkedId ? '확인완료' : '확인필요'"
+                       (onClick)="checkId()">
+            </dx-button>
+          </dxi-item>
+        </dxi-item>
+
+        <dxi-item dataField="password"
+                  [editorOptions]="{mode: 'password'}"
+                  [label]="{text: utilService.convert1('mm.user.password1', '비밀번호')}">
+          <dxi-validation-rule
+            type="required"
+            [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.password1'))">
+          </dxi-validation-rule>
+          <dxi-validation-rule
+            type="pattern"
+            [pattern]="pwPattern"
+            [message]="pwPatternMsg">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="checkPassword"
+                  [editorOptions]="{mode: 'password'}"
+                  [label]="{text: utilService.convert1('mm.user.confirmPassword', '비밀번호 확인')}">
+          <dxi-validation-rule
+            type="required"
+            [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.confirmPassword'))">
+          </dxi-validation-rule>
+          <dxi-validation-rule
+            type="compare"
+            [comparisonTarget]="passwordConfirm"
+            [message]="utilService.convert('mm.user.changPwd.confirmMsg')">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="name" [label]="{text: utilService.convert1('mm.user.name', '사용자명')}">
+          <dxi-validation-rule
+            type="required"
+            [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.name'))">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="phone"
+                  [label]="{text: utilService.convert1('mm.user.phone', '휴대폰번호')}"
+                  [editorOptions]="phoneEditorOptions">
+          <dxi-validation-rule
+            type="required"
+            [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.phone'))">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="tel"
+                  [label]="{text: utilService.convert1('mm.user.tel', '전화번호')}"
+                  [editorOptions]="telEditorOptions">
+        </dxi-item>
+        <dxi-item dataField="email" [label]="{text: utilService.convert1('mm.user.email', '이메일')}">
+          <dxi-validation-rule
+            type="required"
+            [message]="utilService.convert('com.valid.required', utilService.convert('mm.user.email'))">
+          </dxi-validation-rule>
+          <dxi-validation-rule
+            type="email"
+            [message]="utilService.convert('mm_user_valid_emil')">
+          </dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item itemType="group" [label]="{text: '마케팅 수신 동의'}" [colCount]="4" [colSpan]="1" cssClass="group-row">
+          <dxi-item cssClass="sign-check">
+            <dx-check-box text="문자 (SMS)" [(value)]="signUpForm.formData.smsYn"></dx-check-box>
+          </dxi-item>
+          <dxi-item cssClass="sign-check">
+            <dx-check-box text="이메일" [(value)]="signUpForm.formData.emailYn"></dx-check-box>
+          </dxi-item>
+          <dxi-item cssClass="sign-check">
+            <dx-check-box text="앱푸시 알림" [(value)]="signUpForm.formData.appPushYn"></dx-check-box>
+          </dxi-item>
+        </dxi-item>
+        <dxi-item>
+          <span class="additional">로그인하시면 더욱 다양한 서비스 혜택을 제공 받으실 수 있습니다. </span>
+        </dxi-item>
+        <dxi-item  class="signup-bottom">
+          <dx-button
+            type="signup"
+            text="회원가입"
+            (onClick)="onActiveStep(3)">
+          </dx-button>
+        </dxi-item>
+      </dxi-item>
+      <!--//가입 폼-->
+
+      <!--가입 완료-->
+      <dxi-item *ngIf="currentStep === 3" itemType="group" [colCount]="1" cssClass="signup-step3">
+        <div class="signup-success">
+          <img src="/assets/images/sign_smile.png" alt="가입성공">
+          <b>{{ signUpForm.formData.name }} 님, 가입이 완료되었습니다.</b>
+          <span>로그인하시면 더욱 다양한 서비스 혜택을 제공 받으실 수 있습니다. </span>
+        </div>
+
+        <dxi-item [colSpan]="2" class="signup-bottom">
+          <dx-button
+            type="signup"
+            text="로그인"
+            (onClick)="signUpClose()">
+          </dx-button>
+        </dxi-item>
+      </dxi-item>
+      <!--//가입 완료-->
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+
+<dx-popup #pwdPopup
+          [dragEnabled]="true"
+          [showCloseButton]="false"
+          (onHidden)="onHidden()"
+          [title]="utilService.convert('mm_user_btn_chnPwd')"
+          height="200px"
+          width="400px"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    location="center"
+    toolbar="bottom"
+    [options]="{
+                text: utilService.convert('com_btn_save'),
+                type: 'success',
+                onClick: pwdPopupSaveClick
+              }">
+  </dxi-toolbar-item>
+
+  <dx-form #pwdPopupForm
+           [(formData)]="pwdPopupData"
+           [showColonAfterLabel]="true"
+           labelLocation="left"
+  >
+    <dxi-item dataField="password"
+              [visible]="false"
+              [editorOptions]="{mode: 'password'}"
+              [label]="{text: utilService.convert('mm_user_pop_currentPwd')}">
+    </dxi-item>
+    <dxi-item dataField="changePassword"
+              [editorOptions]="{mode: 'password'}"
+              [label]="{text: utilService.convert('mm_user_pop_newPwd')}">
+    </dxi-item>
+    <dxi-item dataField="checkPassword"
+              [editorOptions]="{mode: 'password'}"
+              [label]="{text: utilService.convert('mm_user_pop_confirmPwd')}">
+      <dxi-validation-rule
+        type="compare"
+        [comparisonTarget]="passwordComparison"
+        [message]="utilService.convert('mm_user_confirmMsg')">
+      </dxi-validation-rule>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+
+
+

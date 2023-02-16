@@ -1,0 +1,253 @@
+<dx-popup #popup
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          [title]="utilService.convert1('mm.user.carPopup.title', '차량관리인증')"
+          [width]="1140"
+          [height]="930"
+          (onHidden)="onHidden()"
+>
+  <dxi-toolbar-item widget="dxButton" location="after" toolbar="top"
+                    [options]="{
+                      text: utilService.convert1('mm.car.carRegiYn.Y', '인증'),
+                      type: 'border',
+                      onClick: saveAuth
+                    }">
+  </dxi-toolbar-item>
+
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="success"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="save()">
+    </dx-button>
+    <dx-button type="border"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="close()">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           class="non-horizenscroll"
+  >
+    <dxi-item itemType="group" cssClass="pop-item-box"
+              [colCount]="6" [colSpan]="6">
+      <dxi-item dataField="tenant"
+                [visible]="false"
+                [editorOptions]="{ value: G_TENANT }">
+      </dxi-item>
+      <dxi-item dataField="uid"
+                [visible]="false">
+      </dxi-item>
+
+      <dxi-item dataField="userName"
+                [disabled]="true"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.userId', '사용자')}">
+      </dxi-item>
+      <dxi-item dataField="carRegiNo"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.carRegiNo', '자동차등록번호')}"
+                [editorOptions]="{disabled: isCarRegiYn}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.carRegiNo', '자동차등록번호'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="carNo"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.carNo', '차량번호')}"
+                [editorOptions]="{disabled: isCarRegiYn}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.carNo', '차량번호'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="carType" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.carType', '유형')}"
+                [editorOptions]="{
+                  items: dsCarType,
+                  disabled: isCarRegiYn,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.carType', '유형'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="carKind" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.carKind', '종류')}"
+                [editorOptions]="{
+                  items: dsCarKind,
+                  disabled: isCarRegiYn,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.carKind', '종류'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="actFlg" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.actFlg', '사용여부')}"
+                [editorOptions]="{
+                  items: dsYN,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.actFlg', '사용여부'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="brand" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.brand', '제조사')}"
+                [editorOptions]="{
+                  items: dsCarBrand,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.brand', '제조사'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="createYm" editorType="dxDateBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.createYm', '제조년월')}"
+                [editorOptions]="{
+                  pickerType: 'calendar',
+                  displayFormat: 'yyyy-MM',
+                  dateSerializationFormat: 'yyyy-MM',
+                  calendarOptions: {zoomLevel: 'year', minZoomLevel: 'year', maxZoomLevel: 'year'}
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.createYm', '제조년월'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="oilType" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.oilType', '유종')}"
+                [editorOptions]="{
+                  items: dsOilType,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.car.oilType', '유종'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item itemType="group" [label]="{text: '옵션'}" [colCount]="7" [colSpan]="5" cssClass="group-row">
+        <dxi-item dataField="isOption1" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption1', '짐받이')}">
+        </dxi-item>
+        <dxi-item dataField="isOption2" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption2', '무진동')}">
+        </dxi-item>
+        <dxi-item dataField="isOption3" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption3', '리프트')}">
+        </dxi-item>
+        <dxi-item dataField="isOption4" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption4', '양문개방')}">
+        </dxi-item>
+        <dxi-item dataField="isOption5" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption5', '옆문개방')}">
+        </dxi-item>
+        <dxi-item dataField="isOption6" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption6', '뒷문개방')}">
+        </dxi-item>
+        <dxi-item dataField="isOption7" editorType="dxCheckBox"
+                  [label]="{text: utilService.convert1('mm.car.isOption7', '차량덮개')}">
+        </dxi-item>
+      </dxi-item>
+    </dxi-item>
+    <dxi-item itemType="group" cssClass="pop-item-box"
+              [colCount]="6" [colSpan]="6"
+              [caption]="utilService.convert1('mm.car.popupSubTitle', '인증관리')">
+      <dxi-item dataField="carRegiYn" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.car.carRegiYn', '인증여부')}"
+                [editorOptions]="{
+                  items: dsYN,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  disabled: true
+                }">
+      </dxi-item>
+      <dxi-item dataField="remarks" [colSpan]="4" [label]="{text: utilService.convert1('mm.car.remarks', '사유')}"></dxi-item>
+    </dxi-item>
+  </dx-form>
+
+  <dxi-item itemType="group" class="pop-item-box">
+    <div class="dropzone-title">등록서류</div>
+    <div class="dropzone-container">
+      <div class="dropzone-list">
+        <ng-container *ngFor="let data of imgUploadList">
+          <div class="dropzone-wrapper">
+            <button class="dropzone-download-button"
+                    *ngIf="data.checkPath"
+                    (click)="downloadImage(data)">
+              <i class="dx-icon dx-icon-download"></i>
+            </button>
+            <button class="dropzone-image-button fullscreen"
+                    *ngIf="data.checkPath"
+                    (click)="openImageModal(data)">
+              <i class="dx-icon dx-icon-search"></i>
+            </button>
+            <label class="dropzone-external flex-box">
+              <div class="dropzone-img-box">
+                <img src="{{ data.path }}" class="dropzone-image"/>
+              </div>
+              <span>{{ data.codeName }}</span>
+              <input id="imgCar{{ data.code }}" hidden/>
+            </label>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </dxi-item>
+</dx-popup>
+
+<div class="image-modal">
+  <span class="image-modal-close" (click)="closeImageModal($event)">&times;</span>
+  <img class="image-modal-content" id="fullImage">
+</div>
+<a id="downloadImageEl" href="#"></a>

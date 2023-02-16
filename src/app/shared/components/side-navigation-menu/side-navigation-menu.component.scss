@@ -1,0 +1,17 @@
+@import "../../../../dx-styles.scss";
+@import "../../../../themes/generated/variables.additional.scss";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  height: 100%;
+  width: 260px !important;
+
+
+  &.shrinked{
+    .menu-container{
+      padding-top: 35px;
+    }
+  }
+}

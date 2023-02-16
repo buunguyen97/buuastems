@@ -1,0 +1,122 @@
+<dx-popup #popup
+          [dragEnabled]="true"
+          [title]="utilService.convert1('mm.user.addressBookMarkPopup.title', '즐겨찾기 상세')"
+          (onHidden)="onHidden()"
+          height="700px"
+          width="500px"
+>
+  <dxi-toolbar-item toolbar="bottom" location="after">
+    <dx-button type="border"
+               [text]="utilService.convert1('com.btn.close', '닫기')"
+               (onClick)="close()">
+    </dx-button>
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           scrollingEnabled="true"
+  >
+    <dxi-item itemType="group" cssClass="pop-item-box">
+
+      <dxi-item dataField="ciDo" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.address.area1', '시/도')}"
+                [editorOptions]="{
+                  items: ciDoDs,
+                  displayExpr: 'display',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  showClearButton: true,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  onValueChanged: onChangedArea1
+                }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert('mm.address.area1'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="guGun" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.address.area2', '군/구')}"
+                [editorOptions]="{
+                  items: guGunDs,
+                  displayExpr: 'display',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  showClearButton: true,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  onValueChanged: onChangedArea2
+                }">
+      </dxi-item>
+
+      <dxi-item dataField="eupMyun" editorType="dxSelectBox"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.address.area3', '동/읍/면')}"
+                [editorOptions]="{
+                  items: eupMyunDs,
+                  displayExpr: 'display',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  showClearButton: true,
+                  minSearchLength: 0,
+                  placeholder: ''
+                }">
+      </dxi-item>
+
+      <dxi-item cssClass="form-bottom">
+        <dx-button type="border"
+                   [text]="utilService.convert1('mm.user.registration', '등록')"
+                   (onClick)="registration($event)">
+        </dx-button>
+      </dxi-item>
+    </dxi-item>
+    <dxi-item itemType="group" cssClass="pop-item-box no-border">
+      <dxi-item cssClass="text-right">
+        <dx-button type="border-sm"
+                   icon="add"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   (onClick)="reset($event)">
+        </dx-button>
+      </dxi-item>
+      <dxi-item class="bank-list-container">
+        <table>
+          <colgroup>
+            <col width="85%">
+            <col width="15%">
+          </colgroup>
+          <thead>
+          <tr>
+            <th>주소</th>
+            <th>삭제</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let bookmark of bookmarks; let i = index">
+            <tr (click)="selectRow($event, bookmark)"
+                [ngClass]="bookmark.selected ? 'isSelected' : null">
+              <td>
+                <dxi-item>{{bookmark.address}}</dxi-item>
+              </td>
+              <td>
+                <dx-button type="danger"
+                           icon="trash"
+                           (onClick)="deleteRow(bookmark)">
+                </dx-button>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>

@@ -1,0 +1,293 @@
+<!-- 공통 > 평가 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '평가')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+     <dx-button icon="add"
+                type="default"
+                [text]="utilService.convert1('com.btn.new', '신규')"
+                (onClick)="onNew($event)">
+      </dx-button>
+  </span>
+  <hr/>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item dataField="tenant"
+                    [visible]="false">
+          </dxi-item>
+
+          <dxi-item dataField="gradeCd" [label]="{text: utilService.convert1('mm.grade.gradeCd', '평가코드')}"></dxi-item>
+          <dxi-item dataField="gradeNm" [label]="{text: utilService.convert1('mm.grade.gradeNm', '평가명')}"></dxi-item>
+          <dxi-item dataField="gradeUser"
+                    editorType="dxSelectBox"
+                    [label]="{text: utilService.convert1('mm.grade.gradeUser', '평가자')}"
+                    [editorOptions]="{
+                      items: dsGradeUser,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      minSearchLength: 0,
+                      placeholder: '',
+                      showClearButton: true,
+                      noDataText: utilService.convert('com.txt.noDataText')
+                    }">
+          </dxi-item>
+        </dxi-item>
+      </dx-form>
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(this.mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+  <dx-accordion [collapsible]="true"
+                [multiple]="false"
+                [animationDuration]="300"
+  >
+    <dxi-item [title]="utilService.convert1('mm.grade.mainGridTitle', '평가 리스트')">
+      <dx-data-grid #mainGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                    (onRowDblClick)="onRowDblClick($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event, this.creatFileName(utilService.convert1('mm.grade.mainGridTitle', '평가 리스트')))"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"></dxo-editing>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing type="custom"
+                           [enabled]="true"
+                           [customLoad]="loadStateMain"
+                           [customSave]="saveStateMain">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant" caption="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column dataField="gradeCd" alignment="center"
+                    [caption]="utilService.convert1('mm.grade.gradeCd', '평가코드')">
+        </dxi-column>
+        <dxi-column dataField="gradeNm"
+                    [caption]="utilService.convert1('mm.grade.gradeNm', '평가명')">
+        </dxi-column>
+        <dxi-column dataField="gradeUser" alignment="center"
+                    [caption]="utilService.convert1('mm.grade.gradeUser', '평가자')">
+          <dxo-lookup [dataSource]=dsGradeUser displayExpr="codeName" valueExpr="code"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="actFlg" alignment="center"
+                    [caption]="utilService.convert1('mm.grade.actFlg', '사용여부')">
+        </dxi-column>
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-accordion>
+</div>
+
+<dx-popup #popup
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          [width]="1140"
+          [height]="360"
+          (onHidden)="onHiddenPopup($event)"
+>
+  <dxi-toolbar-item widget="dxButton"
+                    location="before"
+                    toolbar="bottom"
+                    [visible]="!isNewPopup"
+                    [options]="{
+                      text: utilService.convert1('com.btn.del', '삭제'),
+                      stylingMode: 'Contained',
+                      type: 'danger',
+                      onClick: onClickPopupDelete
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.save', '저장'),
+                      type: 'success',
+                      onClick: onClickPopupSave
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.close', '닫기'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: onClickPopupCancel
+                    }">
+  </dxi-toolbar-item>
+
+  <dx-form #popupForm
+           [showColonAfterLabel]="false"
+           [colCountByScreen]="{
+                lg:3, md: 3, sm:2, xs:2
+             }"
+  >
+    <dxi-item itemType="group" cssClass="pop-item-box"
+              [colCount]="3" [colSpan]="3"
+              [caption]="utilService.convert(pageInfo.path)">
+
+      <dxi-item dataField="tenant"
+                [visible]="false">
+      </dxi-item>
+      <dxi-item dataField="uid"
+                [visible]="false">
+      </dxi-item>
+      <dxi-item dataField="gradeCd"
+                [editorOptions]="{disabled: !isNewPopup}"
+                [label]="{text: utilService.convert1('mm.grade.gradeCd', '평가코드')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.grade.gradeCd', '평가코드'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="gradeNm" [label]="{text: utilService.convert1('mm.grade.gradeNm', '평가명')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.grade.gradeNm', '평가명'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="gradeUser"
+                editorType="dxSelectBox"
+                [label]="{text: utilService.convert1('mm.grade.gradeUser', '평가자')}"
+                [editorOptions]="{
+                  items: dsGradeUser,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  showClearButton: true,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: utilService.convert('com.txt.noDataText')
+               }">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.grade.gradeUser', '평가자'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="gradeContent"
+                [colSpan]="2"
+                [label]="{text: utilService.convert1('mm.grade.gradeContent', '평가내용')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.grade.gradeContent', '평가내용'))">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item dataField="actFlg"
+                editorType="dxSelectBox"
+                [label]="{text: utilService.convert1('mm.grade.actFlg', '사용여부')}"
+                [editorOptions]="{
+                  items: dsYN,
+                  displayExpr: 'codeName',
+                  valueExpr: 'code',
+                  searchMode:'contains',
+                  searchEnabled: true,
+                  openOnFieldClick: false,
+                  minSearchLength: 0,
+                  placeholder: '',
+                  noDataText: utilService.convert('com.txt.noDataText')
+                }"
+      >
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.grade.actFlg', '사용여부'))">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item dataField="score"
+                editorType="dxNumberBox"
+                [editorOptions]="{
+                  format : '#,##0.####',
+                  min: 0,
+                  rtlEnabled : 'true'
+                }"
+                [label]="{text: utilService.convert1('mm.grade.score', '가중치')}">
+        <dxi-validation-rule
+          type="required"
+          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.grade.score', '가중치'))">
+        </dxi-validation-rule>
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</dx-popup>

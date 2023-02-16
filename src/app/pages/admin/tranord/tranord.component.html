@@ -1,0 +1,1347 @@
+<div class="map-drawer-wrapper">
+  <div class="map-drawer-inner">
+    <div class="left-side">
+
+      <!--기본 상하차 정보 패널-->
+      <div class="con1">
+        <div class="contents-header">
+          <dx-button #bookmarkBtn
+                     class="bookmark-btn"
+                     [icon]="'star'"
+                     (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+          </dx-button>
+          <h2 class="content-block page-title">배차요청</h2>
+          <span class="page-button-group">
+            <span>운송 정보 입력 </span>
+            <span class="page-count">{{ currentStep }}/3</span>
+          </span>
+        </div>
+        <div class="contents-body">
+          <div id="contentsList" class="contents-list">
+            <dx-form #mainForm
+                     class="map-form-box"
+                     [minColWidth]="300"
+                     [showColonAfterLabel]="false"
+            >
+              <!--step 1-->
+              <dxi-item *ngIf="currentStep === 1" itemType="group">
+
+                <!--상차지 -->
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title from">상차지</h3>
+                    <button class="dx-widget dx-button dx-button-mode-contained dx-button-normal dx-button-has-text"
+                            (click)="addressPopupOpen($event, 'startPoint')">
+                      <div class="dx-button-content">
+                        <span class="dx-button-text">주소록</span>
+                      </div>
+                    </button>
+                  </dxi-item>
+                  <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                    <dxi-item dataField="startPoint.companyNm"
+                              [label]="{text: utilService.convert1('mm.tranord.companyNm', '상호(성명)')}"
+                              cssClass="table-item border-right">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.companyNm', '상호(성명)'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="startPoint.refNm"
+                              [label]="{text: utilService.convert1('mm.tranord.refNm', '담당자명')}"
+                              cssClass="table-item">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.refNm', '담당자명'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+
+                    <dxi-item itemType="group" [label]="{visible: false}" [colSpan]="2" cssClass="table-btn-group">
+                      <dxi-item dataField="startPoint.address1"
+                                [label]="{text: utilService.convert1('mm.tranord.address1', '주소')}"
+                                cssClass="table-item table-btn-input">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.address1', '주소'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item cssClass="table-btn-md">
+                        <button [id]="'startPointBtn'" class="dx-button-normal" (click)="onFindAddress($event)">주소검색</button>
+                      </dxi-item>
+                    </dxi-item>
+
+                    <dxi-item dataField="startPoint.address2"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.address2', '상세주소')}"
+                              cssClass="table-item">
+                    </dxi-item>
+
+                    <dxi-item dataField="startPoint.refTellNo"
+                              [label]="{text: utilService.convert1('mm.tranord.refTellNo', '연락처1')}"
+                              cssClass="table-item border-right"
+                              [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.refTellNo', '연락처1'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="startPoint.refTellNo2"
+                              [label]="{text: utilService.convert1('mm.tranord.refTellNo2', '연락처2')}"
+                              cssClass="table-item"
+                              [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                    </dxi-item>
+
+                    <dxi-item dataField="startPoint.expectedDateTime"
+                              editorType="dxDateBox"
+                              cssClass="table-item"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.expectedDateTimeS', '상차일시')}"
+                              [editorOptions]="{
+                                type: 'datetime',
+                                displayFormat:'yyyy-MM-dd HH:mm',
+                                dateSerializationFormat: 'yyyy-MM-dd HH:mm:dd',
+                                onValueChanged: onValueChangedExpectedDateTime,
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.expectedDateTimeS', '상차일시'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+
+                    <dxi-item dataField="startPoint.remarks"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.remarks', '전달사항')}"
+                              cssClass="table-item">
+                    </dxi-item>
+
+                    <dxi-item dataField="startPoint.latitude"
+                              cssClass="table-item"
+                              [visible]="false">
+                    </dxi-item>
+                    <dxi-item dataField="startPoint.longitude"
+                              cssClass="table-item"
+                              [visible]="false">
+                    </dxi-item>
+                    <dxi-item dataField="startPoint.marker"
+                              cssClass="table-item"
+                              [visible]="false">
+                    </dxi-item>
+
+                  </dxi-item>
+                </dxi-item>
+                <!--//상차지 -->
+
+                <!--경유지 -->
+                <ng-container *ngFor="let wayPoint of wayPointList; let i = index">
+                  <dxi-item itemType="group" cssClass="table-group"
+                            *ngIf="!wayPoint.customHide"
+                            [colSpan]="1">
+                    <dxi-item class="table-header">
+                      <h3 id="item{{i + 1}}" class="table-title transit">경유지</h3>
+                      <div>
+                        <button class="dx-widget dx-button dx-button-mode-contained dx-button-dark dx-button-has-text dx-button-has-icon"
+                                (click)="onClickDeleteWayPoint( i )">
+                          <div class="dx-button-content">
+                            <i class="dx-icon dx-icon-minus"></i>
+                            <span class="dx-button-text">경유지 삭제</span>
+                          </div>
+                        </button>
+                        <button class="dx-widget dx-button dx-button-mode-contained dx-button-normal dx-button-has-text"
+                                (click)="addressPopupOpen($event, 'wayPoint'.concat(i.toString()))">
+                          <div class="dx-button-content">
+                            <span class="dx-button-text">주소록</span>
+                          </div>
+                        </button>
+                      </div>
+                    </dxi-item>
+                    <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                      <dxi-item dataField="wayPoint{{ i }}.companyNm"
+                                [label]="{text: utilService.convert1('mm.tranord.companyNm', '상호(성명)')}"
+                                cssClass="table-item border-right">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.companyNm', '상호(성명)'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item dataField="wayPoint{{ i }}.refNm"
+                                [label]="{text: utilService.convert1('mm.tranord.refNm', '담당자명')}"
+                                cssClass="table-item">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.refNm', '담당자명'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+
+                      <dxi-item itemType="group" [label]="{visible: false}" [colSpan]="2" cssClass="table-btn-group">
+                        <dxi-item dataField="wayPoint{{ i }}.address1"
+                                  [label]="{text: utilService.convert1('mm.tranord.address1', '주소')}"
+                                  cssClass="table-item table-btn-input">
+                          <dxi-validation-rule
+                            type="required"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.address1', '주소'))">
+                          </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item cssClass="table-btn-md">
+                          <button [id]="'wayPoint'.concat((i).toString(), 'Btn')" (click)="onFindAddress($event)">주소검색</button>
+                        </dxi-item>
+                      </dxi-item>
+
+                      <dxi-item dataField="wayPoint{{ i }}.address2"
+                                [colSpan]="2"
+                                [label]="{text: utilService.convert1('mm.tranord.address2', '상세주소')}"
+                                cssClass="table-item">
+                      </dxi-item>
+
+                      <dxi-item dataField="wayPoint{{ i }}.refTellNo"
+                                [label]="{text: utilService.convert1('mm.tranord.refTellNo', '연락처1')}"
+                                cssClass="table-item border-right"
+                                [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.refTellNo', '연락처1'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item dataField="wayPoint{{ i }}.refTellNo2"
+                                [label]="{text: utilService.convert1('mm.tranord.refTellNo2', '연락처2')}"
+                                cssClass="table-item"
+                                [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                      </dxi-item>
+
+                      <dxi-item dataField="wayPoint{{ i }}.expectedDateTime"
+                                editorType="dxDateBox"
+                                cssClass="table-item"
+                                [colSpan]="2"
+                                [label]="{text: utilService.convert1('mm.tranord.expectedDateTimeE', '하차일시')}"
+                                [editorOptions]="{
+                                  type: 'datetime',
+                                  displayFormat:'yyyy-MM-dd HH:mm',
+                                  dateSerializationFormat: 'yyyy-MM-dd HH:mm:dd',
+                                  dropDownOptions: {container: '.contents-list'}
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.expectedDateTimeE', '하차일시'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+
+                      <dxi-item dataField="wayPoint{{ i }}.remarks"
+                                [colSpan]="2"
+                                [label]="{text: utilService.convert1('mm.tranord.remarks', '전달사항')}"
+                                cssClass="table-item">
+                      </dxi-item>
+
+                      <dxi-item dataField="wayPoint{{ i }}.latitude"
+                                cssClass="table-item"
+                                [visible]="false">
+                      </dxi-item>
+                      <dxi-item dataField="wayPoint{{ i }}.longitude"
+                                cssClass="table-item"
+                                [visible]="false">
+                      </dxi-item>
+                      <dxi-item dataField="wayPoint{{ i }}.marker"
+                                cssClass="table-item"
+                                [visible]="false">
+                      </dxi-item>
+                    </dxi-item>
+                  </dxi-item>
+                </ng-container>
+                <!--//경유지 -->
+
+                <dxi-item class="btn-tool">
+                  <button *ngIf="checkWayPoint" (click)="onClickChangePoint()">
+                    <i class="dx-icon dx-icon-swap"></i>
+                    <span class="dx-button-text">상하차 전환</span>
+                  </button>
+                  <button (click)="onClickAddWayPoint()">
+                    <i class="dx-icon dx-icon-location-pin"></i>
+                    <span class="dx-button-text">경유지 추가</span>
+                  </button>
+                </dxi-item>
+
+                <!--하차지 -->
+                <dxi-item itemType="group" cssClass="table-group" [colSpan]="1">
+                  <dxi-item class="table-header" [colSpan]="1">
+                    <h3 class="table-title to">하차지</h3>
+                    <button class="dx-widget dx-button dx-button-mode-contained dx-button-normal dx-button-has-text"
+                            (click)="addressPopupOpen($event, 'endPoint')">
+                      <div class="dx-button-content">
+                        <span class="dx-button-text">주소록</span>
+                      </div>
+                    </button>
+                  </dxi-item>
+                  <dxi-item itemType="group" [colCount]="2" [colSpan]="1" cssClass="table-custom">
+                    <dxi-item dataField="endPoint.companyNm"
+                              [label]="{text: utilService.convert1('mm.tranord.companyNm', '상호(성명)')}"
+                              cssClass="table-item border-right">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.companyNm', '상호(성명)'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="endPoint.refNm"
+                              [label]="{text: utilService.convert1('mm.tranord.refNm', '담당자명')}"
+                              cssClass="table-item">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.refNm', '담당자명'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+
+                    <dxi-item itemType="group" [label]="{visible: false}" [colCount]="1" [colSpan]="2" cssClass="table-btn-group">
+                      <dxi-item dataField="endPoint.address1"
+                                [label]="{text: utilService.convert1('mm.tranord.address1', '주소')}"
+                                cssClass="table-item table-btn-input">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.address1', '주소'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item cssClass="table-btn-md">
+                        <button [id]="'endPointBtn'" class="dx-button-normal" (click)="onFindAddress($event)">주소검색</button>
+                      </dxi-item>
+                    </dxi-item>
+
+                    <dxi-item dataField="endPoint.address2"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.address2', '상세주소')}"
+                              cssClass="table-item">
+                    </dxi-item>
+
+                    <dxi-item dataField="endPoint.refTellNo"
+                              [label]="{text: utilService.convert1('mm.tranord.refTellNo', '연락처1')}"
+                              cssClass="table-item border-right"
+                              [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.refTellNo', '연락처1'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="endPoint.refTellNo2"
+                              [label]="{text: utilService.convert1('mm.tranord.refTellNo2', '연락처2')}"
+                              cssClass="table-item"
+                              [editorOptions]="{ placeholder: '“-”없이 숫자만 입력'}">
+                    </dxi-item>
+
+                    <dxi-item dataField="endPoint.expectedDateTime"
+                              editorType="dxDateBox"
+                              cssClass="table-item"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.expectedDateTimeE', '하차일시')}"
+                              [editorOptions]="{
+                                elementAttr: { id: 'expectedDateTimeEndId' },
+                                type: 'datetime',
+                                displayFormat:'yyyy-MM-dd HH:mm',
+                                dateSerializationFormat: 'yyyy-MM-dd HH:mm:dd',
+                                dropDownOptions: {container: '.contents-list', position: { my: 'left bottom', at: 'left top', of: '#expectedDateTimeEndId' } }
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.expectedDateTimeE', '하차일시'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+
+                    <dxi-item dataField="endPoint.remarks"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.remarks', '전달사항')}"
+                              cssClass="table-item">
+                    </dxi-item>
+
+                    <dxi-item dataField="endPoint.latitude"
+                              cssClass="table-item"
+                              [visible]="false">
+                    </dxi-item>
+                    <dxi-item dataField="endPoint.longitude"
+                              cssClass="table-item"
+                              [visible]="false">
+                    </dxi-item>
+                    <dxi-item dataField="endPoint.marker"
+                              cssClass="table-item"
+                              [visible]="false">
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+                <!--//하차지 -->
+              </dxi-item>
+              <!--//step 1-->
+
+
+              <!--step2-->
+              <dxi-item *ngIf="currentStep === 2" itemType="group">
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">물품종류</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" cssClass="table-custom">
+                    <dxi-item itemType="group" cssClass="table-select-group">
+                      <dxi-item dataField="tranItemCategoryId"
+                                [label]="{visible: false}"
+                                cssClass="table-item table-select"
+                                editorType="dxSelectBox"
+                                [editorOptions]="{
+                                  items: tranItemCategoryIdDs,
+                                  displayExpr: 'codeName',
+                                  valueExpr: 'code',
+                                  searchMode:'contains',
+                                  searchEnabled: true,
+                                  openOnFieldClick: false,
+                                  minSearchLength: 0,
+                                  placeholder: utilService.convert('com.txt.select'),
+                                  showClearButton: true,
+                                  noDataText: utilService.convert('com.txt.noDataText'),
+                                  dropDownOptions: {container: '.contents-list'},
+                                  onValueChanged: onValueChangedItemCategoryId
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCategoryId', '물품분류'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item dataField="tranItemCategoryNm"
+                                [label]="{text: utilService.convert1('mm.tranord.tranItemCategoryId', '물품분류')}"
+                                cssClass="table-item table-select-input"
+                                [editorOptions]="{
+                                  disabled: this.mainForm.formData.tranItemCategoryId !== '9999'
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCategoryNm', '물품분류명'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">물품포장</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" cssClass="table-custom">
+                    <dxi-item itemType="group" cssClass="table-select-group">
+                      <dxi-item dataField="tranItemPackType"
+                                [label]="{visible: false}"
+                                cssClass="table-item table-select"
+                                editorType="dxSelectBox"
+                                [editorOptions]="{
+                                  items: tranItemPackTypeDs,
+                                  displayExpr: 'codeName',
+                                  valueExpr: 'code',
+                                  searchMode:'contains',
+                                  searchEnabled: true,
+                                  openOnFieldClick: false,
+                                  minSearchLength: 0,
+                                  placeholder: utilService.convert('com.txt.select'),
+                                  showClearButton: true,
+                                  noDataText: utilService.convert('com.txt.noDataText'),
+                                  dropDownOptions: {container: '.contents-list'}
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemPackType', '포장유형'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item dataField="tranItemPackCnt"
+                                [label]="{text: utilService.convert1('mm.tranord.tranItemPackType', '포장유형')}"
+                                cssClass="table-item table-select-input"
+                                editorType="dxNumberBox"
+                                [editorOptions]="{
+                                  format:'#,##0.####',
+                                  max:99999999999999,
+                                  step: 0
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemPackCnt', '포장수량'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item cssClass="table-unit">개</dxi-item>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">중량 및 규격</h3>
+                    <dxi-item cssClass="sign-check">
+                      <dx-check-box [(value)]="isRecordCarbon" text="탄소배출량 기록여부"></dx-check-box>
+                    </dxi-item>
+                  </dxi-item>
+                  <dxi-item itemType="group" cssClass="table-custom">
+                    <dxi-item itemType="group" cssClass="table-input-group">
+                      <dxi-item dataField="tranItemWeight"
+                                cssClass="table-item"
+                                editorType="dxNumberBox"
+                                [label]="{text: utilService.convert1('mm.tranord.tranItemWeight', '중량')}"
+                                [editorOptions]="{
+                                  format:'#,##0.####',
+                                  max:99999999999999,
+                                  step: 0
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          *ngIf="isRecordCarbon"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemWeight', '중량'))">
+                        </dxi-validation-rule>
+                        <dxi-validation-rule
+                          type="range"
+                          *ngIf="isRecordCarbon"
+                          [min]="1"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item cssClass="table-unit">KG</dxi-item>
+                    </dxi-item>
+                    <dxi-item itemType="group" cssClass="table-multi-group" [colCount]="7" >
+                      <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="3">
+                        <dxi-item dataField="tranItemWidth"
+                                  cssClass="table-item"
+                                  editorType="dxNumberBox"
+                                  [label]="{text: utilService.convert1('mm.tranord.standard', '규격')}"
+                                  [editorOptions]="{
+                                    format:'#,##0.####',
+                                    max:99999999999999,
+                                    step: 0,
+                                    onValueChanged: calculateCbm,
+                                    placeholder: '가로'
+                                  }">
+                          <dxi-validation-rule
+                            type="required"
+                            *ngIf="isRecordCarbon"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemWidth', '가로'))">
+                          </dxi-validation-rule>
+                          <dxi-validation-rule
+                            type="range"
+                            *ngIf="isRecordCarbon"
+                            [min]="1"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                          </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item cssClass="table-unit">mm</dxi-item>
+                        <dxi-item cssClass="table-mark">x</dxi-item>
+                      </dxi-item>
+                      <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                        <dxi-item dataField="tranItemLength"
+                                  cssClass="table-item"
+                                  editorType="dxNumberBox"
+                                  [label]="{visible: false}"
+                                  [editorOptions]="{
+                                    format:'#,##0.####',
+                                    max:99999999999999,
+                                    step: 0,
+                                    onValueChanged: calculateCbm,
+                                    placeholder: '세로'
+                                  }">
+                          <dxi-validation-rule
+                            type="required"
+                            *ngIf="isRecordCarbon"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemLength', '세로'))">
+                          </dxi-validation-rule>
+                          <dxi-validation-rule
+                            type="range"
+                            *ngIf="isRecordCarbon"
+                            [min]="1"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                          </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item cssClass="table-unit">mm</dxi-item>
+                        <dxi-item cssClass="table-mark">x</dxi-item>
+                      </dxi-item>
+                      <dxi-item itemType="group" cssClass="table-input-group" [colSpan]="2">
+                        <dxi-item dataField="tranItemHeight"
+                                  cssClass="table-item"
+                                  editorType="dxNumberBox"
+                                  [label]="{visible: false}"
+                                  [editorOptions]="{
+                                    format:'#,##0.####',
+                                    max:99999999999999,
+                                    step: 0,
+                                    onValueChanged: calculateCbm,
+                                    placeholder: '높이'
+                                  }">
+                          <dxi-validation-rule
+                            type="required"
+                            *ngIf="isRecordCarbon"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemHeight', '높이'))">
+                          </dxi-validation-rule>
+                          <dxi-validation-rule
+                            type="range"
+                            *ngIf="isRecordCarbon"
+                            [min]="1"
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                          </dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item cssClass="table-unit">mm</dxi-item>
+                      </dxi-item>
+                    </dxi-item>
+                    <dxi-item itemType="group" cssClass="table-input-group">
+                      <dxi-item dataField="tranItemCbm"
+                                cssClass="table-item"
+                                editorType="dxNumberBox"
+                                [label]="{text: utilService.convert1('mm.tranord.tranItemCbm', '물품CBM')}"
+                                [editorOptions]="{
+                                  format:'#,##0.####',
+                                  max:99999999999999,
+                                  step: 0
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          *ngIf="isRecordCarbon"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                        </dxi-validation-rule>
+                        <dxi-validation-rule
+                          type="range"
+                          *ngIf="isRecordCarbon"
+                          [min]="1"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item cssClass="table-unit">㎥</dxi-item>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">물품가액 및 적재옵션</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" cssClass="table-custom">
+                    <dxi-item itemType="group" cssClass="table-input-group">
+                      <dxi-item dataField="tranItemAmt"
+                                cssClass="table-item"
+                                editorType="dxNumberBox"
+                                [label]="{text: utilService.convert1('mm.tranord.tranItemAmt', '물품가액')}"
+                                [editorOptions]="{
+                                  format:'#,##0.####',
+                                  max:99999999999999,
+                                  step: 0
+                                }">
+                      </dxi-item>
+                      <dxi-item cssClass="table-unit">￦</dxi-item>
+                    </dxi-item>
+                    <dxi-item dataField="tranItemOption"
+                              [label]="{text: utilService.convert1('mm.tranord.tranItemOption', '적재옵션')}"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: tranItemOptionDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: '',
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                disabled: true,
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemOption', '적재옵션'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">오더 유형 및 분류</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" [colCount]="2" cssClass="table-custom">
+                    <dxi-item dataField="tranOrdCategory"
+                              [label]="{text: utilService.convert1('mm.tranord.tranOrdCategory', '오더분류')}"
+                              [colSpan]="2"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: tranOrdCategoryDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranOrdCategory', '오더분류'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="tranOrdType"
+                              [label]="{text: utilService.convert1('mm.tranord.tranOrdType', '배차대상')}"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: tranOrdTypeDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranOrdType', '배차대상'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="companyId"
+                              *ngIf="mainForm.formData.tranOrdType === '1'"
+                              [label]="{text: utilService.convert1('mm.tranord.companyId', '운송사')}"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: companyDs,
+                                displayExpr: 'name',
+                                valueExpr: 'uid',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        *ngIf="mainForm.formData.tranOrdType === '1'"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.companyId', '운송사'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">차량정보</h3>
+                    <dx-button text="차량제원" (onClick)="transportPopupOpen($event)"></dx-button>
+                  </dxi-item>
+                  <dxi-item itemType="group" [colCount]="2" cssClass="table-custom">
+                    <dxi-item dataField="tranCarType"
+                              [colSpan]="2"
+                              [label]="{text: utilService.convert1('mm.tranord.tranCarType', '차량유형')}"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: tranCarTypeDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranCarType', '차량유형'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="tranCarKind"
+                              [label]="{text: utilService.convert1('mm.tranord.tranCarKind', '차량종류')}"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: tranCarKindDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranCarKind', '차량종류'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item itemType="group" cssClass="table-input-group">
+                      <dxi-item dataField="tranCarCnt"
+                                editorType="dxNumberBox"
+                                cssClass="table-item"
+                                [label]="{text: utilService.convert1('mm.tranord.tranCarCnt', '차량대수')}"
+                                [editorOptions]="{
+                                  format: '#,##0.####',
+                                  max: 99999999999999,
+                                  step: 0,
+                                  disabled: !checkWayPoint
+                                }">
+                        <dxi-validation-rule
+                          type="required"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranCarCnt', '차량대수'))">
+                        </dxi-validation-rule>
+                        <dxi-validation-rule
+                          type="range"
+                          [min]="1"
+                          [message]="utilService.convert('com.valid.required', utilService.convert1('mm.tranord.tranItemCbm', '물품CBM'))">
+                        </dxi-validation-rule>
+                      </dxi-item>
+                      <dxi-item cssClass="table-unit">대</dxi-item>
+                    </dxi-item>
+                  </dxi-item>
+                  <dxi-item>
+                    <span class="noti">차량 선택이 어렵다면, 상단의 <b>차량제원을 참고</b>하세요.</span>
+                  </dxi-item>
+                  <dxi-item *ngIf="!checkWayPoint">
+                    <span class="noti">경유지가 존재하는 경우 운송구간은 <b>편도</b>, 차량대수는 <b>1대만 요청이 가능</b>합니다.</span>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">차량옵션</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" [colCount]="3" cssClass="table-custom no-border">
+                    <dxi-item dataField="isOption1"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption1', '짐받이')
+                              }">
+                    </dxi-item>
+                    <dxi-item dataField="isOption2"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption2', '무진동')
+                              }">
+                    </dxi-item>
+                    <dxi-item dataField="isOption3"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption3', '리프트')
+                              }">
+                    </dxi-item>
+
+                    <dxi-item dataField="isOption4"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption4', '양문개방')
+                              }">
+                    </dxi-item>
+                    <dxi-item dataField="isOption5"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption5', '옆문개방')
+                              }">
+                    </dxi-item>
+                    <dxi-item dataField="isOption6"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption6', '뒷문개방')
+                              }">
+                    </dxi-item>
+
+                    <dxi-item dataField="isOption7"
+                              editorType="dxCheckBox"
+                              [label]="{visible: false}"
+                              [editorOptions]="{
+                                text: utilService.convert1('mm.car.isOption7', '차량덮개')
+                              }">
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">운송구간</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" cssClass="table-custom">
+                    <dxi-item dataField="tranIntervalType"
+                              [label]="{text: utilService.convert1('mm.tranord.tranIntervalType', '구간')}"
+                              cssClass="table-item table-select"
+                              editorType="dxSelectBox"
+                              [editorOptions]="{
+                                items: tranIntervalTypeDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText'),
+                                disabled: !checkWayPoint,
+                                dropDownOptions: {container: '.contents-list'}
+                              }">
+                    </dxi-item>
+<!--                      <dxi-item dataField="tranIncludeYn"-->
+<!--                                editorType="dxCheckBox"-->
+<!--                                cssClass="table-item table-select-input"-->
+<!--                                [label]="{text: utilService.convert1('mm.tranord.tranIntervalType', '구간')}"-->
+<!--                                [editorOptions]="{-->
+<!--                                  text: utilService.convert1('mm.tranord.tranIncludeYn', '경유지포함'),-->
+<!--                                  value: false-->
+<!--                                }">-->
+<!--                        <dxi-validation-rule type="required"></dxi-validation-rule>-->
+<!--                      </dxi-item>-->
+                  </dxi-item>
+                </dxi-item>
+              </dxi-item>
+              <!-- //step2-->
+
+
+              <!-- step3-->
+              <dxi-item *ngIf="currentStep === 3" itemType="group">
+                <dxi-item itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">결제방식</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" cssClass="table-custom">
+                    <dxi-item dataField="tranSalesType"
+                              cssClass="table-item"
+                              editorType="dxSelectBox"
+                              [label]="{text: utilService.convert1('mm.tranord.tranSalesType', '결제방식')}"
+                              [editorOptions]="{
+                                items: tranSalesTypeDs,
+                                displayExpr: 'codeName',
+                                valueExpr: 'code',
+                                searchMode:'contains',
+                                searchEnabled: true,
+                                openOnFieldClick: false,
+                                minSearchLength: 0,
+                                placeholder: utilService.convert('com.txt.select'),
+                                showClearButton: true,
+                                noDataText: utilService.convert('com.txt.noDataText')
+                              }">
+                      <dxi-validation-rule
+                        type="required"
+                        [message]="utilService.convert('com_valid_required', utilService.convert('mm.tranord.tranSalesType'))">
+                      </dxi-validation-rule>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-item>
+
+                <dxi-item *ngIf="this.mainForm.formData.tranSalesType === '0'" itemType="group" cssClass="table-group">
+                  <dxi-item class="table-header">
+                    <h3 class="table-title">결제수단</h3>
+                  </dxi-item>
+                  <dxi-item itemType="group" [colCount]="2" cssClass="border-custom">
+                    <dx-radio-group
+                      itemTemplate="radio"
+                      [dataSource]="salesTypeDs"
+                      (onValueChanged)="onActivePanel($event)"
+                    >
+                      <div class="radio" *dxTemplate="let data of 'radio'">
+                        <p class="radio-label" ><b>{{ data.codeName }}</b></p>
+
+                        <div *ngIf="data.code === '0' && isPaymentMethod === '0'" class="radio-box">
+                          <dx-button text="카드등록"
+                                     class="purple addCard"
+                                     (onClick)="cardPopupOpen($event)">
+                          </dx-button>
+                          <div class="slide-wrap">
+                            <div class="slides-container">
+                              <div class="slide-prev">
+                                <dx-button
+                                  id="cardPrevBtn"
+                                  icon="chevronleft"
+                                  (onClick)="onPrevCard($event)">
+                                </dx-button>
+                              </div>
+                              <div class="slides">
+                                <div id="slideList" class="slide-inner">
+                                  <ng-container *ngFor="let card of salesList; let i = index;">
+                                    <dxi-item itemType="group"
+                                              name="cards"
+                                              class="card-slide user-card-item"
+                                              [ngClass]="{selected: onActiveCardNum === i + 1}"
+                                    >
+                                      <dxi-item id="'card{{ i }}'">
+                                        <img src="{{ card.imageSrc }}">
+                                        <span class="card-number">{{ card.cardNoMasking }}</span>
+                                      </dxi-item>
+                                    </dxi-item>
+                                  </ng-container>
+                                </div>
+                              </div>
+                              <div class="slide-next">
+                                <dx-button
+                                  id="cardNextBtn"
+                                  icon="chevronright" (onClick)="onNextCard($event)">
+                                </dx-button>
+                              </div>
+                            </div>
+
+                            <div class="slide-select">
+                              <dx-select-box [items]="['일시불','2개월']"></dx-select-box>
+                              <b><span class="current">{{ onActiveCardNum }}</span>/{{ salesList.length }}</b>
+                            </div>
+                          </div>
+                          <dxi-item>
+                            <dxi-item
+                              dataField="구간"
+                              [label]="{ visible: true }"
+                              editorType="dxSelectBox"
+                              cssClass="table-item table-select">
+                            </dxi-item>
+                          </dxi-item>
+                        </div>
+
+                        <div *ngIf="data.code === '1' && isPaymentMethod === '1'" class="radio-box">
+                          <div class="border-row">
+                            <span>잔액</span>
+                            <b>{{ preCard.remainAmtComma }}</b>
+                          </div>
+                          <div class="color-box">
+                            <dx-button text="카드내역보기" class="purple"></dx-button>
+<!--                            <dx-button text="잔액충전"></dx-button>-->
+<!--                            <dx-button text="잔액인출"></dx-button>-->
+                          </div>
+                        </div>
+                      </div>
+                    </dx-radio-group>
+                  </dxi-item>
+                </dxi-item>
+              </dxi-item>
+              <!-- //step3-->
+            </dx-form>
+          </div>
+        </div>
+
+        <div *ngIf="currentStep === 1" class="contents-bottom">
+          <div class="bottom-btn-group">
+            <dx-button type="signup"
+                       text="다음 단계로"
+                       (onClick)="onChangeStep(2)">
+            </dx-button>
+          </div>
+        </div>
+
+        <div *ngIf="currentStep === 2" class="contents-bottom">
+          <div class="bottom-btn-group">
+            <dx-button type="signup-border"
+                       text="이전 단계로"
+                       (onClick)="onChangeStep(1)">
+            </dx-button>
+            <dx-button type="signup"
+                       text="다음 단계로"
+                       (onClick)="onChangeStep(3)">
+            </dx-button>
+          </div>
+        </div>
+
+        <div *ngIf="currentStep === 3" class="contents-bottom">
+          <div class="row border">
+            <b class="price-title">결제금액</b>
+            <input id="totPrice"
+                   class="price" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
+                   style="border: none; text-align:right"
+                   (focusout)="focusoutTranTotAmt($event)"
+                   value="{{ mainFormInfo.displayTranTotAmt }}"/>
+            <b class="price-title">원</b>
+          </div>
+          <div class="row border">
+            <div class="padding-inner">
+              <span class="item-distance">예상 주행거리</span><span>{{ mainFormInfo.displayDistance }}</span>
+            </div>
+            <div class="padding-inner">
+              <span class="item-clock">예상 소요시간</span><span>{{ mainFormInfo.displayTime }}</span>
+            </div>
+          </div>
+          <div class="check-container">
+            <ng-container *ngFor="let term of termList; let i = index">
+              <div class="row">
+                <div>
+                  <input id="termCheck{{ i }}" type="checkbox" class="custom-check">
+                  <label for="termCheck{{ i }}" class="dx-checkbox-icon"></label>
+                  <span><span class="point">{{ term.requiredYn === 'Y' ? '(필수)' : '(선택)' }}</span> {{ term.termTitle }}</span>
+                </div>
+                <a class="underline" (click)="viewFullText(term)">전문보기</a>
+              </div>
+            </ng-container>
+          </div>
+          <div class="bottom-btn-group">
+            <dx-button type="signup-border"
+                       text="이전 단계로"
+                       (onClick)="onChangeStep(2)">
+            </dx-button>
+            <dx-button type="signup"
+                       text="결제 및 배차요청"
+                       (onClick)="onClickSave($event)">
+            </dx-button>
+          </div>
+
+          <div *ngIf="currentStep === 2" class="contents-bottom">
+            <div class="bottom-btn-group">
+              <dx-button type="signup"
+                         text="다음 단계로"
+                         (onClick)="onChangeStep(3)">
+              </dx-button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//기본 상하차 정보 패널-->
+
+
+      <!--side 정보 패널 -->
+      <div class="con2">
+        <div class="con2-list">
+
+          <div class="con2-content">
+            <b class="con2-title"><span class="con2-icon icon1"></span>운송 정보</b>
+            <div class="border-card">
+              <span class="card-title from">상차지</span>
+              <div *ngIf="startPointInfo.checkRegister">
+                <b>{{ startPointInfo.companyNm }}</b>
+                <span>{{ startPointInfo.address1 }}</span>
+                <span>{{ startPointInfo.address2 }}</span>
+                <span>{{ startPointInfo.refNm }}, {{ startPointInfo.refTellNo }}</span>
+                <hr/>
+                <span class="noti">{{ startPointInfo.remarks }}</span>
+              </div>
+            </div>
+            <ng-container *ngFor="let wayPointInfo of wayPointInfoList">
+              <div class="border-card" *ngIf="!wayPointInfo.customHide">
+                <span class="border-badge">하차</span>
+                <span class="card-title transit">경유지</span>
+                <div *ngIf="wayPointInfo.checkRegister">
+                  <b>{{ wayPointInfo.companyNm }}</b>
+                  <span>{{ wayPointInfo.address1 }}</span>
+                  <span>{{ wayPointInfo.address2 }}</span>
+                  <span>{{ wayPointInfo.refNm }}, {{ wayPointInfo.refTellNo }}</span>
+                  <hr/>
+                  <span class="noti">{{ wayPointInfo.remarks }}</span>
+                </div>
+              </div>
+            </ng-container>
+            <div class="border-card">
+              <span class="card-title to">하차지</span>
+              <div *ngIf="endPointInfo.checkRegister">
+                <b>{{ endPointInfo.companyNm }}</b>
+                <span>{{ endPointInfo.address1 }}</span>
+                <span>{{ endPointInfo.address2 }}</span>
+                <span>{{ endPointInfo.refNm }}, {{ endPointInfo.refTellNo }}</span>
+                <hr/>
+                <span class="noti">{{ endPointInfo.remarks }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="con2-content">
+            <b class="con2-title"><span class="con2-icon icon2"></span>물품 정보</b>
+            <div>
+              <table>
+                <tbody>
+                <tr>
+                  <th>물품명</th>
+                  <td>{{ mainFormInfo.tranItemCategoryNm || '' }}</td>
+                </tr>
+                <tr>
+                  <th>수량</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranItemPackTypeNm }}
+                    {{ mainFormInfo.tranItemPackCntComma }}개
+                  </td>
+                </tr>
+                <tr>
+                  <th>물품금액</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    ￦ {{ mainFormInfo.tranItemAmtComma }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>흔적여부</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranItemOptionNm }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>적재량</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranItemWeightComma }} KG
+                  </td>
+                </tr>
+                <tr>
+                  <th>규격(mm)</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranItemWidthComma }} x
+                    {{ mainFormInfo.tranItemLengthComma }} x
+                    {{ mainFormInfo.tranItemHeightComma }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>부피</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranItemCbmComma }} (m3)
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="con2-content">
+            <b class="con2-title"><span class="con2-icon icon3"></span>차량 정보</b>
+            <div>
+              <table>
+                <tbody>
+                <tr>
+                  <th>차량유형</th>
+                  <td>
+                    {{ mainFormInfo.tranCarTypeNm || '' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>왕복여부</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranIntervalTypeNm }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>적재량</th>
+                  <td *ngIf="mainFormInfo.checkRegister">
+                    {{ mainFormInfo.tranCarKindNm }}
+                  </td>
+                </tr>
+                <tr>
+                  <th>운송사</th>
+<!--                  <td>oo통운</td>-->
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//side 정보 패널 -->
+    </div>
+
+    <div class="right-content">
+      <div id="maps"></div>
+
+      <!--즐겨찾기-->
+      <div class="map-bookmark-wrap" [class.expanded]="isBookmakExpanded">
+        <div class="box top">
+          <div class="box-header">
+            <div *ngIf="weatherAddress">
+<!--              <b>서울 종로구 사직동 {{weatherAddress}}</b>-->
+              <b>{{weatherAddress}}</b>
+            </div>
+            <span>
+<!--              현위치로 수정-->
+              <dx-switch #switchLocation width="80" switchedOffText="현위치로 수정" switchedOnText="하차지로 수정"></dx-switch>
+              <dx-button icon="location" class="location-btn" (onClick)="setLocationMap(this.switchLocation.value)"></dx-button>
+            </span>
+          </div>
+          <!--
+              dx-icon-weather1: 청명
+              dx-icon-weather2: 맑음
+              dx-icon-weather3: 구름많음
+              dx-icon-weather4: 흐림
+          -->
+          <div class="box-contents">
+            <div *ngIf="weather" class="flex-between current-box">
+              <div class="weather-item">
+                <span class="weather-flex">
+<!--                    <i class="dx-icon-weather dx-icon-weather4">-->
+                  <i class="dx-icon-weather" [ngStyle]="{'background': 'url(https://openweathermap.org/img/wn/' + weather.weather[0].icon + '.png) no-repeat center center'}" ></i>
+                  <b> {{ weather.main.temp }}℃</b>
+                </span>
+                <span>{{weather.currentTime}}시 기준</span>
+<!--                <span>{{weather.dt}} 현재</span>-->
+                <span>|</span>
+                <span>{{weather.weather[0].description}}</span>
+              </div>
+<!--              <div>-->
+<!--                <span>{{weather.weather[0].description}}</span>-->
+<!--              </div>-->
+            </div>
+
+            <div *ngIf="weatherForecast" class="flex-between">
+              <div class="weather-item">
+                <span class="weather-flex">
+<!--                  <i class="dx-icon-weather dx-icon-weather3"></i>-->
+                  <i class="dx-icon-weather" [ngStyle]="{'background': 'url(https://openweathermap.org/img/wn/' + weatherForecast.list[0].weather[0].icon + '.png) no-repeat center center'}" ></i>
+                  <b> {{weatherForecast.list[0].main.temp}}℃</b>
+                </span>
+                <span>{{weatherForecast.list[0].currentTime}}시, {{weatherForecast.list[0].weather[0].description}}</span>
+              </div>
+              <div class="weather-item">
+                <span class="weather-flex">
+<!--                  <i class="dx-icon-weather dx-icon-weather3"></i>-->
+                  <i class="dx-icon-weather" [ngStyle]="{'background': 'url(https://openweathermap.org/img/wn/' + weatherForecast.list[2].weather[0].icon + '.png) no-repeat center center'}" ></i>
+                  <b> {{weatherForecast.list[2].main.temp}}℃</b>
+                </span>
+                <span>{{weatherForecast.list[2].currentTime}}시, {{weatherForecast.list[2].weather[0].description}}</span>
+              </div>
+              <div class="weather-item">
+                <span class="weather-flex">
+<!--                  <i class="dx-icon-weather dx-icon-weather3"></i>-->
+                  <i class="dx-icon-weather" [ngStyle]="{'background': 'url(https://openweathermap.org/img/wn/' + weatherForecast.list[4].weather[0].icon + '.png) no-repeat center center'}" ></i>
+                  <b> {{weatherForecast.list[4].main.temp}}℃</b>
+                </span>
+                <span>{{weatherForecast.list[4].currentTime}}시, {{weatherForecast.list[4].weather[0].description}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isBookmakExpanded" class="box bottom">
+          <!--최대 10개까지만 출력-->
+          <ng-container *ngFor="let data of tranOrdList; let i = index">
+            <div class="isSelected" (click)="onSearchDetail(data)">
+              <div class="bottom-item">
+                <span>
+                  <i class="dx-icon dx-icon-clock"></i>
+                </span>
+                <div class="lines">
+                  <span>{{ data.companyNmS }} →<span class="point"> +{{ data.pointCntW }}</span> 경유→ {{ data.companyNmE }}</span>
+                  <span><b>{{ data.tranItemPackTypeNm }}</b>· {{ data.tranItemOptionNm }} · {{ data.tranCarTypeNm }} {{ data.tranCarKindNm }}</span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <dx-button #bookmarkToggleBtn
+                   class="toggle-btn"
+                   text="최근요청내역"
+                   (onClick)="openTransportOrder()">
+        </dx-button>
+      </div>
+      <!-- // 즐겨찾기-->
+    </div>
+  </div>
+</div>
+
+<!--주소록 팝업-->
+<app-userbookmark #usbookmark (output)="getSimpleBookmark($event)"></app-userbookmark>
+
+<!--차량제원 팝업-->
+<app-transport #transport (output)="getTransport($event)"></app-transport>
+
+<!--카드등록 팝업-->
+<app-card #card (output)="getCards($event)"></app-card>
+
+<!--전문 팝업-->
+<app-fulltext #fulltext></app-fulltext>
+
+
+<dx-load-panel #loadPanel
+               shadingColor="rgba(0,0,0,0.4)"
+               indicatorSrc="./assets/images/sample.gif"
+               [position]="{ of: '.contents-bottom' }"
+               [showIndicator]="true"
+               [showPane]="true"
+               [shading]="true">
+</dx-load-panel>

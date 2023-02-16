@@ -1,0 +1,370 @@
+<!-- 관리자 > 운송현황 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{ utilService.convert1(pageInfo.path, '차량배차') }}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+
+  <span class="btngroup page-button-group">
+
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [(formData)]="mainFormData"
+               [minColWidth]="300"
+               [colCount]="3"
+      >
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+
+          <dxi-item dataField="tenant" [label]="{text: 'Tenant'}" [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }"></dxi-item>
+          <dxi-item dataField="companyId"
+                    editorType="dxSelectBox" [colSpan]="1"
+                    [label]="{text: utilService.convert1('tr.tranordallcate.companyNm', '운송사')}"
+                    [editorOptions]="{  items: dsCompanyList,
+                                      displayExpr: 'name',
+                                      valueExpr: 'uid',
+                                      searchMode:'contains',
+                                      searchEnabled: true,
+                                      openOnFieldClick: false,
+                                      minSearchLength: 0,
+                                      placeholder: '',
+                                      showClearButton: true,
+                                      noDataText: utilService.convert('com_txt_noDataText')
+                                   }"></dxi-item>
+          <dxi-item dataField="tranOrdKey"
+                    [label]="{text: utilService.convert1('tr.tranordallcate.tranordkey', '배차의뢰번호')}"
+          ></dxi-item>
+          <dxi-item dataField="sts"
+                    [editorOptions]="{readOnly: true, value: '결제완료'}"
+                    [label]="{text: utilService.convert1('tr.tranordallcate.sts', '배차상태')}"
+          ></dxi-item>
+
+        </dxi-item>
+      </dx-form>
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   [text]="utilService.convert('com_btn_reset')"
+                   class="reset-btn"
+                   (onClick)="onReset()"
+        ></dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   [text]="utilService.convert('com_btn_search')"
+                   class="search-btn"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()"
+        ></dx-button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <dx-form [labelMode]="'hidden'" [title]="'배차 리스트'" *ngFor="let data of mainData">
+      <dxi-item itemType="group" cssClass="card-item" [colCount]="12">
+        <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+          <dxi-item itemType="simple" [visible]="false" cssClass="no">{{ data.upData.uid }}</dxi-item>
+          <dxi-item itemType="group">
+              <div class="first-box">
+                <dx-button
+                text={{data.upData.tranOrdKey}} (onClick)="onAllocate(data)"
+                stylingMode="text" type="default"></dx-button>
+                <span itemType="simple" cssClass="date">{{ data.upData.tranDate }}</span>
+                <span itemType="simple" cssClass="time"><i class="dx-icon dx-icon-clock"></i>{{ data.upData.tranOrdTime }}</span>
+                <span class="dx-badge blue">{{ data.upData.sts }}</span>
+              </div>
+
+          </dxi-item>
+
+        </dxi-item>
+        <dxi-item itemType="group" cssClass="col-group col-middle" [colCount]="11" [colSpan]="11">
+          <dxi-item itemType="group" [colSpan]="6">
+            <div class="route-box">
+              <div class="from">
+                <div class="from-box">
+                  <b>상차지</b>
+                  <span class="truck">{{ data.upData.companyNm }}</span>
+                  <span class="addr">{{ data.upData.address1 }}</span>
+                  <span style="display:none" class="officer">{{ data.upData.refNm }}</span>
+                  <span style="display:none" class="phone">{{ data.upData.refTellNo }}</span>
+                </div>
+              </div>
+              <div class="way">
+                <div class="way-box">
+                  <b>경유지</b>
+                  <span>{{ data.viaNum }}곳</span>
+                  <span class="arr-right"><i class="dx-icon dx-icon-arrowright"></i></span>
+                </div>
+              </div>
+              <div class="to">
+                <div class="to-box">
+                  <b>하차지</b>
+                  <span class="truck">{{ data.downData.companyNm }}</span>
+                  <span class="addr">{{ data.downData.address1 }}</span>
+                  <span style="display:none" class="officer">{{ data.downData.refNm }}</span>
+                  <span style="display:none" class="phone">{{ data.downData.refTellNo }}</span>
+                </div>
+              </div>
+            </div>
+          </dxi-item>
+          <dxi-item itemType="group" [colSpan]="1">
+            <div class="route-box">
+              <div class="etc">
+                <div class="etc-box">
+                  <b>차량정보</b>
+                  <span class="simple">{{ data.downData.tranCarType }},
+                    {{ data.downData.tranCarKind }}</span>
+                  <span class="simple">{{ data.downData.tranCarCnt }}대</span>
+                  <span class="simple">{{ data.downData.tranItemOption }}, {{ data.downData.tranOrdCompany }}</span>
+                </div>
+              </div>
+            </div>
+          </dxi-item>
+          <dxi-item itemType="group" [colSpan]="1">
+            <div class="route-box">
+              <div class="etc">
+                <div class="etc-box">
+                  <b>운송정보</b>
+                  <span class="simple">{{ data.downData.tranIntervalType }}</span>
+                  <span class="simple">{{ data.downData.tranDistance }}</span>
+                </div>
+              </div>
+            </div>
+          </dxi-item>
+          <dxi-item itemType="group" [colSpan]="1">
+            <div class="item-box">
+              <div class="etc">
+                <div class="etc-box">
+                  <b>물품정보</b>
+                  <span>{{ data.downData.tranItemCategoryNm }}</span>
+                  <span>&#8361;{{ data.downData.tranItemAmt }}</span>
+                  <span>{{ data.downData.tranItemWeight }}kg</span>
+                </div>
+              </div>
+            </div>
+          </dxi-item>
+          <dxi-item itemType="group" [colSpan]="1">
+            <div class="item-box" style="border-right: 1px solid #e0e6ef;">
+              <div class="etc">
+                <div class="etc-box">
+                  <b>&nbsp;<!--운송정보--></b>
+                  <span style="padding-left: 0px;">{{ data.downData.tranItemWidth }}x{{ data.downData.tranItemLength }}
+                    x{{ data.downData.tranItemHeight }}</span>
+                  <span style="padding-left: 0px;">{{ data.downData.tranItemCbm }}(m<sup>3</sup>)</span>
+                </div>
+              </div>
+            </div>
+          </dxi-item>
+          <dxi-item itemType="group" [colSpan]="1">
+            <div class="route-box" style="border: 0">
+              <div class="etc">
+                <div class="etc-box">
+                  <b>결제방식</b>
+                  <span class="simple">{{ data.downData.tranSalesType }}</span>
+                  <!--bold 처리시 bold css class 추가-->
+                  <span class="currency bold">&#8361;{{ data.downData.tranTotAmt }}</span>
+                </div>
+              </div>
+            </div>
+          </dxi-item>
+        </dxi-item>
+      </dxi-item>
+    </dx-form>
+  </div>
+  <div class="form-paging-wrap">
+    <button *ngIf="isMoreItem" class="card-more-btn" (click)="addCardItem($event)">
+      <span class="dx-button-text">더보기</span>
+    </button>
+
+  </div>
+</div>
+
+<!-- 차량배차 팝업 -->
+<dx-popup #popup
+          [title]="popupMode"
+          [closeOnOutsideClick]="false"
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          [height]="'1000px'"
+          [width]="'1200px'"
+          [(visible)]="popupVisible"
+          (onShown)="popupShown($event)"
+>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.save', '저장'),
+                      type: 'success',
+                      onClick: popupSaveClick
+                    }">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton"
+                    location="after"
+                    toolbar="bottom"
+                    [options]="{
+                      text: utilService.convert1('com.btn.close', '닫기'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: popupCancelClick
+                    }">
+  </dxi-toolbar-item>
+  <div *dxTemplate="let templateData1 of 'content'">
+    <div>
+      <div class="pop-top">
+        <span class="num">{{ popupData.upData.tranOrdKey }}</span>
+      </div>
+      <div class="pop-flex-wrap">
+        <div class="d-track-wrap">
+          <dx-form #popupForm
+                   [(formData)]="popupFormData"
+                   scrollingEnabled="true"
+                   [showColonAfterLabel]="false"
+                   [labelMode]="'hidden'"
+                   height="800"
+                   class="non-horizenscroll">
+            <!-- left start -->
+            <dxi-item itemType="group" cssClass="d-track-list">
+              <!-- 상차지 -->
+              <div class="border-card active">
+                <div class="card-title">
+                  <span class="from">상차지</span>
+                  <span class="time">{{ popupData.upData.expectedDateTime }}</span>
+                </div>
+                <b>{{ popupData.upData.companyNm }}</b>
+                <span>{{ popupData.upData.addrFull }}</span>
+                <span>{{ popupData.upData.refNm }}, {{ popupData.upData.refTellNo }}</span>
+                <span class="noti"> {{ popupData.upData.remarks }}</span>
+              </div>
+              <ng-container *ngIf="popupData.viaData.length > 0">
+                <div class="border-card active">
+                  <div *ngFor="let data of popupData.viaData">
+                    <div class="card-title">
+                      <span class="transit">경유지</span>
+                      <span class="time">{{ data.expectedDateTime }}</span>
+                    </div>
+                    <b>{{ data.companyNm }}</b>
+                    <span>{{ data.addrFull }}</span>
+                    <span>{{ data.refNm }}, {{ data.refTellNo }}</span>
+                    <span class="noti"> {{ data.remarks }}</span>
+                  </div>
+
+                </div>
+              </ng-container>
+              <div class="border-card active">
+                <div class="card-title">
+                  <span class="to">하차지</span>
+                  <span class="time">{{ popupData.downData.expectedDateTime }}</span>
+                </div>
+                <b>{{ popupData.downData.companyNm }}</b>
+                <span>{{ popupData.downData.addrFull }}</span>
+                <span>{{ popupData.downData.refNm }}, {{ popupData.downData.refTellNo }}</span>
+                <span class="noti"> {{ popupData.downData.remarks }}</span>
+              </div>
+            </dxi-item>
+          </dx-form>
+        </div>
+        <!-- left end-->
+        <div class="map-info-list">
+          <div class="map-container" style="height: 250px;">
+            <!--TMAP 지도-->
+            <div id="map_div"></div>
+          </div>
+          <div class="info-box">
+            <!--차량,물품,결제 정보-->
+            <b class="info-title">차량정보</b>
+            <span>{{ popupData.downData['tranCarType'] }}, {{ popupData.downData['tranCarKind'] }},
+              {{ popupData.downData['tranItemOption'] }}, {{ popupData.downData['tranOrdCompany'] }},
+              {{ popupData.downData.tranCarCnt }}대
+            </span>
+          </div>
+          <div class="info-box">
+            <b class="info-title">물품정보</b>
+            <ul>
+              <li><span>{{ popupData.downData['tranItemCategoryNm'] }}</span></li>
+              <li><span>{{ popupData.downData['tranItemPackType'] }}</span></li>
+              <li><span>&#8361;{{ popupData.downData['tranItemAmt'] }}</span></li>
+            </ul>
+            <ul>
+              <li><span>{{ popupData.downData['tranItemWeight'] }}kg</span></li>
+              <li><span>{{ popupData.downData['tranItemWidth'] }}x{{ popupData.downData['tranItemLength'] }}
+                x{{ popupData.downData['tranItemHeight'] }}</span></li>
+              <li><span>{{ popupData.downData['tranItemCbm'] }} (m<sup>3</sup>)</span></li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <div class="info-half-box">
+              <b class="info-title">운임 가격</b>
+              <span class="price">&#8361;{{ popupData.downData['tranTotAmt'] }}</span>
+            </div>
+            <div class="info-half-box">
+              <b class="info-title">결제방식</b>
+              <span>{{ popupData.downData['tranSalesType'] }}</span>
+            </div>
+          </div>
+          <div class="info-box">
+              <span>
+                <b class="info-title">운송사</b>
+                <dx-select-box [labelMode]="'hidden'"
+                               [items]="dsCompanyList" (onValueChanged)="onValueChanged($event)"
+                               displayExpr="name" valueExpr="uid" placeholder=""
+                               searchEnabled="true" searchMode="contains"
+                               openOnFieldClick="false" showClearButton="true">
+                </dx-select-box>
+              </span>
+            <dx-data-grid #popupGrid
+                          [dataSource]="popupDataSource"
+                          [allowColumnResizing]="true"
+                          [allowColumnReordering]="true"
+                          [focusedRowEnabled]="true"
+                          [rowAlternationEnabled]="true"
+                          [columnAutoWidth]="true"
+                          [showRowLines]="true"
+                          [height]="200"
+                          sorting="{mode: none}"
+                          toolbar="{disabled: true, visible:false}"
+                          columnResizingMode=nextColumn
+            >
+              <dxo-editing mode="batch"
+                           [allowUpdating]="true"
+                           [(changes)]="changes"
+                           [selectTextOnEditStart]="true"
+                           [newRowPosition]="'last'"
+              ></dxo-editing>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-load-panel [enabled]="true"></dxo-load-panel>
+              <dxo-state-storing type="custom"
+                                 [enabled]="true"
+                                 [customLoad]="loadStatePopup"
+                                 [customSave]="saveStatePopup">
+              </dxo-state-storing>
+              <dxi-column dataField="uid" [showInColumnChooser]="false" [visible]="false" [allowEditing]="false"
+                          [allowSearch]="false"></dxi-column>
+              <dxi-column dataField="check" caption=" " dataType="boolean" value="false"></dxi-column>
+              <dxi-column dataField="name" alignment="center" [allowEditing]="false"
+                          [caption]="utilService.convert1('admin.tranordallocate.name', '차주')"></dxi-column>
+              <dxi-column dataField="phone" alignment="center" [allowEditing]="false"
+                          [caption]="utilService.convert1('admin.tranordallocate.hpNo', '연락처')"></dxi-column>
+              <dxi-column dataField="carNo" alignment="center" [allowEditing]="false"
+                          [caption]="utilService.convert1('admin.tranordallocate.carno', '차량번호')"></dxi-column>
+              <dxi-column dataField="carType" alignment="center" [allowEditing]="false"
+                          [caption]="utilService.convert1('admin.tranordallocate.trancartype', '차량유형')"></dxi-column>
+              <dxi-column dataField="carKind" alignment="center" [allowEditing]="false"
+                          [caption]="utilService.convert1('admin.tranordallocate.trancarkind', '차량종류')"></dxi-column>
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dx-popup>

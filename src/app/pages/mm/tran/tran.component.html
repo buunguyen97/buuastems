@@ -1,0 +1,295 @@
+<!-- 공통 > 운송요금관리 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '운송요금관리')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+  <span class="btngroup page-button-group">
+    <dx-button icon="save"
+               type="default"
+               [text]="utilService.convert1('com.btn.save', '저장')"
+               (onClick)="onClickSave($event)">
+    </dx-button>
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}">
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+          <dxi-item dataField="tenant"
+                    [visible]="false">
+          </dxi-item>
+
+          <dxi-item dataField="inquiryDate"
+                    editorType="dxDateBox"
+                    [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}"
+                    [label]="{text: utilService.convert1('mm.tran.inquiryDate', '조회일자')}">
+          </dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(this.mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div class="foldable-btn">
+      <dx-button #foldableBtn type="default"
+                 (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)">
+      </dx-button>
+    </div>
+  </div>
+
+  <dx-accordion #acrdn
+                [collapsible]="true"
+                [multiple]="true"
+                [animationDuration]="300"
+  >
+    <dxi-item [title]="utilService.convert1('mm.tran.mainGridTitle', '운송관리 리스트')">
+      <dx-data-grid #mainGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    [height]="200"
+                    (onFocusedCellChanged)="onFocusedCellChanged($event)"
+                    (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, onMainGridAddRow, onMainGridDeleteRow)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"
+                     [allowUpdating]="true"
+                     [newRowPosition]="'last'">
+        </dxo-editing>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing type="custom"
+                           [enabled]="true"
+                           [customLoad]="loadStateMain"
+                           [customSave]="saveStateMain">
+        </dxo-state-storing>
+
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="tenant" caption="tenant"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+
+        <dxi-column dataField="startDate" dataType="date"
+                    format="yyyy-MM-dd" alignment="center"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.startDate', '시작일자')"
+                    [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="endDate"
+                    dataType="date"
+                    format="yyyy-MM-dd" alignment="center"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.endDate', '종료일자')"
+                    [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="allocatedDelay"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.allocatedDelay', '배차지연시간')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="companyOrdDelay"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.companyOrdDelay', '오더지연시간')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="intervalDelay"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.intervalDelay', '왕복오더지연시간')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="serviceRate"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.serviceRate', '오더수수료율')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="calculateRate"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.calculateRate', '정산수수료율')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="benefitRate"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.benefitRate', '혜택수수료율')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column dataField="oilPrice"
+                    format="#,##0.####"
+                    cssClass="grid-cell-required"
+                    [caption]="utilService.convert1('mm.tran.oilPrice', '유류비')">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-column>
+
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+
+    <dxi-item [title]="utilService.convert1('mm.tranCharge.subGridTitle', '요금관리 리스트')">
+      <dx-data-grid #subGrid
+                    [allowColumnResizing]="true"
+                    [allowColumnReordering]="true"
+                    [columnAutoWidth]="true"
+                    [focusedRowEnabled]="true"
+                    [rowAlternationEnabled]="true"
+                    [showRowLines]="true"
+                    (onFocusedCellChanged)="onFocusedCellChangedSubGrid($event)"
+                    (onExporting)="gridUtil.onPageExportXlsx($event)"
+                    columnResizingMode=nextColumn
+      >
+        <dxo-editing mode="batch"
+                     [selectTextOnEditStart]="true"
+                     [allowUpdating]="true">
+        </dxo-editing>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"
+                          [width]="240"
+                          [placeholder]="''">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+        <dxo-pager [visible]="true"
+                   [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                   [displayMode]="'full'"
+                   [showPageSizeSelector]="true"
+                   [showInfo]="true"
+                   [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-state-storing [enabled]="true"
+                           type="custom"
+                           [customLoad]="loadStateSub"
+                           [customSave]="saveStateSub">
+        </dxo-state-storing>
+
+        <!-- Columns -->
+        <dxi-column dataField="uid" caption="UID"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false"
+                    [allowEditing]="false">
+        </dxi-column>
+        <dxi-column dataField="codecategoryId"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false">
+        </dxi-column>
+        <dxi-column dataField="codecategoryNm"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('mm.tranCharge.codecategoryNm', '관리유형')">
+        </dxi-column>
+        <dxi-column dataField="codeId"
+                    [visible]="false"
+                    [allowSearch]="false"
+                    [showInColumnChooser]="false">
+        </dxi-column>
+        <dxi-column dataField="codeNm"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('mm.tranCharge.codeNm', '관리항목')">
+        </dxi-column>
+        <dxi-column dataField="standardAmt"
+                    format="#,##0.####"
+                    [caption]="utilService.convert1('mm.tranCharge.standardAmt', '기준운임료')"></dxi-column>
+        <dxi-column dataField="standardMinute"
+                    format="#,##0.####"
+                    [caption]="utilService.convert1('mm.tranCharge.standardMinute', '기준시간(분)')"></dxi-column>
+        <dxi-column dataField="unitAmt"
+                    format="#,##0.####"
+                    [caption]="utilService.convert1('mm.tranCharge.unitAmt', '단위운임료')"></dxi-column>
+        <dxi-column dataField="mileageAvg"
+                    format="#,##0.####"
+                    [caption]="utilService.convert1('mm.tranCharge.mileageAvg', '기준연비')"></dxi-column>
+
+        <dxi-column dataField="createdUserName" alignment="center"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.createdBy', '작성자')">
+        </dxi-column>
+        <dxi-column dataField="createdDatetime"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.createdDatetime', '작성일시')">
+        </dxi-column>
+        <dxi-column dataField="modifiedUserName" alignment="center"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.modifiedBy', '수정자')">
+        </dxi-column>
+        <dxi-column dataField="modifiedDatetime"
+                    [allowEditing]="false"
+                    [caption]="utilService.convert1('com.text.modifiedDatetime', '수정일시')">
+        </dxi-column>
+      </dx-data-grid>
+    </dxi-item>
+  </dx-accordion>
+</div>
+

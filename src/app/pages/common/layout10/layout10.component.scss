@@ -1,0 +1,70 @@
+
+/*일자별 운송건수*/
+::ng-deep #chart1 {
+    height: 320px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }
+  
+  /*일자별 운송비*/
+  ::ng-deep #chart2 {
+    height: 200px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }
+  
+  /*일자별 탄소배출량*/
+  ::ng-deep #chart3 {
+    height: 200px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }
+  
+  /*일자별 운송건수*/
+  ::ng-deep #chart4 {
+    height: 130px;
+    width: 250px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }
+  /*지역별 운송건수*/
+  ::ng-deep #chart5 {
+    height: 130px;
+    width: 250px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }
+  /*차량제원별 운송건수*/
+  ::ng-deep #chart6 {
+    height: 130px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }
+  
+  /*기타 운송건수*/
+  ::ng-deep #chart7 {
+    height: 130px;
+    width:100%;
+    max-width: 100%;
+    svg{
+      width: 100%;
+    }
+  }

@@ -1,0 +1,73 @@
+<header>
+  <dx-toolbar class="header-toolbar layout-header">
+    <!--sidemenu toggle -->
+    <dxi-item
+      location="before"
+      widget="dxButton"
+      cssClass="toggle-button"
+      [options]="toggleMenuButtonOptions">
+    </dxi-item>
+    <!--// sidemenu toggle -->
+
+    <dxi-item location="before"
+              cssClass="top-gnb">
+      <dx-tabs [dataSource]="tabs"
+               [selectedIndex]="selectedIndex"
+               noDataText=""
+               (onItemClick)="onSelectTab($event)"
+      ></dx-tabs>
+    </dxi-item>
+
+    <!--user-->
+    <dxi-item
+      cssClass="top-user"
+      location="after"
+      locateInMenu="auto"
+      menuItemTemplate="menuItem">
+      <div *dxTemplate="let data of 'item'">
+        <dx-button
+          class="user-button authorization"
+          width=""
+          height="100%"
+          stylingMode="text">
+          <div *dxTemplate="let data of 'content'">
+            <app-user-panel [user]="user" [menuItems]="userMenuItems" menuMode="context"></app-user-panel>
+          </div>
+        </dx-button>
+      </div>
+    </dxi-item>
+    <div *dxTemplate="let data of 'menuItem'">
+      <app-user-panel [user]="user" [menuItems]="userMenuItems" menuMode="list"></app-user-panel>
+    </div>
+    <!--// user-->
+
+    <!-- notification 
+    cssClass = active 클래스 토글로 관리
+    -->
+    <dxi-item location="after" cssClass="menu-button top-utilitymenu ut-alarm active">
+      <dx-drop-down-button icon="alarm"
+                           displayExpr="name"
+                           [dropDownOptions]="{ width: 180 }">
+        <div *dxTemplate="let data of 'content'" class="personal-alarm">
+          <dx-form [showColonAfterLabel]="false">
+            <!-- <dxi-item *ngFor="let notiData of notiDataList">{{ notiData.title }} {{ notiData.body }}</dxi-item> -->
+            <dxi-item class="alarm-line">차주앱 필수 업데이트 차주앱 필수</dxi-item>
+            <dxi-item class="alarm-line">화주/차주 기능 필수 업데이트 업데이트</dxi-item>
+            <dxi-item class="alarm-line">새로 바뀐 지정.... </dxi-item>
+          </dx-form>
+          <dx-button class="alram-link">뉴스 더보기</dx-button>
+        </div>
+      </dx-drop-down-button>
+    </dxi-item>
+    <!-- // notification -->
+
+    <!--sign out-->
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      cssClass="logout-button"
+      [options]="logoutButtonOptions">
+    </dxi-item>
+    <!--/sign out-->
+  </dx-toolbar>
+</header>

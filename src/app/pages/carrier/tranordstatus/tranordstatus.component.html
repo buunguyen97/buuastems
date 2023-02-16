@@ -1,0 +1,161 @@
+<!-- 관리자 > 운송현황 -->
+<div class="contents-header">
+  <dx-button #bookmarkBtn
+             class="bookmark-btn"
+             [icon]="'star'"
+             (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)">
+  </dx-button>
+  <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '운송현황')}}</h2>
+  <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
+
+  <dx-toolbar>
+    <dxi-item widget="dxSelectBox" location="after">
+      <dx-select-box #company
+                     placeholder=""
+                     displayExpr="display"
+                     width="140">
+      </dx-select-box>
+    </dxi-item>
+    <dxi-item widget="dxSelectBox" location="after">
+      <dx-select-box #company
+                     placeholder=""
+                     displayExpr="display"
+                     width="240">
+      </dx-select-box>
+    </dxi-item>
+  </dx-toolbar>
+
+  <span class="btngroup page-button-group">
+    <dx-button icon="print" type="point" (onClick)="onSearch()"></dx-button>
+  </span>
+</div>
+
+<div class="contents-body">
+  <div class="search_foldable">
+    <div class="search-box">
+      <dx-form #mainForm
+               class="search-form-box"
+               [showColonAfterLabel]="false"
+               [minColWidth]="300"
+               [colCountByScreen]="{lg:3, md:3, sm:2, xs:1}">
+        <dxi-item itemType="group" [colCount]="3" [colSpan]="3">
+
+          <dxi-item dataField="tenant" [label]="{text: 'Tenant'}"
+                    [visible]="false"
+                    [editorOptions]="{ value: G_TENANT }">
+          </dxi-item>
+
+          <dxi-item itemType="group" cssClass="fromtocalendar"
+                    [colCount]="2"
+                    [label]="{text: utilService.convert1('tr.tranord.tranDate', '운송일자')}">
+            <dxi-item dataField="fromTranDate"
+                      cssClass="fromcalendar"
+                      editorType="dxDateBox"
+                      [label]="{visible: false}"
+                      [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+            </dxi-item>
+            <dxi-item dataField="toTranDate"
+                      cssClass="tocalendar"
+                      editorType="dxDateBox"
+                      [label]="{text: '~'}"
+                      [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
+            </dxi-item>
+          </dxi-item>
+          <dxi-item dataField="userId" [label]="{text: utilService.convert1('tr.tranord.userName', '사용자명')}"></dxi-item>
+          <dxi-item dataField="sts" editorType="dxSelectBox"
+                    [label]="{text: utilService.convert1('tr.tranord.sts', '배차상태')}"
+                    [editorOptions]="{
+                      displayExpr: 'display',
+                      valueExpr: 'uid',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      minSearchLength: 0,
+                      placeholder: ''
+                    }">
+          </dxi-item>
+
+          <dxi-item dataField="tranOrdKey" [label]="{text: utilService.convert1('tr.tranord.tranOrdKey', '배차오더번호')}"></dxi-item>
+        </dxi-item>
+      </dx-form>
+
+      <div class="search-btn-group">
+        <dx-button icon="refresh"
+                   type="form"
+                   class="reset-btn"
+                   [text]="utilService.convert1('com.btn.reset', '초기화')"
+                   [focusStateEnabled]="false"
+                   (onClick)="utilService.onReset(this.mainForm)">
+        </dx-button>
+        <dx-button icon="search"
+                   type="form"
+                   class="search-btn"
+                   [text]="utilService.convert1('com.btn.search', '조회')"
+                   [focusStateEnabled]="false"
+                   (onClick)="onSearch()">
+        </dx-button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <dx-form [labelMode]="'hidden'" *ngFor="let tranOrd of tranOrdList">
+      <dxi-item itemType="group" cssClass="card-item" [colCount]="8">
+
+        <dxi-item itemType="group" cssClass="col-group col-group-first" [colSpan]="1">
+          <dxi-item dataField="tranOrdKey" cssClass="no">
+            <label (click)="onClickTranOrdKey(tranOrd);">{{ tranOrd.tranOrdKey }}</label>
+          </dxi-item>
+          <dxi-item dataField="tranDate" cssClass="date">{{ tranOrd.tranDate }}</dxi-item>
+          <dxi-item dataField="e" cssClass="time"><i class="dx-icon dx-icon-clock"></i>8:30 출발</dxi-item>
+          <dxi-item>
+            <span class="dx-badge blue">운송중</span>
+          </dxi-item>
+        </dxi-item>
+
+        <dxi-item itemType="group" caption="신청일 2022.05.10" cssClass="col-group" [colCount]="2" [colSpan]="4">
+          <dxi-item itemType="group" [colSpan]="1">
+            <dxi-item dataField="s"><i class="dx-icon dx-icon-tel"></i><b>상차지 연락처</b> 031-468-7895</dxi-item>
+            <dxi-item dataField="d"><i class="dx-icon dx-icon-delivery"></i>{{ tranOrd.address1S }}</dxi-item>
+            <dxi-item dataField="f"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> {{ tranOrd.refNmS }}, {{ tranOrd.refTellNoS }}</dxi-item>
+            <dxi-item dataField="g"><i class="dx-icon dx-icon-money"></i>220,000원 (실시간계좌)</dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" [colSpan]="1">
+            <dxi-item dataField="x"><i class="dx-icon dx-icon-tel"></i><b>하차지</b> 연락처 031-489-8511</dxi-item>
+            <dxi-item dataField="c"><i class="dx-icon dx-icon-delivery"></i>{{ tranOrd.address1E }}</dxi-item>
+            <dxi-item dataField="v"><i class="dx-icon dx-icon-officer"></i><b>담당자</b> {{ tranOrd.refNmE }}, {{ tranOrd.refTellNoE }}</dxi-item>
+          </dxi-item>
+        </dxi-item>
+
+        <dxi-item itemType="group" cssClass="col-group col-group-last" [colCount]="4" [colSpan]="3">
+          <dxi-item itemType="group" [colSpan]="4">
+            <dx-linear-gauge id="guage" [value]="20" [subvalues]="[0, 10, 20]">
+              <dxo-subvalue-indicator type="circle" color="#3366ff"></dxo-subvalue-indicator>
+              <dxo-scale [startValue]="0" [endValue]="40" [customTicks]="[0, 10, 20, 40]" [minorTickInterval]="2"></dxo-scale>
+            </dx-linear-gauge>
+          </dxi-item>
+          <dxi-item itemType="group" [colCount]="4" [colSpan]="4" cssClass="guage-sub-box">
+            <dxi-item itemType="group" [colSpan]="2"><span class="guage-sub-first">2톤 카고/윙</span></dxi-item>
+            <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-second">경기도 이천시</span></dxi-item>
+            <dxi-item itemType="group" [colSpan]="1"><span class="guage-sub-last">경기도 평택시</span></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" [colCount]="4" [colSpan]="4" >
+            <div class="guage-sub-text">
+              (탄소배출량 : 15.7만톤 CO2eq)
+            </div>
+          </dxi-item>
+        </dxi-item>
+      </dxi-item>
+    </dx-form>
+  </div>
+</div>
+
+<dx-load-panel #loadPanel
+               shadingColor="rgba(0,0,0,0.4)"
+               indicatorSrc="./assets/images/sample.gif"
+               [position]="{ of: '.content' }"
+               [showIndicator]="true"
+               [showPane]="true"
+               [shading]="true">
+</dx-load-panel>
+
