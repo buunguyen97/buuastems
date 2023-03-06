@@ -1,20 +1,23 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {DxFormComponent} from 'devextreme-angular/ui/form';
-import {DxAccordionComponent, DxButtonComponent, DxDataGridComponent} from 'devextreme-angular';
-import DataSource from 'devextreme/data/data_source';
-import ArrayStore from 'devextreme/data/array_store';
-import {CommonUtilService} from '../../../shared/services/common-util.service';
-import {CommonCodeService} from '../../../shared/services/common-code.service';
-import {RcvAcceptVO, AstemsService, RcvTagDetailVO} from './astems.service';
-import {RcvExpectedVO} from '../../common/rcvexpected/rcvexpected.service';
-import {GridUtilService} from '../../../shared/services/grid-util.service';
+import {DxAccordionComponent, DxButtonComponent, DxDataGridComponent} from "devextreme-angular";
+import {DxFormComponent} from "devextreme-angular/ui/form";
+import {RcvExpectedVO} from "../../common/rcvexpected/rcvexpected.service";
+import DataSource from "devextreme/data/data_source";
+import ArrayStore from "devextreme/data/array_store";
+import {CommonUtilService} from "../../../shared/services/common-util.service";
+import {AstemsService, RcvAcceptVO, RcvTagDetailVO} from "../astems/astems.service";
+import {CommonCodeService} from "../../../shared/services/common-code.service";
+import {GridUtilService} from "../../../shared/services/grid-util.service";
 
 @Component({
-    selector: 'app-astems',
-    templateUrl: './astems.component.html',
-    styleUrls: ['./astems.component.scss']
+    selector: 'app-buuastems3',
+    templateUrl: './buuastems3.component.html',
+    styleUrls: ['./buuastems3.component.scss']
 })
-export class AstemsComponent implements OnInit, AfterViewInit {
+
+export class Buuastems3Component implements OnInit, AfterViewInit {
+    textColor = 'red';
+    bgColor = 'yellow';
     @ViewChild('bookmarkBtn', {static: false}) bookmarkBtn: DxButtonComponent;
     @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
     @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
@@ -120,7 +123,7 @@ export class AstemsComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
 
-        this.initMap();
+
         this.bookmarkBtn.instance.option('icon', 'star');
         this.utilService.getFoldable(this.mainForm, this.foldableBtn);
         this.utilService.fnAccordionExpandAll(this.acrdn);  // 아코디언 모두 펼치기
@@ -250,19 +253,5 @@ export class AstemsComponent implements OnInit, AfterViewInit {
         this.mainForm.instance.focus();
     }
 
-    initMap(): void {
-        // @ts-ignore
-        this.map = new Tmapv2.Map('maps', {
-            // @ts-ignore
-            center: new Tmapv2.LatLng(37.14662571373519, 127.5939137276295),
-            width: '100%',
-            height: '1000px',
-            zoom: 14,
-            zoomControl: true,
-            scrollwheel: true
-        });
-    }
-
 
 }
-

@@ -20,6 +20,10 @@
   font-weight: 500;
 }
 
+::ng-deep .container {
+  max-width: 100%;
+}
+
 
 ::ng-deep .jflab_contents {
   padding: 3px 3px 3px 3px;

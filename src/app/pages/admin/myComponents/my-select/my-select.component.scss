@@ -1,0 +1,27 @@
+
+.text-input {
+  align-items: center;
+  display: flex;
+  color: #0d0c22;
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: 120px;
+  padding: 2px 5px;
+  min-height: 35px;
+  border-radius: 3px;
+}
+
+.form-select {
+  color: #6e6d7a;
+  border-radius: 3px !important;
+  min-height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  max-width: 295px;
+}
+
+select.form-select option {
+  color: #0d0c22;
+  font-size: 12px;
+  font-weight: 500;
+}

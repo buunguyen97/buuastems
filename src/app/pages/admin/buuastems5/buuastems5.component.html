@@ -66,7 +66,9 @@
                   [multiple]="false"
     >
         <dxi-item [title]="utilService.convert1('mm.code.mainGridTitle', '공통코드 리스트')">
+            <span *ngIf="themText === 'Y'" class="them"></span>
             <dx-data-grid #mainGrid
+                          (onCellClick)="handleCellClick($event)"
                           (onExporting)="gridUtil.onPageExportXlsx($event)"
                           (onRowDblClick)="onRowDblClick($event)"
                           (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
@@ -100,12 +102,10 @@
                                    type="custom">
                 </dxo-state-storing>
 
-                <dxi-column [allowEditing]="false" [allowSearch]="false"
-                            [showInColumnChooser]="false"
-                            [visible]="false"
-                            caption="UID"
-                            dataField="uid">
-                </dxi-column>
+                <dxo-selection
+                        caption="UID"
+                        dataField="uid">
+                </dxo-selection>
                 <dxi-column [allowEditing]="false" [allowSearch]="false"
                             [showInColumnChooser]="false"
                             [visible]="false"
@@ -113,26 +113,84 @@
                             dataField="tenant">
                 </dxi-column>
 
-                <dxi-column [caption]="utilService.convert1('mm.code.codeCategory', 'ID')"
-                            dataField="codeCategory"></dxi-column>
-                <dxi-column [caption]="utilService.convert1('mm.code.name', '공통코드명')" dataField="name"></dxi-column>
-                <dxi-column [caption]="utilService.convert1('mm.code.remarks', '비고')" dataField="remarks"></dxi-column>
+                <!--                <dxi-column [caption]="utilService.convert1('mm.code.codeCategory', 'ID')"-->
+                <!--                            dataField="codeCategory"></dxi-column>-->
+                <!--                <dxi-column [caption]="utilService.convert1('mm.code.name', '공통코드명')" dataField="name"></dxi-column>-->
+                <!--                <dxi-column [caption]="utilService.convert1('mm.code.remarks', '비고')" dataField="remarks"></dxi-column>-->
 
-                <dxi-column [caption]="utilService.convert('com.text.createdBy')" alignment="center"
-                            dataField="createdBy">
-                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
-                </dxi-column>
-                <dxi-column [caption]="utilService.convert('com.text.createdDatetime')"
-                            dataField="createdDatetime">
-                </dxi-column>
-                <dxi-column [caption]="utilService.convert('com.text.modifiedBy')" alignment="center"
-                            dataField="modifiedBy">
-                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
-                </dxi-column>
-                <dxi-column [caption]="utilService.convert('com.text.modifiedDatetime')"
-                            dataField="modifiedDatetime">
-                </dxi-column>
+                <!--                <dxi-column [caption]="utilService.convert('com.text.createdBy')" alignment="center"-->
+                <!--                            dataField="createdBy">-->
+                <!--                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>-->
+                <!--                </dxi-column>-->
+                <!--                <dxi-column [caption]="utilService.convert('com.text.createdDatetime')"-->
+                <!--                            dataField="createdDatetime">-->
+                <!--                </dxi-column>-->
+                <!--                <dxi-column [caption]="utilService.convert('com.text.modifiedBy')" alignment="center"-->
+                <!--                            dataField="modifiedBy">-->
+                <!--                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>-->
+                <!--                </dxi-column>-->
+                <!--                <dxi-column [caption]="utilService.convert('com.text.modifiedDatetime')"-->
+                <!--                            dataField="modifiedDatetime">-->
+                <!--                </dxi-column>-->
+                <dxi-column cssClass="pointer-column" type="checkbox"></dxi-column>
+                <dxi-column dataField="content"></dxi-column>
+                <dxi-column dataField="user"></dxi-column>
+                <dxi-column alignment="center" dataField="title"></dxi-column>
+                <dxi-column dataField="date-insert"></dxi-column>
+                <dxi-column alignment="center" dataField="author"></dxi-column>
+                <dxi-column dataField="date-update"></dxi-column>
+
+
+                <dxo-summary [calculateCustomSummary]="calculateAreaSummary">
+                    <dxi-total-item
+                            name="сustomSummary1"
+                            showInColumn="SaleAmount"
+                            summaryType="custom"
+                            valueFormat="currency"
+                    >
+                    </dxi-total-item>
+                    <dxi-total-item
+                            showInColumn="content"
+                            summaryType="custom"
+                            valueFormat="currency">
+
+
+                    </dxi-total-item>
+                    <dxi-total-item
+                            showInColumn="user"
+                            summaryType="custom"
+                            valueFormat="currency">
+
+                    </dxi-total-item>
+                    <dxi-total-item
+                            showInColumn="title"
+                            summaryType="custom"
+                            valueFormat="currency">
+
+                    </dxi-total-item>
+                    <dxi-total-item
+                            showInColumn="date-insert"
+                            summaryType="custom"
+                            valueFormat="currency">
+
+                    </dxi-total-item>
+                    <dxi-total-item
+                            showInColumn="author"
+                            summaryType="custom"
+                            valueFormat="currency">
+
+                    </dxi-total-item>
+                    <dxi-total-item
+                            showInColumn="date-update"
+                            summaryType="custom"
+                            valueFormat="currency">
+
+                    </dxi-total-item>
+                </dxo-summary>
+
             </dx-data-grid>
+
+
         </dxi-item>
     </dx-accordion>
 </div>

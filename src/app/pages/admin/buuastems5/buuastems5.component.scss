@@ -1,0 +1,24 @@
+.them {
+  position: absolute;
+  top: 20px;
+  left: 500px;
+  background: url(/assets/images/flag.png);
+  border-radius: 10px;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  background-size: 50px;
+  background-repeat: no-repeat;
+}
+
+::ng-deep .pointer-column {
+  background: url(/assets/images/flag.png) !important;
+
+}
+
+::ng-deep #gridContainer {
+  height: 100px !important;
+  width: 100% !important;
+  background-color: red !important;;
+
+}

@@ -1,27 +1,31 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {DxFormComponent} from 'devextreme-angular/ui/form';
-import {DxAccordionComponent, DxButtonComponent, DxDataGridComponent} from 'devextreme-angular';
-import DataSource from 'devextreme/data/data_source';
-import ArrayStore from 'devextreme/data/array_store';
-import {CommonUtilService} from '../../../shared/services/common-util.service';
-import {CommonCodeService} from '../../../shared/services/common-code.service';
-import {RcvAcceptVO, AstemsService, RcvTagDetailVO} from './astems.service';
-import {RcvExpectedVO} from '../../common/rcvexpected/rcvexpected.service';
-import {GridUtilService} from '../../../shared/services/grid-util.service';
+import {DxAccordionComponent, DxButtonComponent, DxDataGridComponent} from "devextreme-angular";
+import {DxFormComponent} from "devextreme-angular/ui/form";
+import {RcvExpectedVO} from "../../common/rcvexpected/rcvexpected.service";
+import DataSource from "devextreme/data/data_source";
+import ArrayStore from "devextreme/data/array_store";
+import {CommonUtilService} from "../../../shared/services/common-util.service";
+import {AstemsService, RcvAcceptVO, RcvTagDetailVO} from "../astems/astems.service";
+import {CommonCodeService} from "../../../shared/services/common-code.service";
+import {GridUtilService} from "../../../shared/services/grid-util.service";
 
 @Component({
-    selector: 'app-astems',
-    templateUrl: './astems.component.html',
-    styleUrls: ['./astems.component.scss']
+    selector: 'app-buuastems4',
+    templateUrl: './buuastems4.component.html',
+    styleUrls: ['./buuastems4.component.scss']
 })
-export class AstemsComponent implements OnInit, AfterViewInit {
+
+export class Buuastems4Component implements OnInit, AfterViewInit {
+    textColor = 'red';
+    bgColor = 'yellow';
+    cities = [{name: 'New York', code: 'NY'}, {name: 'Los Angeles', code: 'LA'}];
+
     @ViewChild('bookmarkBtn', {static: false}) bookmarkBtn: DxButtonComponent;
     @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
     @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
     @ViewChild('subGrid', {static: false}) subGrid: DxDataGridComponent;
     @ViewChild('foldableBtn', {static: false}) foldableBtn: DxButtonComponent;
     @ViewChild('acrdn', {static: false}) acrdn: DxAccordionComponent;
-
 
     // Global
     G_TENANT: any;
@@ -55,6 +59,7 @@ export class AstemsComponent implements OnInit, AfterViewInit {
     loadStateSub = this.gridUtil.fnGridLoadState(this.GRID_STATE_KEY + '_sub');
     saveStateSub = this.gridUtil.fnGridSaveState(this.GRID_STATE_KEY + '_sub');
     map;
+    test: string;
 
     constructor(
         public utilService: CommonUtilService,
@@ -120,7 +125,7 @@ export class AstemsComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
 
-        this.initMap();
+
         this.bookmarkBtn.instance.option('icon', 'star');
         this.utilService.getFoldable(this.mainForm, this.foldableBtn);
         this.utilService.fnAccordionExpandAll(this.acrdn);  // 아코디언 모두 펼치기
@@ -146,9 +151,11 @@ export class AstemsComponent implements OnInit, AfterViewInit {
     async onSearch(): Promise<void> {
         const data = this.mainForm.instance.validate();
 
+        console.log(this.mainForm.formData.test);
         if (data.isValid) {
             // const result = await this.service.get(this.mainFormData);
             const result = await this.service.get(this.mainFormData);
+
             if (!result.success) {
                 this.utilService.notify_error(result.msg);
                 return;
@@ -235,6 +242,7 @@ export class AstemsComponent implements OnInit, AfterViewInit {
     async onReset(): Promise<void> {
         await this.mainForm.instance.resetValues();
         await this.initForm();
+        this.mainForm.formData = {};
     }
 
     initForm(): void {
@@ -250,19 +258,5 @@ export class AstemsComponent implements OnInit, AfterViewInit {
         this.mainForm.instance.focus();
     }
 
-    initMap(): void {
-        // @ts-ignore
-        this.map = new Tmapv2.Map('maps', {
-            // @ts-ignore
-            center: new Tmapv2.LatLng(37.14662571373519, 127.5939137276295),
-            width: '100%',
-            height: '1000px',
-            zoom: 14,
-            zoomControl: true,
-            scrollwheel: true
-        });
-    }
-
 
 }
-
