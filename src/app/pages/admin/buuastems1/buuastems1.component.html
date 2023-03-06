@@ -1,0 +1,445 @@
+<!-- 공통 >  선불카드관리 -->
+<div class="contents-header">
+    <dx-button #bookmarkBtn
+               (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+               [icon]="'star'"
+               class="bookmark-btn">
+    </dx-button>
+    <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '선불카드관리')}}</h2>
+
+</div>
+
+<div class="contents-body">
+    <div class="search_foldable">
+        <div class="search-box">
+            <dx-form #mainForm
+                     [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}"
+                     [minColWidth]="300"
+                     [showColonAfterLabel]="false"
+                     class="search-form-box"
+            >
+                <dxi-item [colCount]="3" [colSpan]="3" itemType="group">
+                    <dxi-item [visible]="false"
+                              dataField="tenant">
+                    </dxi-item>
+                    <dxi-item [label]="{text: utilService.convert1('mm.precard.userId', '사용자ID')}"
+                              dataField="usr"></dxi-item>
+                    <dxi-item [label]="{text: utilService.convert1('mm.precard.userNm', '사용자')}"
+                              dataField="name"></dxi-item>
+                    <dxi-item [editorOptions]="{
+                      items: dsUserType,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      showClearButton: true,
+                      minSearchLength: 0,
+                      placeholder: '',
+                      noDataText: utilService.convert('com.txt.noDataText')
+                   }"
+                              [label]="{text: utilService.convert1('mm.precard.userType', '사용자유형')}"
+                              dataField="userType"
+                              editorType="dxSelectBox">
+                    </dxi-item>
+
+                    <dxi-item [label]="{text: utilService.convert1('mm.precard.preCardNo', '선불카드번호')}"
+                              dataField="preCardNo"></dxi-item>
+                </dxi-item>
+            </dx-form>
+
+            <div class="search-btn-group">
+                <dx-button (onClick)="utilService.onReset(this.mainForm)"
+                           [focusStateEnabled]="false"
+                           [text]="utilService.convert1('com.btn.reset', '초기화')"
+                           class="reset-btn"
+                           icon="refresh"
+                           type="form">
+                </dx-button>
+                <dx-button (onClick)="onSearch()"
+                           [focusStateEnabled]="false"
+                           [text]="utilService.convert1('com.btn.search', '조회')"
+                           class="search-btn"
+                           icon="search"
+                           type="form">
+                </dx-button>
+            </div>
+        </div>
+
+        <div class="foldable-btn">
+            <dx-button #foldableBtn (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"
+                       type="default">
+            </dx-button>
+        </div>
+    </div>
+    <div class="left">
+        <dx-accordion [animationDuration]="300"
+                      [collapsible]="true"
+                      [multiple]="false"
+        >
+            <dxi-item [title]="utilService.convert1('mm.precard.mainGridTitle', '선불카드 리스트')">
+                <dx-data-grid #mainGrid
+                              (onExporting)="gridUtil.onPageExportXlsx($event, this.creatFileName(utilService.convert1('mm.precard.mainGridTitle', '선불카드관리')))"
+                              (onRowDblClick)="onRowDblClick($event)"
+                              [allowColumnReordering]="true"
+                              [allowColumnResizing]="true"
+                              [columnAutoWidth]="true"
+                              [focusedRowEnabled]="true"
+                              [rowAlternationEnabled]="true"
+                              [showRowLines]="true"
+                              columnResizingMode=nextColumn
+                >
+                    <dxo-editing mode="batch"></dxo-editing>
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                    <dxo-search-panel [placeholder]="''"
+                                      [visible]="true"
+                                      [width]="200">
+                    </dxo-search-panel>
+                    <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+                    <dxo-pager [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                               [displayMode]="'full'"
+                               [showInfo]="true"
+                               [showNavigationButtons]="true"
+                               [showPageSizeSelector]="true"
+                               [visible]="true">
+                    </dxo-pager>
+                    <dxo-state-storing [customLoad]="loadStateMain"
+                                       [customSave]="saveStateMain"
+                                       [enabled]="true"
+                                       type="custom">
+                    </dxo-state-storing>
+
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="UID"
+                                dataField="uid">
+                    </dxi-column>
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="tenant"
+                                dataField="tenant">
+                    </dxi-column>
+
+                    <dxi-column [caption]="utilService.convert1('mm.precard.userId', '사용자ID')"
+                                dataField="usr"></dxi-column>
+                    <dxi-column [caption]="utilService.convert1('mm.precard.userNm', '사용자')"
+                                dataField="name"></dxi-column>
+                    <dxi-column [caption]="utilService.convert1('mm.precard.userType', '유형')" alignment="center"
+                                dataField="userType">
+                        <dxo-lookup [dataSource]=dsUserType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column [caption]="utilService.convert1('mm.precard.preCardNo', '선불카드번호')" alignment="center"
+                                dataField="preCardNo">
+                    </dxi-column>
+
+                    <dxi-column [caption]="utilService.convert1('mm.precard.preCardColName', '선불카드')">
+                        <dxi-column [caption]="utilService.convert1('mm.precard.chargeAmt', '충전금액(+)')"
+                                    dataField="chargeAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                        <dxi-column [caption]="utilService.convert1('mm.precard.useAmt', '사용금액(-)')"
+                                    dataField="useAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                        <dxi-column [caption]="utilService.convert1('mm.precard.cancelAmt', '취소금액(+)')"
+                                    dataField="cancelAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                        <dxi-column [caption]="utilService.convert1('mm.precard.returnAmt', '환불금액(-)')"
+                                    dataField="returnAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                        <dxi-column [caption]="utilService.convert1('mm.precard.addAmt', '가산금액(+)')"
+                                    dataField="addAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                        <dxi-column [caption]="utilService.convert1('mm.precard.minusAmt', '감산금액(-)')"
+                                    dataField="minusAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                        <dxi-column [caption]="utilService.convert1('mm.precard.remainAmt', '잔여금액(-)')"
+                                    dataField="remainAmt"
+                                    format="#,##0.####">
+                        </dxi-column>
+                    </dxi-column>
+                </dx-data-grid>
+            </dxi-item>
+        </dx-accordion>
+    </div>
+    <div class="right">
+        <div class="right-content">
+            <!--map-->
+            <div class="map-container">
+                <dx-map #sMap></dx-map>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<dx-popup #popup
+          (onHidden)="onHiddenPopup($event)"
+          [dragEnabled]="true"
+          [resizeEnabled]="true"
+          [width]="1220"
+          maxHeight="80vh"
+>
+    <dxi-toolbar-item [options]="{
+                      text: utilService.convert1('com.btn.adjust', '조정'),
+                      stylingMode: 'Contained',
+                      type: 'normal',
+                      onClick: onClickPopupAdjust
+                    }"
+                      location="after"
+                      toolbar="top"
+                      widget="dxButton">
+    </dxi-toolbar-item>
+
+    <dxi-toolbar-item [options]="{
+                      text: utilService.convert1('com.btn.close', '닫기'),
+                      stylingMode: 'outlined',
+                      type: 'normal',
+                      onClick: onClickPopupCancel
+                    }"
+                      location="after"
+                      toolbar="bottom"
+                      widget="dxButton">
+    </dxi-toolbar-item>
+    <dx-scroll-view>
+        <dx-form #popupForm
+                 [colCountByScreen]="{
+                lg:3, md: 3, sm:2, xs:1
+             }"
+                 [showColonAfterLabel]="false"
+        >
+            <dxi-item [caption]="utilService.convert(pageInfo.path)" [colCount]="3"
+                      [colSpan]="3" cssClass="pop-item-box"
+                      itemType="group">
+                <dxi-item [visible]="false"
+                          dataField="tenant">
+                </dxi-item>
+                <dxi-item [visible]="false"
+                          dataField="uid">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true }"
+                          [label]="{text: utilService.convert1('mm.precard.userNm', '사용자')}"
+                          dataField="name">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true }"
+                          [label]="{text: utilService.convert1('mm.precard.userType', '유형')}"
+                          dataField="userType">
+                    <dxo-lookup [dataSource]=dsUserType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true }"
+                          [label]="{text: utilService.convert1('mm.precard.preCardNo', '선불카드')}"
+                          dataField="preCardNo">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.chargeAmt', '충전금액(+)')}"
+                          dataField="chargeAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.cancelAmt', '취소금액(+)')}"
+                          dataField="cancelAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.addAmt', '가산금액(+)')}"
+                          dataField="addAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.useAmt', '사용금액(-)')}"
+                          dataField="useAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.returnAmt', '환불금액(-)')}"
+                          dataField="returnAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.minusAmt', '감산금액(-)')}"
+                          dataField="minusAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+                <dxi-item [editorOptions]="{ disabled: true, format: '#,##0.####' }"
+                          [label]="{text: utilService.convert1('mm.precard.remainAmt', '잔여금액')}"
+                          dataField="remainAmt"
+                          editorType="dxNumberBox">
+                </dxi-item>
+            </dxi-item>
+
+            <dxi-item [colCount]="3" [colSpan]="3"
+                      caption="금액관리" cssClass="pop-item-box"
+                      itemType="group">
+                <dxi-item [visible]="false" dataField="beforeAmt" value="remainAmt"></dxi-item>
+                <dxi-item cssClass="form-group3" itemType="group">
+                    <dxi-item [editorOptions]="{
+                      items: dsProcType,
+                      displayExpr: 'codeName',
+                      valueExpr: 'code',
+                      searchMode:'contains',
+                      searchEnabled: true,
+                      openOnFieldClick: false,
+                      showClearButton: true,
+                      minSearchLength: 0,
+                      placeholder: utilService.convert('com.txt.select'),
+                      noDataText: utilService.convert('com.txt.noDataText')
+                    }"
+                              [label]="{text: utilService.convert1('mm.precard.procType', '잔액조정')}"
+                              dataField="procType"
+                              editorType="dxSelectBox">
+                        <dxi-validation-rule
+                                [message]="utilService.convert('com.valid.required', utilService.convert1('mm.precard.procType', '잔액조정'))"
+                                type="required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+
+                    <dxi-item [editorOptions]="{format : '#,##0.####', min: 0}"
+                              [label]="{visible: false}"
+                              cssClass="form-group-right2"
+                              dataField="procAmt"
+                              editorType="dxNumberBox">
+                        <dxi-validation-rule
+                                [message]="utilService.convert('com.valid.required', utilService.convert1('mm.precard.procAmt', '잔액조정값'))"
+                                type="required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                </dxi-item>
+
+                <dxi-item [colSpan]="2" [label]="{text: utilService.convert1('mm_preCard_remark', '조정사유')}"
+                          dataField="remark">
+                    <dxi-validation-rule
+                            [message]="utilService.convert('com.valid.required', utilService.convert1('mm_preCard_remark', '조정사유'))"
+                            type="required">
+                    </dxi-validation-rule>
+                </dxi-item>
+            </dxi-item>
+
+            <dxi-item [colCount]="3"
+                      [colSpan]="3"
+                      caption="사용내역" cssClass="fromtocalendar pop-item-box"
+                      itemType="group"
+            >
+                <dxi-item [colCount]="3" [colSpan]="3"
+                          [label]="{text: utilService.convert1('mm.precard.procDatetime', '처리일자')}"
+                          cssClass="fromtocalendar" itemType="group">
+                    <dxi-item
+                            [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}"
+                            [label]="{visible: false}"
+                            cssClass="fromcalendar"
+                            dataField="fromProcDate"
+                            editorType="dxDateBox">
+                    </dxi-item>
+                    <dxi-item
+                            [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}"
+                            [label]="{text: '~'}"
+                            cssClass="tocalendar"
+                            dataField="toProcDate"
+                            editorType="dxDateBox">
+                    </dxi-item>
+                    <dxi-item horizontalAlignment="right" itemType="button">
+                        <dxo-button-options
+                                [focusStateEnabled]="false"
+                                [onClick]="onClickSearchPopup"
+                                [text]="utilService.convert1('com.btn.search', '조회')"
+                                class="search-btn"
+                                icon="search"
+                                type="form"
+                        >
+                        </dxo-button-options>
+                    </dxi-item>
+                </dxi-item>
+            </dxi-item>
+        </dx-form>
+
+        <dx-data-grid #popupGrid
+                      (onExporting)="gridUtil.onPageExportXlsx($event)"
+                      (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                      [allowColumnReordering]="true"
+                      [allowColumnResizing]="true"
+                      [class]="'pop-item-box'"
+                      [columnAutoWidth]="true"
+                      [focusedRowEnabled]="true"
+                      [rowAlternationEnabled]="true"
+                      [showRowLines]="true"
+                      columnResizingMode=nextColumn
+        >
+            <dxo-editing mode="batch"></dxo-editing>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+            <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+            <dxo-search-panel [placeholder]="''"
+                              [visible]="true"
+                              [width]="240">
+            </dxo-search-panel>
+            <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+            <dxo-pager [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                       [displayMode]="'full'"
+                       [showInfo]="true"
+                       [showNavigationButtons]="true"
+                       [showPageSizeSelector]="true"
+                       [visible]="true">
+            </dxo-pager>
+            <dxo-state-storing [customLoad]="loadStatePopup"
+                               [customSave]="saveStatePopup"
+                               [enabled]="true"
+                               type="custom">
+            </dxo-state-storing>
+
+            <dxi-column [allowEditing]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false"
+                        [visible]="false"
+                        caption="UID"
+                        dataField="uid">
+            </dxi-column>
+            <dxi-column [allowEditing]="false" [allowSearch]="false"
+                        [showInColumnChooser]="false"
+                        [visible]="false"
+                        caption="tenant"
+                        dataField="tenant">
+            </dxi-column>
+
+            <dxi-column [allowEditing]="false" [caption]="utilService.convert1('mm.precard.procDateTime', '처리일시')"
+                        alignment="center"
+                        dataField="procDateTime">
+            </dxi-column>
+
+            <dxi-column [allowEditing]="false" [caption]="utilService.convert1('mm.precard.procType.process', '처리유형')"
+                        alignment="center"
+                        dataField="procType">
+                <dxo-lookup [dataSource]=dsProcType displayExpr="codeName" valueExpr="code"></dxo-lookup>
+            </dxi-column>
+            <dxi-column [allowEditing]="false"
+                        [caption]="utilService.convert1('mm.precard.procAmt', '금액')"
+                        dataField="procAmt"
+                        format="#,##0.####">
+            </dxi-column>
+            <dxi-column [allowEditing]="false"
+                        [caption]="utilService.convert1('mm.precard.remainAmt.after', '잔액')"
+                        dataField="remainAmt"
+                        format="#,##0.####">
+            </dxi-column>
+            <dxi-column [allowEditing]="false" [caption]="utilService.convert1('mm.precard.procUser', '처리자')"
+                        alignment="center"
+                        dataField="procUser">
+                <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>
+            </dxi-column>
+            <dxi-column [allowEditing]="false" [caption]="utilService.convert1('mm.precard.remark', '사유')"
+                        alignment="center"
+                        dataField="remark">
+            </dxi-column>
+        </dx-data-grid>
+    </dx-scroll-view>
+</dx-popup>
+
+
+

@@ -1,73 +1,72 @@
 <!-- 입고 > 적치지시 -->
 <div class="contents-header">
-  <dx-button
-          #bookmarkBtn
-          class="bookmark-btn"
-          (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
-  ></dx-button>
-  <h2 class="content-block page-title">
-    {{ utilService.convert("일자별매출") }}
-
-  </h2>
-  <span class="page-breadcrumb">{{ utilService.getPagePath() }}</span>
-  <span class="btngroup page-button-group">
     <dx-button
+        #bookmarkBtn
+        (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
+        class="bookmark-btn"
+    ></dx-button>
+    <h2 class="content-block page-title">
+        {{ utilService.convert("일자별매출") }}
+
+    </h2>
+    <span class="page-breadcrumb">{{ utilService.getPagePath() }}</span>
+    <span class="btngroup page-button-group">
+    <dx-button
+            (onClick)="executeInstruct()"
+            [text]="utilService.convert('com_btn_save')"
             icon="save"
             id="executeInstruct"
             type="default"
-            [text]="utilService.convert('com_btn_save')"
-            (onClick)="executeInstruct()"
     ></dx-button>
   </span>
 </div>
 
 <div class="contents-body">
-  <div class="search_foldable">
-    <div class="search-box">
-      <dx-form
-              #mainForm
-              class="search-form-box"
-              [showColonAfterLabel]="false"
-              [(formData)]="mainFormData"
-              [minColWidth]="300"
-              [colCount]="3"
-      >
-        <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-          <dxi-item
-                  dataField="tenant"
-                  [label]="{ text: 'Tenant' }"
-                  [visible]="false"
-                  [editorOptions]="{ value: G_TENANT }"
-          ></dxi-item>
+    <div class="search_foldable">
+        <div class="search-box">
+            <dx-form
+                #mainForm
+                [(formData)]="mainFormData"
+                [colCount]="3"
+                [minColWidth]="300"
+                [showColonAfterLabel]="false"
+                class="search-form-box"
+            >
+                <dxi-item [colCount]="2" [colSpan]="2" itemType="group">
+                    <dxi-item
+                            [editorOptions]="{ value: G_TENANT }"
+                            [label]="{ text: 'Tenant' }"
+                            [visible]="false"
+                            dataField="tenant"
+                    ></dxi-item>
 
-          <dxi-item itemType="group" [label]="{text: utilService.convert('조회기간 ')}"
-                    cssClass="fromtocalendar" [colCount]="2" [colSpan]="1">
-            <dxi-item dataField="fromShipSchDate" editorType="dxDateBox"
-                      cssClass="fromcalendar"
-                      [label]="{visible: false}"
-                      [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
-            </dxi-item>
-            <dxi-item dataField="toShipSchDate" editorType="dxDateBox"
-                      cssClass="tocalendar"
-                      [label]="{text: '~'}"
-                      [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}">
-            </dxi-item>
-          </dxi-item>
+                    <dxi-item [colCount]="2" [colSpan]="1"
+                              [label]="{text: utilService.convert('조회기간 ')}" cssClass="fromtocalendar" itemType="group">
+                        <dxi-item
+                                [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}"
+                                [label]="{visible: false}"
+                                cssClass="fromcalendar"
+                                dataField="fromShipSchDate"
+                                editorType="dxDateBox">
+                        </dxi-item>
+                        <dxi-item
+                                [editorOptions]="{ useMaskBehavior:'true', displayFormat:'yyyy-MM-dd', dateSerializationFormat: 'yyyy-MM-dd'}"
+                                [label]="{text: '~'}"
+                                cssClass="tocalendar"
+                                dataField="toShipSchDate"
+                                editorType="dxDateBox">
+                        </dxi-item>
+                    </dxi-item>
 
-          <dxi-item
-                  dataField="acceptKey"
-                  [label]="{text: utilService.convert1('mm_menu_text1', 'MenuL1(메뉴명)')}"
-                  [colSpan]="1"
-          ></dxi-item>
+                    <dxi-item
+                            [colSpan]="1"
+                            [label]="{text: utilService.convert1('mm_menu_text1', 'MenuL1(메뉴명)')}"
+                            dataField="acceptKey"
+                    ></dxi-item>
 
-          <dxi-item
-                  dataField="sts"
-                  [label]="{
-              text: utilService.convert1('inv_invadjust_sts', '상태')
-            }"
-                  editorType="dxSelectBox"
-                  [colSpan]="1"
-                  [editorOptions]="{
+                    <dxi-item
+                            [colSpan]="1"
+                            [editorOptions]="{
               items: dsRcvStatus,
               displayExpr: 'display',
               valueExpr: 'code',
@@ -79,324 +78,336 @@
               placeholder: '',
               noDataText: utilService.convert('com_txt_noDataText')
             }"
-          ></dxi-item>
+                            [label]="{
+              text: utilService.convert1('inv_invadjust_sts', '상태')
+            }"
+                            dataField="sts"
+                            editorType="dxSelectBox"
+                    ></dxi-item>
 
-          <dxi-item
-                  dataField="acceptKey"
-                  [label]="{text: utilService.convert1('mm_menu_text1', 'MenuL1(메뉴명)')}"
-                  [colSpan]="1"
-          ></dxi-item>
+                    <dxi-item
+                            [colSpan]="1"
+                            [label]="{text: utilService.convert1('mm_menu_text1', 'MenuL1(메뉴명)')}"
+                            dataField="acceptKey"
+                    ></dxi-item>
 
-        </dxi-item>
-      </dx-form>
-      <div class="search-btn-group">
-        <!--        <dx-button-->
-        <!--          icon="refresh"-->
-        <!--          type="form"-->
-        <!--          [text]="utilService.convert('com_btn_reset')"-->
-        <!--          class="reset-btn"-->
-        <!--          (onClick)="onReset()"-->
-        <!--        ></dx-button>-->
-        <dx-button
-                icon="search"
-                type="form"
-                [text]="utilService.convert('com_btn_search')"
-                class="search-btn"
-                [focusStateEnabled]="false"
-                (onClick)="onSearch()"
-        ></dx-button>
-      </div>
+                </dxi-item>
+            </dx-form>
+            <div class="search-btn-group">
+                <!--        <dx-button-->
+                <!--          icon="refresh"-->
+                <!--          type="form"-->
+                <!--          [text]="utilService.convert('com_btn_reset')"-->
+                <!--          class="reset-btn"-->
+                <!--          (onClick)="onReset()"-->
+                <!--        ></dx-button>-->
+                <dx-button
+                        (onClick)="onSearch()"
+                        [focusStateEnabled]="false"
+                        [text]="utilService.convert('com_btn_search')"
+                        class="search-btn"
+                        icon="search"
+                        type="form"
+                ></dx-button>
+            </div>
+        </div>
+        <div class="foldable-btn">
+            <dx-button
+                #foldableBtn
+                (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"
+                type="default"
+            ></dx-button>
+        </div>
     </div>
-    <div class="foldable-btn">
-      <dx-button
-              #foldableBtn
-              type="default"
-              (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"
-      ></dx-button>
-    </div>
-  </div>
 
-  <!--Grid-->
-  <dx-accordion
-          #acrdn
-          [collapsible]="true"
-          [multiple]="true"
-          [animationDuration]="300"
-  >
+    <!--Grid-->
 
-    <!--    bang 1-->
-    <dxi-item [title]="utilService.convert1('titlesss','조회결과','Re In lissss')">
-      <dx-data-grid
-              #subGrid
-              [dataSource]="mainDataSource"
-              (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
-              [allowColumnResizing]="true"
-              [columnAutoWidth]="true"
-              [focusedRowEnabled]="true"
-              [rowAlternationEnabled]="true"
-              [allowColumnReordering]="true"
-              (onFocusedCellChanged)="onFocusedCellChanging($event, this.mainGrid)"
-              (onFocusedRowChanged)="onFocusedRowChanged($event)"
-              [showRowLines]="true"
-              [height]="540"
-              (onExporting)="gridUtil.onPageExportXlsx($event)"
-              columnResizingMode="nextColumn"
-      >
-        <dxo-editing mode="batch"></dxo-editing>
-        <!-- 단건 선택 -->
-        <dxo-selection mode="single" selectAllMode="allPages"> </dxo-selection>
-        <!-- single, multiple -->
-        <dxo-load-panel [enabled]="true"></dxo-load-panel>
-        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-        <dxo-export
-                [enabled]="true"
-                [allowExportSelectedData]="true"
-        ></dxo-export>
-        <dxo-search-panel
-                [visible]="true"
-                [width]="240"
-                [placeholder]="''"
-        ></dxo-search-panel>
-        <dxo-paging
-                [enabled]="true"
-                [pageSize]="gridUtil.getMainGridPageSize()"
-        ></dxo-paging>
-        <dxo-pager
-                [visible]="true"
-                [allowedPageSizes]="gridUtil.getAllowedPageSize()"
-                [displayMode]="'full'"
-                [showPageSizeSelector]="true"
-                [showInfo]="true"
-                [showNavigationButtons]="true"
+    <div class="top">
+        <dx-accordion
+            #acrdn
+            [animationDuration]="300"
+            [collapsible]="true"
+            [multiple]="true"
         >
-        </dxo-pager>
-        <dxo-state-storing
-                [enabled]="true"
-                type="custom"
-                [customLoad]="loadStateMain"
-                [customSave]="saveStateMain"
-        ></dxo-state-storing>
-        <dxi-column
-                dataField="uid"
-                caption="UID"
-                [visible]="false"
-                [allowSearch]="false"
-                [showInColumnChooser]="false"
-                [allowEditing]="false"
-        ></dxi-column>
-        <dxi-column
-                dataField="tenant"
-                caption="tenant"
-                [visible]="false"
-                [allowSearch]="false"
-                [showInColumnChooser]="false"
-                [allowEditing]="false"
-        ></dxi-column>
-        <!--        coot 1-->
-        <dxi-column
-                name="No"
-                [caption]="utilService.convert('매출일자')"
-                cellTemplate="NoTemplate"
-                [allowEditing]="false"
-                alignment="center"
-        ></dxi-column>
+
+            <!--    bang 1-->
+            <dxi-item [title]="utilService.convert1('titlesss','조회결과','Re In lissss')">
+                <dx-data-grid #subGrid
+                              (onExporting)="gridUtil.onPageExportXlsx($event)"
+                              (onFocusedCellChanged)="onFocusedCellChanging($event, this.mainGrid)"
+                              (onFocusedRowChanged)="onFocusedRowChanged($event)"
+                              (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                              [allowColumnReordering]="true"
+                              [allowColumnResizing]="true"
+                              [columnAutoWidth]="true"
+                              [dataSource]="mainDataSource"
+                              [focusedRowEnabled]="true"
+                              [height]="50"
+                              [rowAlternationEnabled]="true"
+                              [showRowLines]="true"
+                              class="moine"
+                              columnResizingMode="nextColumn"
+                >
+                    <dxo-editing mode="batch"></dxo-editing>
+                    <!-- 단건 선택 -->
+                    <dxo-selection mode="single" selectAllMode="allPages"></dxo-selection>
+                    <!-- single, multiple -->
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-export
+                            [allowExportSelectedData]="true"
+                            [enabled]="true"
+                    ></dxo-export>
+                    <dxo-search-panel
+                            [placeholder]="''"
+                            [visible]="true"
+                            [width]="240"
+                    ></dxo-search-panel>
+                    <dxo-paging
+                            [enabled]="true"
+                            [pageSize]="gridUtil.getMainGridPageSize()"
+                    ></dxo-paging>
+                    <dxo-pager
+                            [allowedPageSizes]="gridUtil.getAllowedPageSize()"
+                            [displayMode]="'full'"
+                            [showInfo]="true"
+                            [showNavigationButtons]="true"
+                            [showPageSizeSelector]="true"
+                            [visible]="true"
+                    >
+                    </dxo-pager>
+                    <dxo-state-storing
+                            [customLoad]="loadStateMain"
+                            [customSave]="saveStateMain"
+                            [enabled]="true"
+                            type="custom"
+                    ></dxo-state-storing>
+                    <dxi-column
+                            [allowEditing]="false"
+                            [allowSearch]="false"
+                            [showInColumnChooser]="false"
+                            [visible]="false"
+                            caption="UID"
+                            dataField="uid"
+                    ></dxi-column>
+                    <dxi-column
+                            [allowEditing]="false"
+                            [allowSearch]="false"
+                            [showInColumnChooser]="false"
+                            [visible]="false"
+                            caption="tenant"
+                            dataField="tenant"
+                    ></dxi-column>
+                    <!--        coot 1-->
+                    <dxi-column
+                            [allowEditing]="false"
+                            [caption]="utilService.convert('매출일자')"
+                            alignment="center"
+                            cellTemplate="NoTemplate"
+                            name="No"
+                    ></dxi-column>
 
 
-        <!--        coot 2-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('POS번호')"
-                alignment="center"
-        ></dxi-column>
-        <!--        coot 3-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('영수번호')"
-                alignment="center"
-        ></dxi-column>
-        <!--        coot 4-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('매출금액')"
-                alignment="center"
-        ></dxi-column>
-        <!--        coot 5-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('상품명')"
-                alignment="center"
-        ></dxi-column>
+                    <!--        coot 2-->
+                    <dxi-column
+                            [caption]="utilService.convert('POS번호')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <!--        coot 3-->
+                    <dxi-column
+                            [caption]="utilService.convert('영수번호')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <!--        coot 4-->
+                    <dxi-column
+                            [caption]="utilService.convert('매출금액')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <!--        coot 5-->
+                    <dxi-column
+                            [caption]="utilService.convert('상품명')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
 
-        <!--        coot 6-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('상품코드')"
-                alignment="center"
-        ></dxi-column>
-        <!--        coot 7-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('순매출')"
-                alignment="center"
-        ></dxi-column>
-        <!--        coot 8-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('NET매출')"
-                alignment="center"
-        ></dxi-column>
-        <!--        coot 9-->
-        <dxi-column
-                dataField="acceptKey"
-                [caption]="utilService.convert('할인')"
-                alignment="center"
-        ></dxi-column>
-        <dxi-column
-                dataField="modifiedDatetime"
-                [caption]="utilService.convert('com_text_modifiedDatetime')"
-                [allowEditing]="false"
-                [visible]="false"
-        ></dxi-column>
-      </dx-data-grid>
-    </dxi-item>
-    <!--bang 2-->
-    <!--    <dxi-item-->
-    <!--      [title]="-->
-    <!--        utilService.convert1(-->
-    <!--          'rcvInstructList',-->
-    <!--          '적치지시 리스트',-->
-    <!--          'Receive Instruct List'-->
-    <!--        )-->
-    <!--      "-->
-    <!--    >-->
-    <!--      <dx-data-grid-->
-    <!--        #subGrid-->
-    <!--        [dataSource]="subDataSource"-->
-    <!--        (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"-->
-    <!--        [allowColumnResizing]="true"-->
-    <!--        [columnAutoWidth]="true"-->
-    <!--        [focusedRowEnabled]="true"-->
-    <!--        (onFocusedCellChanged)="onFocusedCellChanging($event, this.subGrid)"-->
-    <!--        [showRowLines]="true"-->
-    <!--        [rowAlternationEnabled]="true"-->
-    <!--        [allowColumnReordering]="true"-->
-    <!--        (onExporting)="gridUtil.onPageExportXlsx($event)"-->
-    <!--        columnResizingMode="nextColumn"-->
-    <!--      >-->
-    <!--        <dxo-editing mode="batch"></dxo-editing>-->
-    <!--        <dxo-selection mode="single" selectAllMode="allPages"> </dxo-selection>-->
-    <!--        &lt;!&ndash; single, multiple &ndash;&gt;-->
-    <!--        <dxo-load-panel [enabled]="true"></dxo-load-panel>-->
-    <!--        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>-->
-    <!--        <dxo-export-->
-    <!--          [enabled]="true"-->
-    <!--          [allowExportSelectedData]="true"-->
-    <!--        ></dxo-export>-->
-    <!--        <dxo-search-panel-->
-    <!--          [visible]="true"-->
-    <!--          [width]="240"-->
-    <!--          [placeholder]="''"-->
-    <!--        ></dxo-search-panel>-->
-    <!--        <dxo-paging-->
-    <!--          [enabled]="true"-->
-    <!--          [pageSize]="gridUtil.getPageSize()"-->
-    <!--        ></dxo-paging>-->
-    <!--        <dxo-pager-->
-    <!--          [visible]="true"-->
-    <!--          [allowedPageSizes]="gridUtil.getAllowedPageSize()"-->
-    <!--          [displayMode]="'full'"-->
-    <!--          [showPageSizeSelector]="true"-->
-    <!--          [showInfo]="true"-->
-    <!--          [showNavigationButtons]="true"-->
-    <!--        >-->
-    <!--        </dxo-pager>-->
-    <!--        <dxo-state-storing-->
-    <!--          [enabled]="true"-->
-    <!--          type="custom"-->
-    <!--          [customLoad]="loadStateSub"-->
-    <!--          [customSave]="saveStateSub"-->
-    <!--        ></dxo-state-storing>-->
-    <!--        &lt;!&ndash;    <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false" [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="tenant"-->
-    <!--          caption="tenant"-->
-    <!--          [visible]="false"-->
-    <!--          [allowSearch]="false"-->
-    <!--          [showInColumnChooser]="false"-->
-    <!--          [allowEditing]="false"-->
-    <!--        ></dxi-column>-->
+                    <!--        coot 6-->
+                    <dxi-column
+                            [caption]="utilService.convert('상품코드')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <!--        coot 7-->
+                    <dxi-column
+                            [caption]="utilService.convert('순매출')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <!--        coot 8-->
+                    <dxi-column
+                            [caption]="utilService.convert('NET매출')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <!--        coot 9-->
+                    <dxi-column
+                            [caption]="utilService.convert('할인')"
+                            alignment="center"
+                            dataField="acceptKey"
+                    ></dxi-column>
+                    <dxi-column
+                            [allowEditing]="false"
+                            [caption]="utilService.convert('com_text_modifiedDatetime')"
+                            [visible]="false"
+                            dataField="modifiedDatetime"
+                    ></dxi-column>
+                </dx-data-grid>
+            </dxi-item>
 
-    <!--        &lt;!&ndash;        coot 1&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          name="No"-->
-    <!--          [caption]="utilService.convert('매출일자')"-->
-    <!--          cellTemplate="NoTemplate"-->
-    <!--          [allowEditing]="false"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
+            <!--bang 2-->
+            <!--    <dxi-item-->
+            <!--      [title]="-->
+            <!--        utilService.convert1(-->
+            <!--          'rcvInstructList',-->
+            <!--          '적치지시 리스트',-->
+            <!--          'Receive Instruct List'-->
+            <!--        )-->
+            <!--      "-->
+            <!--    >-->
+            <!--      <dx-data-grid-->
+            <!--        #subGrid-->
+            <!--        [dataSource]="subDataSource"-->
+            <!--        (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"-->
+            <!--        [allowColumnResizing]="true"-->
+            <!--        [columnAutoWidth]="true"-->
+            <!--        [focusedRowEnabled]="true"-->
+            <!--        (onFocusedCellChanged)="onFocusedCellChanging($event, this.subGrid)"-->
+            <!--        [showRowLines]="true"-->
+            <!--        [rowAlternationEnabled]="true"-->
+            <!--        [allowColumnReordering]="true"-->
+            <!--        (onExporting)="gridUtil.onPageExportXlsx($event)"-->
+            <!--        columnResizingMode="nextColumn"-->
+            <!--      >-->
+            <!--        <dxo-editing mode="batch"></dxo-editing>-->
+            <!--        <dxo-selection mode="single" selectAllMode="allPages"> </dxo-selection>-->
+            <!--        &lt;!&ndash; single, multiple &ndash;&gt;-->
+            <!--        <dxo-load-panel [enabled]="true"></dxo-load-panel>-->
+            <!--        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>-->
+            <!--        <dxo-export-->
+            <!--          [enabled]="true"-->
+            <!--          [allowExportSelectedData]="true"-->
+            <!--        ></dxo-export>-->
+            <!--        <dxo-search-panel-->
+            <!--          [visible]="true"-->
+            <!--          [width]="240"-->
+            <!--          [placeholder]="''"-->
+            <!--        ></dxo-search-panel>-->
+            <!--        <dxo-paging-->
+            <!--          [enabled]="true"-->
+            <!--          [pageSize]="gridUtil.getPageSize()"-->
+            <!--        ></dxo-paging>-->
+            <!--        <dxo-pager-->
+            <!--          [visible]="true"-->
+            <!--          [allowedPageSizes]="gridUtil.getAllowedPageSize()"-->
+            <!--          [displayMode]="'full'"-->
+            <!--          [showPageSizeSelector]="true"-->
+            <!--          [showInfo]="true"-->
+            <!--          [showNavigationButtons]="true"-->
+            <!--        >-->
+            <!--        </dxo-pager>-->
+            <!--        <dxo-state-storing-->
+            <!--          [enabled]="true"-->
+            <!--          type="custom"-->
+            <!--          [customLoad]="loadStateSub"-->
+            <!--          [customSave]="saveStateSub"-->
+            <!--        ></dxo-state-storing>-->
+            <!--        &lt;!&ndash;    <dxi-column dataField="uid" caption="UID" [visible]="false" [allowSearch]="false" [showInColumnChooser]="false" [allowEditing]="false"></dxi-column>&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="tenant"-->
+            <!--          caption="tenant"-->
+            <!--          [visible]="false"-->
+            <!--          [allowSearch]="false"-->
+            <!--          [showInColumnChooser]="false"-->
+            <!--          [allowEditing]="false"-->
+            <!--        ></dxi-column>-->
 
-
-    <!--        &lt;!&ndash;        coot 2&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('POS번호')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        &lt;!&ndash;        coot 3&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('영수번호')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        &lt;!&ndash;        coot 4&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('매출금액')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        &lt;!&ndash;        coot 5&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('상품명')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-
-    <!--        &lt;!&ndash;        coot 6&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('상품코드')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        &lt;!&ndash;        coot 7&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('순매출')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        &lt;!&ndash;        coot 8&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('NET매출')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        &lt;!&ndash;        coot 9&ndash;&gt;-->
-    <!--        <dxi-column-->
-    <!--          dataField="acceptKey"-->
-    <!--          [caption]="utilService.convert('할인')"-->
-    <!--          alignment="center"-->
-    <!--        ></dxi-column>-->
-    <!--        <dxi-column-->
-    <!--          dataField="modifiedDatetime"-->
-    <!--          [caption]="utilService.convert('com_text_modifiedDatetime')"-->
-    <!--          [allowEditing]="false"-->
-    <!--          [visible]="false"-->
-    <!--        ></dxi-column>-->
-    <!--      </dx-data-grid>-->
-    <!--    </dxi-item>-->
+            <!--        &lt;!&ndash;        coot 1&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          name="No"-->
+            <!--          [caption]="utilService.convert('매출일자')"-->
+            <!--          cellTemplate="NoTemplate"-->
+            <!--          [allowEditing]="false"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
 
 
+            <!--        &lt;!&ndash;        coot 2&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('POS번호')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        &lt;!&ndash;        coot 3&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('영수번호')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        &lt;!&ndash;        coot 4&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('매출금액')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        &lt;!&ndash;        coot 5&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('상품명')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
 
-  </dx-accordion>
+            <!--        &lt;!&ndash;        coot 6&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('상품코드')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        &lt;!&ndash;        coot 7&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('순매출')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        &lt;!&ndash;        coot 8&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('NET매출')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        &lt;!&ndash;        coot 9&ndash;&gt;-->
+            <!--        <dxi-column-->
+            <!--          dataField="acceptKey"-->
+            <!--          [caption]="utilService.convert('할인')"-->
+            <!--          alignment="center"-->
+            <!--        ></dxi-column>-->
+            <!--        <dxi-column-->
+            <!--          dataField="modifiedDatetime"-->
+            <!--          [caption]="utilService.convert('com_text_modifiedDatetime')"-->
+            <!--          [allowEditing]="false"-->
+            <!--          [visible]="false"-->
+            <!--        ></dxi-column>-->
+            <!--      </dx-data-grid>-->
+            <!--    </dxi-item>-->
+
+
+        </dx-accordion>
+    </div>
+    <div class="right-content">
+        <div class="map-ne" id="maps"></div>
+    </div>
+
 </div>
 
 

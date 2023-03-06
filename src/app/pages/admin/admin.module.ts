@@ -9,6 +9,7 @@ import {TranordaccidentComponent} from './tranordaccident/tranordaccident.compon
 import {PopupModule} from '../popup/popup.module';
 import { AstemsComponent } from './astems/astems.component';
 import { BuuastemsComponent } from './buuastems/buuastems.component';
+import { Buuastems1Component } from './buuastems1/buuastems1.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BuuastemsComponent } from './buuastems/buuastems.component';
     TranordallocateComponent,
     TranordaccidentComponent,
     AstemsComponent,
-    BuuastemsComponent
+    BuuastemsComponent,
+    Buuastems1Component
   ],
   imports: [
     DevExtremeModule,
