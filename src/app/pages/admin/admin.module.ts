@@ -23,6 +23,7 @@ import { MyData1Component } from './myComponents/my-data1/my-data1.component';
 import { TextDirectoryComponent } from './myComponents/text-directory/text-directory.component';
 import { Buuastems7Component } from './buuastems7/buuastems7.component';
 import { ButtonComponent } from './myComponents/button/button.component';
+import { ComboSelectComponent } from './myComponents/combo-select/combo-select.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { ButtonComponent } from './myComponents/button/button.component';
         MyData1Component,
         TextDirectoryComponent,
         Buuastems7Component,
-        ButtonComponent
+        ButtonComponent,
+        ComboSelectComponent
     ],
     imports: [
         DevExtremeModule,
