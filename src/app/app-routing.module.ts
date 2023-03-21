@@ -57,6 +57,7 @@ import {Buuastems3Component} from './pages/admin/buuastems3/buuastems3.component
 import {Buuastems4Component} from './pages/admin/buuastems4/buuastems4.component';
 import {Buuastems5Component} from './pages/admin/buuastems5/buuastems5.component';
 import {Buuastems6Component} from './pages/admin/buuastems6/buuastems6.component';
+import {Buuastems7Component} from './pages/admin/buuastems7/buuastems7.component';
 /* 관리자 */
 
 /* 화주 */
@@ -276,6 +277,11 @@ const routes: Routes = [
     {
         path: 'tr/admin/buuastems6',
         component: Buuastems6Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/buuastems7',
+        component: Buuastems7Component,
         canActivate: [AuthGuardService]
     },
     /* 관리자 */

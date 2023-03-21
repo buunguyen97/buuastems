@@ -19,6 +19,10 @@ import {MyInputComponent} from './myComponents/my-input/my-input.component';
 import {MySelectComponent} from './myComponents/my-select/my-select.component';
 import {MyDateComponent} from './myComponents/my-date/my-date.component';
 import {FormsModule} from "@angular/forms";
+import { MyData1Component } from './myComponents/my-data1/my-data1.component';
+import { TextDirectoryComponent } from './myComponents/text-directory/text-directory.component';
+import { Buuastems7Component } from './buuastems7/buuastems7.component';
+import { ButtonComponent } from './myComponents/button/button.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +41,11 @@ import {FormsModule} from "@angular/forms";
         MyButtonComponent,
         MyInputComponent,
         MySelectComponent,
-        MyDateComponent
+        MyDateComponent,
+        MyData1Component,
+        TextDirectoryComponent,
+        Buuastems7Component,
+        ButtonComponent
     ],
     imports: [
         DevExtremeModule,

@@ -1,29 +1,34 @@
-<text-directory text="수주현황"></text-directory>
+<text-directory text="수주현황 5-5-1"></text-directory>
 <ng-form #mainForm>
     <div class="content-headerb">
         <div class="container">
             <div class="row ">
 
                 <div class="col-3 item">
-                    <my-select label="aaabb"></my-select>
-                </div>
-                <div class="col-3 item">
-                    <my-input label="공통코드명"></my-input>
+                    <my-select label="조회기준" optionsl="주문일자"></my-select>
                 </div>
                 <div class=" col-4 item">
                     <my-date></my-date>
                 </div>
-                <div class=" col-2 ">
-                    <my-button (reset)="onReset()" (submit)="onSearch()"></my-button>
-                </div>
+
                 <div class="col-3 item">
-                    <my-data1></my-data1>
+                    <my-select label="매장선택" optionsl="전 체"></my-select>
+                </div>
+                <div class=" col-2 item">
+                    <my-select label="주문구분 " optionsl="전 체"></my-select>
                 </div>
                 <div class=" col-3 item">
-                    <my-data1></my-data1>
+                    <my-input label="진행상태 " optionsl="전 체"></my-input>
                 </div>
                 <div class=" col-4 item">
-                    <my-input label="공통코"></my-input>
+                    <my-select label="전표구분 " optionsl="전 체"></my-select>
+                </div>
+
+                <div class=" col-5 item">
+                    <app-button text="조 회"></app-button>
+                    <app-button text="엑 셀"></app-button>
+                    <app-button text="거래명세서인쇄"></app-button>
+
                 </div>
             </div>
         </div>
@@ -106,12 +111,61 @@
                 <!--                            dataField="modifiedDatetime">-->
                 <!--                </dxi-column>-->
                 <dxi-column cssClass="pointer-column" type="checkbox"></dxi-column>
-                <dxi-column dataField="content"></dxi-column>
-                <dxi-column dataField="user"></dxi-column>
-                <dxi-column alignment="center" dataField="title"></dxi-column>
-                <dxi-column dataField="date-insert"></dxi-column>
-                <dxi-column alignment="center" dataField="author"></dxi-column>
-                <dxi-column dataField="date-update"></dxi-column>
+                <dxi-column alignment="center"
+                            caption="주문일자"
+                            dataField="content"
+                ></dxi-column>
+                <dxi-column alignment="center" caption="주문일자"
+                            dataField="user"
+                ></dxi-column>
+                <dxi-column alignment="center" alignment="center"
+                            caption="매장명'"
+                            name="title"
+                ></dxi-column>
+                <dxi-column
+                        alignment="center" caption="전표 번호"
+                        dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="등록 구분"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="진행상태"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="전표구분"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="입고예정일"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="수주일자"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="출고일자"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="'출고일자"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="주문금액 [수량]"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="주문금액 [수량]"
+                            dataField="date-insert"
+                ></dxi-column>
+                <dxi-column alignment="center"
+                            caption="주문금액 [수량]"
+                            dataField="date-insert"
+                ></dxi-column>
 
 
                 <dxo-summary [calculateCustomSummary]="calculateAreaSummary">
