@@ -7,5 +7,5 @@ import {Component, Input} from '@angular/core';
 })
 export class MySelectComponent {
     @Input() optionsl = '데이터가 없습니다.';
-    @Input() label = 'Select';
+    @Input() label = '';
 }

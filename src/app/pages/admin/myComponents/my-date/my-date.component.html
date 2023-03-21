@@ -1,0 +1,32 @@
+<div class="input-group flex-nowrap w-100">
+    <span class="text-input">입고예정일자</span>
+    <div class="date">
+        <div class="col-5 item-date">
+            <dx-date-box
+                    [showClearButton]="true"
+                    [useMaskBehavior]="true"
+                    [value]="lastMonthDate"
+                    displayFormat="dd/MM/yyyy"
+                    placeholder="16/10/2018"
+                    type="date"
+            >
+            </dx-date-box>
+        </div>
+        <div class="col-1  item-date d-flex align-items-center">
+            <span class="mytocalendar ">~</span>
+        </div>
+        <div class="col-6 item-date">
+            <dx-date-box
+                    [showClearButton]="true"
+                    [useMaskBehavior]="true"
+                    [value]="todayDate"
+                    displayFormat="dd/MM/yyyy"
+                    placeholder="16/10/2018"
+                    type="date"
+            >
+            </dx-date-box>
+        </div>
+
+
+    </div>
+</div>
