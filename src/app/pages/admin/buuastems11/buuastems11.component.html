@@ -1,65 +1,26 @@
-<!-- 공통 > 코드 -->
-<div class="contents-header">
-    <dx-button #bookmarkBtn
-               (onClick)="utilService.onBookmarkToggle(this.bookmarkBtn)"
-               [icon]="'star'"
-               class="bookmark-btn">
-    </dx-button>
-    <h2 class="content-block page-title">{{utilService.convert1(pageInfo.path, '코드')}}</h2>
-    <span class="page-breadcrumb">{{pageInfo.pathName}}</span>
-    <span class="btngroup page-button-group">
-     <dx-button (onClick)="onNew($event)"
-                [text]="utilService.convert1('com.btn.new', '신규')"
-                icon="add"
-                type="default">
-      </dx-button>
-  </span>
-    <hr/>
-</div>
+<text-directory text=" 당일매출현황 3-2-4"></text-directory>
+<ng-form #mainForm>
+    <div class="content-headerb">
+        <div class="container">
+            <div class="row ">
 
-<div class="contents-body">
-    <div class="search_foldable">
-        <div class="search-box">
-            <dx-form #mainForm
-                     [colCountByScreen]="{lg:3, md: 3, sm:2, xs:1}"
-                     [minColWidth]="300"
-                     [showColonAfterLabel]="false"
-                     class="search-form-box">
-                <dxi-item [colCount]="3" [colSpan]="3" itemType="group">
-                    <dxi-item [visible]="false"
-                              dataField="tenant">
-                    </dxi-item>
-                    <dxi-item [label]="{text: utilService.convert1('mm.code.codeCategory', 'ID')}"
-                              dataField="codeCategory"></dxi-item>
-                    <dxi-item [label]="{text: utilService.convert1('mm.code.name', '공통코드명')}"
-                              dataField="name"></dxi-item>
-                </dxi-item>
-            </dx-form>
+                <div class="col-10 item">
+                    <my-data1 label="조회일자 "></my-data1>
+                </div>
 
-            <div class="search-btn-group">
-                <dx-button (onClick)="onReset()"
-                           [focusStateEnabled]="false"
-                           [text]="utilService.convert1('com.btn.reset', '초기화')"
-                           class="reset-btn"
-                           icon="refresh"
-                           type="form">
-                </dx-button>
-                <dx-button (onClick)="onSearch()"
-                           [focusStateEnabled]="false"
-                           [text]="utilService.convert1('com.btn.search', '조회')"
-                           class="search-btn"
-                           icon="search"
-                           type="form">
-                </dx-button>
+                <div class=" col-2 item">
+                    <app-button text="조 회"></app-button>
+                    <app-button text="엑 셀"></app-button>
+                </div>
+
             </div>
         </div>
 
-        <div class="foldable-btn">
-            <dx-button #foldableBtn (onClick)="utilService.onFoldable(this.mainForm, this.foldableBtn)"
-                       type="default">
-            </dx-button>
-        </div>
     </div>
+</ng-form>
+
+<div class="contents-body">
+
 
     <dx-accordion [animationDuration]="300"
                   [collapsible]="true"
@@ -67,81 +28,91 @@
     >
         <dxi-item [title]="utilService.convert1('mm.code.mainGridTitle', '공통코드 리스트')">
             <span *ngIf="themText === 'Y'" class="them"></span>
-            <dx-data-grid #mainGrid
-                          (onCellClick)="handleCellClick($event)"
-                          (onExporting)="gridUtil.onPageExportXlsx($event)"
-                          (onRowDblClick)="onRowDblClick($event)"
-                          (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
-                          [allowColumnReordering]="true"
-                          [allowColumnResizing]="true"
-                          [columnAutoWidth]="true"
-                          [focusedRowEnabled]="true"
-                          [rowAlternationEnabled]="true"
-                          [showRowLines]="true"
-                          columnResizingMode=nextColumn
-            >
-                <dxo-editing mode="batch"></dxo-editing>
-                <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
-                <dxo-search-panel [placeholder]="''"
-                                  [visible]="true"
-                                  [width]="240">
-                </dxo-search-panel>
-                <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
-                <dxo-pager [allowedPageSizes]=gridUtil.getAllowedPageSize()
-                           [displayMode]="'full'"
-                           [showInfo]="true"
-                           [showNavigationButtons]="true"
-                           [showPageSizeSelector]="true"
-                           [visible]="true">
-                </dxo-pager>
-                <dxo-state-storing [customLoad]="loadStateMain"
-                                   [customSave]="saveStateMain"
-                                   [enabled]="true"
-                                   type="custom">
-                </dxo-state-storing>
+            <div class="grid">
 
-                <dxo-selection
-                        caption="UID"
-                        dataField="uid">
-                </dxo-selection>
-                <dxi-column [allowEditing]="false" [allowSearch]="false"
-                            [showInColumnChooser]="false"
-                            [visible]="false"
-                            caption="tenant"
-                            dataField="tenant">
-                </dxi-column>
+                <dx-data-grid #mainGrid
+                              (onCellClick)="handleCellClick($event)"
+                              (onExporting)="gridUtil.onPageExportXlsx($event)"
+                              (onRowDblClick)="onRowDblClick($event)"
+                              (onToolbarPreparing)="gridUtil.onToolbarPreparing($event)"
+                              [allowColumnReordering]="true"
+                              [allowColumnResizing]="true"
+                              [columnAutoWidth]="true"
+                              [focusedRowEnabled]="true"
+                              [rowAlternationEnabled]="true"
+                              [showRowLines]="true"
+                              columnResizingMode=nextColumn
+                >
+                    <dxo-editing mode="batch"></dxo-editing>
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                    <dxo-search-panel [placeholder]="''"
+                                      [visible]="true"
+                                      [width]="240">
+                    </dxo-search-panel>
+                    <dxo-paging [enabled]="true" [pageSize]=gridUtil.getPageSize()></dxo-paging>
+                    <dxo-pager [allowedPageSizes]=gridUtil.getAllowedPageSize()
+                               [displayMode]="'full'"
+                               [showInfo]="true"
+                               [showNavigationButtons]="true"
+                               [showPageSizeSelector]="true"
+                               [visible]="true">
+                    </dxo-pager>
+                    <dxo-state-storing [customLoad]="loadStateMain"
+                                       [customSave]="saveStateMain"
+                                       [enabled]="true"
+                                       type="custom">
+                    </dxo-state-storing>
 
-                <!--                <dxi-column [caption]="utilService.convert1('mm.code.codeCategory', 'ID')"-->
-                <!--                            dataField="codeCategory"></dxi-column>-->
-                <!--                <dxi-column [caption]="utilService.convert1('mm.code.name', '공통코드명')" dataField="name"></dxi-column>-->
-                <!--                <dxi-column [caption]="utilService.convert1('mm.code.remarks', '비고')" dataField="remarks"></dxi-column>-->
+                    <dxo-selection
+                            caption="UID"
+                            dataField="uid">
+                    </dxo-selection>
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="tenant"
+                                dataField="tenant">
+                    </dxi-column>
 
-                <!--                <dxi-column [caption]="utilService.convert('com.text.createdBy')" alignment="center"-->
-                <!--                            dataField="createdBy">-->
-                <!--                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>-->
-                <!--                </dxi-column>-->
-                <!--                <dxi-column [caption]="utilService.convert('com.text.createdDatetime')"-->
-                <!--                            dataField="createdDatetime">-->
-                <!--                </dxi-column>-->
-                <!--                <dxi-column [caption]="utilService.convert('com.text.modifiedBy')" alignment="center"-->
-                <!--                            dataField="modifiedBy">-->
-                <!--                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>-->
-                <!--                </dxi-column>-->
-                <!--                <dxi-column [caption]="utilService.convert('com.text.modifiedDatetime')"-->
-                <!--                            dataField="modifiedDatetime">-->
-                <!--                </dxi-column>-->
-                <dxi-column cssClass="pointer-column" type="checkbox"></dxi-column>
-                <dxi-column dataField="content"></dxi-column>
-                <dxi-column dataField="user"></dxi-column>
-                <dxi-column alignment="center" dataField="title"></dxi-column>
-                <dxi-column dataField="date-insert"></dxi-column>
-                <dxi-column alignment="center" dataField="author"></dxi-column>
-                <dxi-column dataField="date-update"></dxi-column>
+                    <!--                <dxi-column [caption]="utilService.convert1('mm.code.codeCategory', 'ID')"-->
+                    <!--                            dataField="codeCategory"></dxi-column>-->
+                    <!--                <dxi-column [caption]="utilService.convert1('mm.code.name', '공통코드명')" dataField="name"></dxi-column>-->
+                    <!--                <dxi-column [caption]="utilService.convert1('mm.code.remarks', '비고')" dataField="remarks"></dxi-column>-->
+
+                    <!--                <dxi-column [caption]="utilService.convert('com.text.createdBy')" alignment="center"-->
+                    <!--                            dataField="createdBy">-->
+                    <!--                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>-->
+                    <!--                </dxi-column>-->
+                    <!--                <dxi-column [caption]="utilService.convert('com.text.createdDatetime')"-->
+                    <!--                            dataField="createdDatetime">-->
+                    <!--                </dxi-column>-->
+                    <!--                <dxi-column [caption]="utilService.convert('com.text.modifiedBy')" alignment="center"-->
+                    <!--                            dataField="modifiedBy">-->
+                    <!--                    <dxo-lookup [dataSource]=dsUser displayExpr="name" valueExpr="uid"></dxo-lookup>-->
+                    <!--                </dxi-column>-->
+                    <!--                <dxi-column [caption]="utilService.convert('com.text.modifiedDatetime')"-->
+                    <!--                            dataField="modifiedDatetime">-->
+                    <!--                </dxi-column>-->
+                    <dxi-column alignment="center"
+                                caption="매장"
+                                dataField="content"
+                    ></dxi-column>
+                    <dxi-column caption="조회일">
+                        <dxi-column alignment="center" dataField="순매출액 [원]"></dxi-column>
+                        <dxi-column alignment="center" dataField="내장객 [명]"></dxi-column>
+                        <dxi-column alignment="center" dataField="객단가[원/명]"></dxi-column>
+                    </dxi-column>
+                    <dxi-column caption="조회월(2023년 1월 1일부터 ~ 조회일자까지)">
+                        <dxi-column alignment="center" dataField="순매출액 [원]"></dxi-column>
+                        <dxi-column alignment="center" dataField="내장객 [명]"></dxi-column>
+                        <dxi-column alignment="center" dataField="객단가[원/명]"></dxi-column>
+                    </dxi-column>
 
 
-            </dx-data-grid>
+                </dx-data-grid>
+            </div>
 
 
         </dxi-item>

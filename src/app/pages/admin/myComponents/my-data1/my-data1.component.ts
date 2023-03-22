@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
     selector: 'my-data1',
@@ -7,5 +7,5 @@ import {Component} from '@angular/core';
 })
 export class MyData1Component {
     todayDate: Date = new Date();
-
+    @Input() label = '';
 }

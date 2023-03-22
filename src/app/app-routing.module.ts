@@ -58,6 +58,10 @@ import {Buuastems4Component} from './pages/admin/buuastems4/buuastems4.component
 import {Buuastems5Component} from './pages/admin/buuastems5/buuastems5.component';
 import {Buuastems6Component} from './pages/admin/buuastems6/buuastems6.component';
 import {Buuastems7Component} from './pages/admin/buuastems7/buuastems7.component';
+import {Buuastems8Component} from './pages/admin/buuastems8/buuastems8.component';
+import {Buuastems9Component} from './pages/admin/buuastems9/buuastems9.component';
+import {Buuastems10Component} from './pages/admin/buuastems10/buuastems10.component';
+import {Buuastems11Component} from './pages/admin/buuastems11/buuastems11.component';
 /* 관리자 */
 
 /* 화주 */
@@ -282,6 +286,26 @@ const routes: Routes = [
     {
         path: 'tr/admin/buuastems7',
         component: Buuastems7Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/buuastems8',
+        component: Buuastems8Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/buuastems9',
+        component: Buuastems9Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/buuastems10',
+        component: Buuastems10Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/buuastems11',
+        component: Buuastems11Component,
         canActivate: [AuthGuardService]
     },
     /* 관리자 */

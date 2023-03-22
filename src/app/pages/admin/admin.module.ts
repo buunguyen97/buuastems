@@ -24,6 +24,12 @@ import { TextDirectoryComponent } from './myComponents/text-directory/text-direc
 import { Buuastems7Component } from './buuastems7/buuastems7.component';
 import { ButtonComponent } from './myComponents/button/button.component';
 import { ComboSelectComponent } from './myComponents/combo-select/combo-select.component';
+import { Buuastems8Component } from './buuastems8/buuastems8.component';
+import { ComboInputComponent } from './myComponents/combo-input/combo-input.component';
+import { RadioComponent } from './myComponents/radio/radio.component';
+import { Buuastems9Component } from './buuastems9/buuastems9.component';
+import { Buuastems10Component } from './buuastems10/buuastems10.component';
+import { Buuastems11Component } from './buuastems11/buuastems11.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +53,13 @@ import { ComboSelectComponent } from './myComponents/combo-select/combo-select.c
         TextDirectoryComponent,
         Buuastems7Component,
         ButtonComponent,
-        ComboSelectComponent
+        ComboSelectComponent,
+        Buuastems8Component,
+        ComboInputComponent,
+        RadioComponent,
+        Buuastems9Component,
+        Buuastems10Component,
+        Buuastems11Component
     ],
     imports: [
         DevExtremeModule,

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {DxDateBoxModule} from 'devextreme-angular';
 
 @Component({
@@ -9,6 +9,8 @@ import {DxDateBoxModule} from 'devextreme-angular';
 export class MyDateComponent {
     todayDate: Date = new Date();
     lastMonthDate: Date = new Date();
+    // @Input() type = "month";
+    // @Input() displayFormat = "dd/MM/yyyy";
 
     constructor() {
         this.lastMonthDate.setMonth(this.lastMonthDate.getMonth() - 1);
