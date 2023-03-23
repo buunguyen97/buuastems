@@ -30,6 +30,7 @@ export class Buuastems11Component implements OnInit, AfterViewInit {
     imagene = 'my-css-class';
     mainKey = 'uid';
     popupKey = 'uid';
+
     dataTest = [{
         "id": 1,
         "title": "json-server",
@@ -39,7 +40,15 @@ export class Buuastems11Component implements OnInit, AfterViewInit {
         "user": "Buu",
         "content": "aaaaaaaaaaaaaaaaaa",
         "uid": 100030,
-        "tenant": 1000
+        "tenant": 1000,
+        "city": "Cuauhtémoc",
+        "state": "Aguascalientes",
+        "country": "Mexico",
+        "postcode": 27300,
+        "first": "Magdalena",
+        "last": "Terzić",
+        "phone": "05-2942-7500",
+        "cell": "0441-932-570",
 
     },
         {
@@ -51,7 +60,15 @@ export class Buuastems11Component implements OnInit, AfterViewInit {
             "user": "Buu",
             "content": "bbbbbb",
             "uid": 100032,
-            "tenant": 1000
+            "tenant": 1000,
+            "city": "Cuauhtémoc",
+            "state": "Aguascalientes",
+            "country": "Mexico",
+            "postcode": 27300,
+            "first": "Magdalena",
+            "last": "Terzić",
+            "phone": "05-2942-7500",
+            "cell": "0441-932-570",
         }
         ,
         {
@@ -63,10 +80,61 @@ export class Buuastems11Component implements OnInit, AfterViewInit {
             "user": "Buu",
             "content": "cccc",
             "uid": 100033,
-            "tenant": 1000
+            "tenant": 1000,
+            "city": "Cuauhtémoc",
+            "state": "Aguascalientes",
+            "country": "Mexico",
+            "postcode": 27300,
+            "first": "Magdalena",
+            "last": "Terzić",
+            "phone": "05-2942-7500",
+            "cell": "0441-932-570",
         }
     ];
+    dataTitle = [
+        {
+            "id": 1,
+            "title": "순매출액 [원]",
+            "dataField": "id",
 
+        },
+        {
+            "id": 2,
+            "title": "순매출액 [원]",
+            "dataField": "title",
+
+        }
+        ,
+        {
+            "id": 3,
+            "title": "내장객 [명]",
+            "dataField": "author",
+        }
+        ,
+        {
+            "id": 4,
+            "title": "내장객 [명]",
+            "dataField": "user",
+        }
+        ,
+        {
+            "id": 5,
+            "title": "매장",
+            "dataField": "content",
+        }
+        ,
+        {
+            "id": 6,
+            "title": "객단가[원/ 명]",
+            "dataField": "uid",
+        }
+        ,
+        {
+            "id": 7,
+            "title": "객단가[원/ 명]",
+            "dataField": "date-insert",
+        }
+    ];
 
     isNewPopup = true;
 
@@ -129,7 +197,7 @@ export class Buuastems11Component implements OnInit, AfterViewInit {
         this.mainGrid.dataSource = this.dataTest;
         this.mainGrid.focusedRowKey = null;
         this.mainGrid.paging.pageIndex = 0;
-        console.log(this.dataTest)
+
     }
 
     // async onSearch(): Promise<void> {

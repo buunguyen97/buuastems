@@ -29,6 +29,7 @@ export class Buuastems10Component implements OnInit, AfterViewInit {
     imagene = 'my-css-class';
     mainKey = 'uid';
     popupKey = 'uid';
+    data = [];
     dataTest = [{
         "id": 1,
         "title": "json-server",
@@ -65,7 +66,124 @@ export class Buuastems10Component implements OnInit, AfterViewInit {
             "tenant": 1000
         }
     ];
+    dataTitle = [
+        {
+            "id": 1,
+            "title": "No",
+            "dataField": "id",
 
+        },
+        {
+            "id": 2,
+            "title": "매장명",
+            "dataField": "title",
+
+        }
+        ,
+        {
+            "id": 3,
+            "title": "영수번호",
+            "dataField": "author",
+        }
+        ,
+        {
+            "id": 4,
+            "title": "고객명",
+            "dataField": "user",
+        }
+        ,
+        {
+            "id": 5,
+            "title": "테이블명",
+            "dataField": "content",
+        }
+        ,
+        {
+            "id": 6,
+            "title": "매출시간",
+            "dataField": "uid",
+        }
+        ,
+        {
+            "id": 7,
+            "title": "결제시간",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 8,
+            "title": "주기시간",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 9,
+            "title": "매출구분",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 10,
+            "title": "총매출액",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 11,
+            "title": "순매출액",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 12,
+            "title": "부가세",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 13,
+            "title": "봉사료",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 14,
+            "title": "매출액",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 15,
+            "title": "총매출액",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 16,
+            "title": "순매출액",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 17,
+            "title": "부가세",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 18,
+            "title": "봉사료",
+            "dataField": "date-insert",
+        }
+        ,
+        {
+            "id": 19,
+            "title": "매출액",
+            "dataField": "date-insert",
+        }
+
+
+    ];
 
     isNewPopup = true;
 
@@ -128,7 +246,7 @@ export class Buuastems10Component implements OnInit, AfterViewInit {
         this.mainGrid.dataSource = this.dataTest;
         this.mainGrid.focusedRowKey = null;
         this.mainGrid.paging.pageIndex = 0;
-        console.log(this.dataTest)
+        this.data = this.dataTest;
     }
 
     // async onSearch(): Promise<void> {

@@ -30,6 +30,7 @@ import { RadioComponent } from './myComponents/radio/radio.component';
 import { Buuastems9Component } from './buuastems9/buuastems9.component';
 import { Buuastems10Component } from './buuastems10/buuastems10.component';
 import { Buuastems11Component } from './buuastems11/buuastems11.component';
+import { Buuastems12Component } from './buuastems12/buuastems12.component';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,8 @@ import { Buuastems11Component } from './buuastems11/buuastems11.component';
         RadioComponent,
         Buuastems9Component,
         Buuastems10Component,
-        Buuastems11Component
+        Buuastems11Component,
+        Buuastems12Component
     ],
     imports: [
         DevExtremeModule,
