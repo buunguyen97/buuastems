@@ -115,7 +115,9 @@ export class Buuastems12Component implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.initCode();
     }
-
+    onSubmit(form: any): void {
+      console.log('you submitted value:', form);
+    }
     calculateAreaSummary(options) {
     }
 

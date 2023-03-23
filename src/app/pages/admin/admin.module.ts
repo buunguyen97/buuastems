@@ -31,6 +31,8 @@ import { Buuastems9Component } from './buuastems9/buuastems9.component';
 import { Buuastems10Component } from './buuastems10/buuastems10.component';
 import { Buuastems11Component } from './buuastems11/buuastems11.component';
 import { Buuastems12Component } from './buuastems12/buuastems12.component';
+import { Buuastems13Component } from './buuastems13/buuastems13.component';
+import { OnlyNumberDirective } from './only-number.directive';
 
 @NgModule({
     declarations: [
@@ -61,7 +63,9 @@ import { Buuastems12Component } from './buuastems12/buuastems12.component';
         Buuastems9Component,
         Buuastems10Component,
         Buuastems11Component,
-        Buuastems12Component
+        Buuastems12Component,
+        Buuastems13Component,
+        OnlyNumberDirective
     ],
     imports: [
         DevExtremeModule,

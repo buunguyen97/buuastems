@@ -1,5 +1,5 @@
 <text-directory text=" 선불카드발행 2-11-1"></text-directory>
-<ng-form #myForm>
+<ng-form #f="ngForm"         >
     <div class="content-headerb">
         <div class="container">
             <div class="row ">
@@ -12,7 +12,7 @@
                 </div>
 
                 <div class=" col-6 item">
-                    <app-button (submit)="onSearch()" text="조 회"></app-button>
+                    <app-button (submit)="onSubmit(f.value)" text="조 회"></app-button>
                     <app-button text="엑 셀"></app-button>
                 </div>
 
