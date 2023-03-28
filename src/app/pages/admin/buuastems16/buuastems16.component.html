@@ -1,0 +1,156 @@
+<text-directory text="지역관리"></text-directory>
+<ng-form #f="ngForm">
+    <div class="content-headerb">
+        <div class="container">
+            <div class="row ">
+
+                <div class="col-12 item">
+                    <span class="text-note">체인본부에서 <span class="text-danger">관리하고 있는 지역 </span>을 구분하여 등록하여 주십시오.</span>
+                </div>
+                <div class=" col-3 item">
+                    <my-input label="지역분류명"></my-input>
+                </div>
+
+                <div class="col-2 item">
+                    <app-button text="등 록"></app-button>
+                    <app-button text="삭 제"></app-button>
+                    <app-button text="취 소"></app-button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-form>
+
+<div class="contents-body">
+
+    <dx-accordion [animationDuration]="300"
+                  [collapsible]="true"
+                  [multiple]="false"
+    >
+        <dxi-item>
+            <div class="grid">
+
+                <dx-data-grid #mainGrid
+                              (onCellClick)="handleCellClick($event)"
+                              (onExporting)="gridUtil.onPageExportXlsx($event)"
+                              (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
+                              [allowColumnReordering]="true"
+                              [allowColumnResizing]="true"
+                              [columnAutoWidth]="true"
+                              [dataSource]="dataTest"
+                              [focusedRowEnabled]="true"
+                              [height]="240"
+                              [rowAlternationEnabled]="true"
+                              [showRowLines]="true"
+                              class="aaaaa"
+                              columnResizingMode=nextColumn
+                              keyExpr="id"
+                >
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                    <dxo-search-panel [placeholder]="''"
+                                      [visible]="true"
+                                      [width]="240">
+                    </dxo-search-panel>
+
+
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="UID"
+                                dataField="uid">
+                    </dxi-column>
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="tenant"
+                                dataField="tenant">
+                    </dxi-column>
+                    <!--                    <dxi-column *ngFor="let item of dataTitle"-->
+                    <!--                                alignment="center"-->
+                    <!--                                caption="{{item.title}}"-->
+                    <!--                                dataField="{{item.dataField}}"-->
+                    <!--                    > <dxi-button name="edit"></dxi-button>-->
+
+                    <!--                    </dxi-column>-->
+                    <dxo-selection mode="multiple"></dxo-selection>
+                    <dxi-column [width]="45" type="selection"></dxi-column>
+                    <dxi-column *ngFor="let item of dataTitle"
+                                alignment="center" caption="{{item.title}}"
+                                cssClass="{{item.cssClass}}" dataField="{{item.dataField}}"
+                    ></dxi-column>
+
+
+                </dx-data-grid>
+            </div>
+
+
+        </dxi-item>
+    </dx-accordion>
+    <dx-accordion [animationDuration]="300"
+                  [collapsible]="true"
+                  [multiple]="false"
+    >
+        <dxi-item>
+            <div class="grid">
+
+                <dx-data-grid #mainGrid2
+                              (onCellClick)="handleCellClick($event)"
+                              (onExporting)="gridUtil.onPageExportXlsx($event)"
+                              (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
+                              [allowColumnReordering]="true"
+                              [allowColumnResizing]="true"
+                              [columnAutoWidth]="true"
+                              [dataSource]="dataTest2"
+                              [focusedRowEnabled]="true"
+                              [height]="240"
+                              [rowAlternationEnabled]="true"
+                              [showRowLines]="true"
+                              columnResizingMode=nextColumn
+                              keyExpr="id"
+                >
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                    <dxo-search-panel [placeholder]="''"
+                                      [visible]="true"
+                                      [width]="240">
+                    </dxo-search-panel>
+
+
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="UID"
+                                dataField="uid">
+                    </dxi-column>
+                    <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                [showInColumnChooser]="false"
+                                [visible]="false"
+                                caption="tenant"
+                                dataField="tenant">
+                    </dxi-column>
+                    <!--                    <dxi-column *ngFor="let item of dataTitle"-->
+                    <!--                                alignment="center"-->
+                    <!--                                caption="{{item.title}}"-->
+                    <!--                                dataField="{{item.dataField}}"-->
+                    <!--                    > <dxi-button name="edit"></dxi-button>-->
+
+                    <!--                    </dxi-column>-->
+                    <dxi-column *ngFor="let item of dataTitle2"
+                                alignment="{{item.alignment}}"
+                                caption="{{item.title}}"
+                                cssClass="{{item.cssClass}}"
+                                dataField="{{item.dataField}}"
+                    ></dxi-column>
+
+
+                </dx-data-grid>
+            </div>
+
+
+        </dxi-item>
+    </dx-accordion>
+</div>

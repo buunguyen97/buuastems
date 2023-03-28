@@ -1,23 +1,23 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from "devextreme-angular/ui/form";
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from "devextreme-angular";
+import {FormControl, FormGroup} from "@angular/forms";
 import {CommonUtilService} from "../../../shared/services/common-util.service";
-import {CodeService} from "../../mm/code/code.service";
+import {Buuastems12Service} from "../buuastems12/buuastems12.service";
 import {CommonCodeService} from "../../../shared/services/common-code.service";
 import {GridUtilService} from "../../../shared/services/grid-util.service";
-import {FormControl, FormGroup} from "@angular/forms";
-import {Buuastems12Service} from "../buuastems12/buuastems12.service";
-import {Router} from '@angular/router';
+import {Router} from "@angular/router";
 
 @Component({
-    selector: 'app-buuastems13',
-    templateUrl: './buuastems13.component.html',
-    styleUrls: ['./buuastems13.component.scss']
+    selector: 'app-buuastems17',
+    templateUrl: './buuastems17.component.html',
+    styleUrls: ['./buuastems17.component.scss']
 })
 
-export class Buuastems13Component implements OnInit, AfterViewInit {
+export class Buuastems17Component implements OnInit, AfterViewInit {
     @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
     @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
+    @ViewChild('mainGrid2', {static: false}) mainGrid2: DxDataGridComponent;
 
     @ViewChild('popup', {static: false}) popup: DxPopupComponent;
     @ViewChild('popupForm', {static: false}) popupForm: DxFormComponent;
@@ -30,80 +30,176 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
     pageInfo: any = this.utilService.getPageInfo();
     public moihe: string = this.utilService.convert1('mm.code.codeCategory', 'ID');
     myForm: FormGroup;
-
+    public tilte = "";
     imagene = 'my-css-class';
     mainKey = 'uid';
     popupKey = 'uid';
-
+    todayDate: Date = new Date();
+    lastMonthDate: Date = new Date();
+    // @Input() type = "month";
+    // @Input() displayFormat = "dd/MM/yyyy";
     dataTest = [{
         "id": 1,
-        "title": "만원짜리",
-        "author": "1000",
-        "date-insert": "24/03/2023, 08:28:19",
-        "tenant": 100
+        "title": "배추유나카드",
+        "share": "10%",
+        "discount": "25%",
 
 
     },
         {
             "id": 2,
-            "title": "10만원",
-            "author": "200",
-            "date-insert": "24/03/2023, 08:28:19",
-            "tenant": 100
+            "title": "한샘그룹카드",
+            "share": "0%",
+            "discount": "5%",
         }
         ,
         {
             "id": 3,
-            "title": "오만원권",
-            "author": "300",
-            "date-insert": "24/03/2023, 08:28:19",
-            "tenant": 100
+            "title": "테스트용카드",
+            "share": "50%",
+            "discount": "10%",
+        }
+        ,
+        {
+            "id": 4,
+            "title": "Hi",
+            "share": "50%",
+            "discount": "50%",
         }
     ];
     dataTitle = [
         {
             "id": 1,
-            "title": "권종코드",
+            "title": "No.",
             "dataField": "id",
 
         },
+
         {
             "id": 2,
-            "title": "권종명",
+            "title": "제휴카드사명",
             "dataField": "title",
 
         }
         ,
         {
             "id": 3,
-            "title": "권종명",
-            "dataField": "author",
+            "title": "분담율",
+            "dataField": "share",
+
+        },
+        {
+            "id": 4,
+            "title": "할인율",
+            "dataField": "discount",
+        }
+
+    ];
+    dataTest2 = [];
+    dataTest2Search = [{
+        "id": 1,
+        "title": "8층테스트",
+        "user": "홍아무개",
+        "address": "서울특별시 광진구 구의강변로 30 (구의동) 목림빌딩",
+        "phone": "02) 123-1231",
+        "email": "atpos101@astems.co.kr",
+        "model": "001"
+
+
+    },
+        {
+            "id": 2,
+            "title": "ASTEMS교육장(매장)3",
+            "user": "홍길동",
+            "address": "서울 광진구 구의동  599",
+            "phone": "02) 123-1231",
+            "email": "atpos101@astems.co.kr",
+            "model": "001"
+        }
+        ,
+        {
+            "id": 3,
+            "title": "SCR테스트",
+            "user": "홍길동",
+            "address": "서울 광진구 구의동  599",
+            "phone": "02) 123-1231",
+            "email": "atpos101@astems.co.kr",
+            "model": "001"
         }
         ,
         {
             "id": 4,
-            "title": "최종변경일시",
-            "dataField": "date-insert",
+            "title": "ASTEMS교육장(매장)2",
+            "user": "홍아무개",
+            "address": "서울 광진구 구의동  599",
+            "phone": "02) 123-1231",
+            "email": "atpos101@astems.co.kr",
+            "model": "002"
+        }
+        ,
+        {
+            "id": 5,
+            "title": "10층교육장",
+            "user": "홍아무개",
+            "address": "서울특별시 광진구 구의강변로 30 (구의동) 목림빌딩",
+            "phone": "02) 123-1231",
+            "email": "atpos105@astems.co.kr",
+            "model": "002"
+        }
+    ];
+    dataTitle2 = [
+        {
+            "id": 1,
+            "title": "대분류명",
+            "dataField": "title",
+            "alignment": "left",
+
+        },
+
+        {
+            "id": 2,
+            "title": "중분류명",
+            "dataField": "user",
+            "alignment": "center",
+
+        }
+        ,
+        {
+            "id": 3,
+            "title": "소분류명",
+            "dataField": "address",
+            "alignment": "left",
+
+        },
+        {
+            "id": 4,
+            "title": "상품명",
+            "dataField": "phone",
+            "alignment": "center",
+        }
+        ,
+        {
+            "id": 5,
+            "title": "할인율",
+            "dataField": "email",
+            "alignment": "left",
         }
 
     ];
-
     isNewPopup = true;
     changesHien = false;
-
     changes = [];
     public themText = '';
     dsYN = [];
     dsUser = [];
-
     GRID_STATE_KEY = 'mm_code';
     saveStateMain = this.gridUtil.fnGridSaveState(this.GRID_STATE_KEY + '_main');
     loadStateMain = this.gridUtil.fnGridLoadState(this.GRID_STATE_KEY + '_main');
     saveStatePopup = this.gridUtil.fnGridSaveState(this.GRID_STATE_KEY + '_popup');
     loadStatePopup = this.gridUtil.fnGridLoadState(this.GRID_STATE_KEY + '_popup');
 
-    // }
 
+    // }
 
     constructor(public utilService: CommonUtilService,
                 private service: Buuastems12Service,
@@ -114,6 +210,7 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
         this.onClickPopupSave = this.onClickPopupSave.bind(this);
         this.onClickPopupDelete = this.onClickPopupDelete.bind(this);
         this.onClickPopupCancel = this.onClickPopupCancel.bind(this);
+        this.lastMonthDate.setMonth(this.lastMonthDate.getMonth() - 1);
         this.myForm = new FormGroup({
             title: new FormControl('')
         });
@@ -178,14 +275,7 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
             const lastItem = this.dataTest[this.dataTest.length - 1];
             const newId = lastItem.id + 1;
             const currentDate = new Date();
-            const newObject = {
-                "id": newId,
-                "title": this.mainForm.formData.codeCategory,
-                "author": this.mainForm.formData.name,
-                "date-insert": currentDate.toLocaleString(),
-                "tenant": 200
-            };
-            this.dataTest.push(newObject);
+
             this.mainGrid.dataSource = this.dataTest;
             this.mainGrid.focusedRowKey = null;
             this.mainGrid.paging.pageIndex = 0;
@@ -198,9 +288,6 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
         this.mainForm.formData = {};
     }
 
-    nhapso() {
-        alert(1111);
-    }
 
     onNew(e): void {
         this.isNewPopup = true;
@@ -227,22 +314,19 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
         }
     }
 
-    async handleCellClick(e): Promise<void> {
-        console.log(e.column.index);
-        if (e.column.index === 3) {
-            this.router.navigate(['/tr/admin/buuastems14'], {skipLocationChange: true});
-        }
-        if (e.column.index === 2) {
-            console.log(e.data.title);
-            this.mainForm.formData.codeCategory = e.data.title;
-            this.mainForm.formData.name = e.data.author;
-            this.mainForm.formData.id = e.data.id;
-            this.changesHien = true;
-        }
+    async onRowClick(e): Promise<void> {
+        // this.mainForm.formData.codeCategory = e.data.codeCategory;
+        // this.mainForm.formData.name = e.data.name;
+        // this.themText = e.data.isEditPossibleFlg;
+        console.log(e.data);
+        this.tilte = e.data.title;
 
 
     }
 
+    handleKeyDown(event: any) {
+        console.log('Key pressed:', event.key);
+    }
 
     async onDelete(): Promise<any> {
         console.log(111);
@@ -269,20 +353,7 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
 
     async onChange(): Promise<any> {
         console.log(this.mainForm.formData.id);
-        const targetObject = this.dataTest.find((item) => item.id === this.mainForm.formData.id);
-        if (targetObject) {
-            const updatedObject = {
-                id: targetObject.id,
-                title: this.mainForm.formData.codeCategory,
-                author: this.mainForm.formData.name,
-                "date-insert": targetObject["date-insert"],
-                tenant: targetObject.tenant
-            };
-            console.log(updatedObject);
-            Object.assign(targetObject, updatedObject);
-            return updatedObject;
-            this.mainGrid.dataSource = this.dataTest;
-        }
+
     }
 
     async onClickPopupSave(e): Promise<void> {

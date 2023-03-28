@@ -1,21 +1,20 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from "devextreme-angular/ui/form";
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from "devextreme-angular";
+import {FormControl, FormGroup} from "@angular/forms";
 import {CommonUtilService} from "../../../shared/services/common-util.service";
-import {CodeService} from "../../mm/code/code.service";
+import {Buuastems12Service} from "../buuastems12/buuastems12.service";
 import {CommonCodeService} from "../../../shared/services/common-code.service";
 import {GridUtilService} from "../../../shared/services/grid-util.service";
-import {FormControl, FormGroup} from "@angular/forms";
-import {Buuastems12Service} from "../buuastems12/buuastems12.service";
-import {Router} from '@angular/router';
+import {Router} from "@angular/router";
 
 @Component({
-    selector: 'app-buuastems13',
-    templateUrl: './buuastems13.component.html',
-    styleUrls: ['./buuastems13.component.scss']
+    selector: 'app-buuastems14',
+    templateUrl: './buuastems14.component.html',
+    styleUrls: ['./buuastems14.component.scss']
 })
 
-export class Buuastems13Component implements OnInit, AfterViewInit {
+export class Buuastems14Component implements OnInit, AfterViewInit {
     @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
     @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
 
@@ -37,54 +36,86 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
 
     dataTest = [{
         "id": 1,
-        "title": "만원짜리",
-        "author": "1000",
-        "date-insert": "24/03/2023, 08:28:19",
+        "title": "0000001 ~ 0000005",
+        "number": "3",
+        "author": "발행완료",
+        "date-insert": "24/03/2023",
+        "date-update": "24/03/2023",
         "tenant": 100
 
 
     },
         {
             "id": 2,
-            "title": "10만원",
-            "author": "200",
-            "date-insert": "24/03/2023, 08:28:19",
+            "title": "1111111 ~ 1111111",
+            "number": "5",
+            "author": "발행완료",
+            "date-insert": "24/03/2023",
+            "date-update": "24/03/2023",
             "tenant": 100
         }
         ,
         {
             "id": 3,
-            "title": "오만원권",
-            "author": "300",
-            "date-insert": "24/03/2023, 08:28:19",
+            "title": "0000000 ~ 0000000",
+            "number": "1",
+            "author": "발행완료",
+            "date-insert": "24/03/2023",
+            "date-update": "24/03/2023",
             "tenant": 100
         }
     ];
     dataTitle = [
         {
             "id": 1,
-            "title": "권종코드",
+            "title": "차수",
             "dataField": "id",
+            "cssClass": "",
 
         },
         {
             "id": 2,
-            "title": "권종명",
+            "title": "카드번호",
             "dataField": "title",
+            "cssClass": "title",
 
         }
         ,
         {
             "id": 3,
-            "title": "권종명",
-            "dataField": "author",
+            "title": "발행매수",
+            "dataField": "number",
+            "cssClass": "",
         }
         ,
         {
             "id": 4,
-            "title": "최종변경일시",
+            "title": "유효기간",
             "dataField": "date-insert",
+            "cssClass": "",
         }
+        ,
+        {
+            "id": 5,
+            "title": "발행일자",
+            "dataField": "date-update",
+            "cssClass": "",
+        }
+        ,
+        {
+            "id": 6,
+            "title": "발행구분",
+            "dataField": "author",
+            "cssClass": "",
+        }
+        ,
+        {
+            "id": 6,
+            "title": "발행요청",
+            "dataField": "author",
+            "cssClass": "",
+        }
+
 
     ];
 
@@ -173,33 +204,17 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
     //     }
 
     async onSearch(): Promise<void> {
-        console.log(this.mainForm.formData.codeCategory);
-        if (this.mainForm.formData.codeCategory && this.mainForm.formData.name) {
-            const lastItem = this.dataTest[this.dataTest.length - 1];
-            const newId = lastItem.id + 1;
-            const currentDate = new Date();
-            const newObject = {
-                "id": newId,
-                "title": this.mainForm.formData.codeCategory,
-                "author": this.mainForm.formData.name,
-                "date-insert": currentDate.toLocaleString(),
-                "tenant": 200
-            };
-            this.dataTest.push(newObject);
-            this.mainGrid.dataSource = this.dataTest;
-            this.mainGrid.focusedRowKey = null;
-            this.mainGrid.paging.pageIndex = 0;
-            this.mainForm.formData = {};
-        }
+
+        console.log(this.dataTest);
+        this.mainGrid.dataSource = this.dataTest;
+        this.mainGrid.focusedRowKey = null;
+        this.mainGrid.paging.pageIndex = 0;
+
     }
 
     onReset(): void {
         console.log(111);
         this.mainForm.formData = {};
-    }
-
-    nhapso() {
-        alert(1111);
     }
 
     onNew(e): void {
@@ -228,44 +243,26 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
     }
 
     async handleCellClick(e): Promise<void> {
-        console.log(e.column.index);
+
+        console.log(e.column.index)
         if (e.column.index === 3) {
-            this.router.navigate(['/tr/admin/buuastems14'], {skipLocationChange: true});
-        }
-        if (e.column.index === 2) {
-            console.log(e.data.title);
-            this.mainForm.formData.codeCategory = e.data.title;
-            this.mainForm.formData.name = e.data.author;
-            this.mainForm.formData.id = e.data.id;
-            this.changesHien = true;
+            this.router.navigate(['/tr/admin/buuastems15'], {skipLocationChange: true});
         }
 
 
     }
-
 
     async onDelete(): Promise<any> {
         console.log(111);
         const titleToRemove = this.mainForm.formData.codeCategory
         const indexToRemove = this.dataTest.findIndex((item) => item.title === titleToRemove);
         let deletedData = null;
-        this.mainForm.formData = {};
         if (indexToRemove !== -1) {
             deletedData = this.dataTest.splice(indexToRemove, 1)[0];
         }
         this.mainGrid.dataSource = this.dataTest;
         return deletedData;
-
     }
-
-    // async onChange(): Promise<any> {
-    //     console.log(this.mainForm.formData.uid);
-    //     const targetObject = this.dataTest.find((item) => item.id === this.mainForm.formData.id);
-    //     if (targetObject) {
-    //         targetObject.title = this.mainForm.formData.codeCategory;
-    //         targetObject.author = this.mainForm.formData.name;
-    //     }
-    // }
 
     async onChange(): Promise<any> {
         console.log(this.mainForm.formData.id);

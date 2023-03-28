@@ -19,20 +19,25 @@ import {MyInputComponent} from './myComponents/my-input/my-input.component';
 import {MySelectComponent} from './myComponents/my-select/my-select.component';
 import {MyDateComponent} from './myComponents/my-date/my-date.component';
 import {FormsModule} from "@angular/forms";
-import { MyData1Component } from './myComponents/my-data1/my-data1.component';
-import { TextDirectoryComponent } from './myComponents/text-directory/text-directory.component';
-import { Buuastems7Component } from './buuastems7/buuastems7.component';
-import { ButtonComponent } from './myComponents/button/button.component';
-import { ComboSelectComponent } from './myComponents/combo-select/combo-select.component';
-import { Buuastems8Component } from './buuastems8/buuastems8.component';
-import { ComboInputComponent } from './myComponents/combo-input/combo-input.component';
-import { RadioComponent } from './myComponents/radio/radio.component';
-import { Buuastems9Component } from './buuastems9/buuastems9.component';
-import { Buuastems10Component } from './buuastems10/buuastems10.component';
-import { Buuastems11Component } from './buuastems11/buuastems11.component';
-import { Buuastems12Component } from './buuastems12/buuastems12.component';
-import { Buuastems13Component } from './buuastems13/buuastems13.component';
-import { OnlyNumberDirective } from './only-number.directive';
+import {MyData1Component} from './myComponents/my-data1/my-data1.component';
+import {TextDirectoryComponent} from './myComponents/text-directory/text-directory.component';
+import {Buuastems7Component} from './buuastems7/buuastems7.component';
+import {ButtonComponent} from './myComponents/button/button.component';
+import {ComboSelectComponent} from './myComponents/combo-select/combo-select.component';
+import {Buuastems8Component} from './buuastems8/buuastems8.component';
+import {ComboInputComponent} from './myComponents/combo-input/combo-input.component';
+import {RadioComponent} from './myComponents/radio/radio.component';
+import {Buuastems9Component} from './buuastems9/buuastems9.component';
+import {Buuastems10Component} from './buuastems10/buuastems10.component';
+import {Buuastems11Component} from './buuastems11/buuastems11.component';
+import {Buuastems12Component} from './buuastems12/buuastems12.component';
+import {Buuastems13Component} from './buuastems13/buuastems13.component';
+import {OnlyNumberDirective} from './only-number.directive';
+import {Buuastems14Component} from './buuastems14/buuastems14.component';
+import {Buuastems15Component} from './buuastems15/buuastems15.component';
+import {RouterModule} from '@angular/router';
+import { Buuastems16Component } from './buuastems16/buuastems16.component';
+import { Buuastems17Component } from './buuastems17/buuastems17.component';
 
 @NgModule({
     declarations: [
@@ -65,13 +70,18 @@ import { OnlyNumberDirective } from './only-number.directive';
         Buuastems11Component,
         Buuastems12Component,
         Buuastems13Component,
-        OnlyNumberDirective
+        OnlyNumberDirective,
+        Buuastems14Component,
+        Buuastems15Component,
+        Buuastems16Component,
+        Buuastems17Component
     ],
     imports: [
         DevExtremeModule,
         CommonModule,
         PopupModule,
-        FormsModule
+        FormsModule,
+        RouterModule
     ]
 })
 export class AdminModule {

@@ -1,0 +1,275 @@
+<text-directory text="수주현황"></text-directory>
+<div class="content">
+    <div class="content1">
+
+        <ng-form #f="ngForm">
+            <div class="content-headerb">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-12 item">
+                            <span class="text-note text-danger">☞ 할인율은 전체상품 적용일때 보여짐.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-form>
+
+        <div class="contents-body">
+
+            <dx-accordion [animationDuration]="300"
+                          [collapsible]="true"
+                          [multiple]="false"
+            >
+                <dxi-item>
+                    <div class="grid">
+
+                        <dx-data-grid #mainGrid
+                                      (onExporting)="gridUtil.onPageExportXlsx($event)"
+                                      (onRowClick)="onRowClick($event)"
+                                      (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
+                                      [allowColumnReordering]="true"
+                                      [allowColumnResizing]="true"
+                                      [columnAutoWidth]="true"
+                                      [dataSource]="dataTest"
+                                      [focusedRowEnabled]="true"
+                                      [height]="240"
+                                      [rowAlternationEnabled]="true"
+                                      [showRowLines]="true"
+                                      class="aaaaa"
+                                      columnResizingMode=nextColumn
+                                      keyExpr="id"
+                        >
+                            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                            <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                            <dxo-search-panel [placeholder]="''"
+                                              [visible]="true"
+                                              [width]="240">
+                            </dxo-search-panel>
+
+
+                            <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                        [showInColumnChooser]="false"
+                                        [visible]="false"
+                                        caption="UID"
+                                        dataField="uid">
+                            </dxi-column>
+                            <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                        [showInColumnChooser]="false"
+                                        [visible]="false"
+                                        caption="tenant"
+                                        dataField="tenant">
+                            </dxi-column>
+
+                            <dxi-column *ngFor="let item of dataTitle"
+                                        alignment="center" caption="{{item.title}}"
+                                        cssClass="{{item.cssClass}}" dataField="{{item.dataField}}"
+                            ></dxi-column>
+
+
+                        </dx-data-grid>
+                    </div>
+
+
+                </dxi-item>
+            </dx-accordion>
+        </div>
+
+    </div>
+    <div class="content2">
+        <div class="content-headerbnew">
+            <div class="container">
+                <div class="row ">
+                    <div class=" col-10 item">
+
+                    </div>
+                    <div class=" col-2 item">
+                        <my-button (reset)="onReset()" (submit)="onSearch()"></my-button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="table-input content-headerb">
+            <div class="container">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="text-center"><span>제휴카드사명</span></td>
+                        <td colspan="3"><input [name]="tilte" [value]="tilte" type="text"></td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-center "><span>분담율</span></td>
+                        <td><input name="title" type="number"><span>%</span></td>
+                        <td class="text-center"><span>분담율면과세</span></td>
+                        <td>
+                            <select aria-label="Default select example" class="form-select">
+                                <option selected>면세</option>
+                                <option value="1">과세</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><span>유효기간</span></td>
+                        <td colspan="3">
+                            <div class="date">
+                                <div class="col-5 item-date">
+                                    <dx-date-box
+
+                                            [value]="lastMonthDate"
+                                            displayFormat="dd/MM/yyyy"
+                                            placeholder="16/10/2018"
+                                            type="date"
+                                    >
+                                    </dx-date-box>
+                                </div>
+                                <div class="col-1  item-date d-flex align-items-center">
+                                    <span class="mytocalendar ">~</span>
+                                </div>
+                                <div class="col-6 item-date">
+                                    <dx-date-box
+                                            [useMaskBehavior]="true"
+                                            [value]="todayDate"
+                                            displayFormat="dd/MM/yyyy"
+                                            placeholder="16/10/2018"
+                                            type="date"
+                                    >
+                                    </dx-date-box>
+                                </div>
+
+
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-center"><span>취급상품구분</span></td>
+                        <td colspan="3">
+                            <select aria-label="Default select example" class="form-select select-css">
+                                <option selected>전체상품</option>
+                                <option value="1">특정상품</option>
+                            </select>
+                            <span>할인율 </span><input name="title" type="number"><span>%</span>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-center"><span>할인액</span></td>
+                        <td colspan="3">
+                            <select aria-label="Default select example" class="form-select select-css">
+                                <option selected>전체상품</option>
+                                <option value="1">특정상품</option>
+                            </select></td>
+
+                    </tr>
+                    <tr>
+
+                        <td class="text-center"><span>반올림구분</span></td>
+                        <td>
+                            <select aria-label="Default select example" class="form-select select-css">
+                                <option selected>반올림
+                                </option>
+                                <option value="1">절사</option>
+                                <option value="2">절상</option>
+                            </select>
+                        </td>
+                        <td class="text-center"><span>승인처리구분</span></td>
+                        <td>
+                            <select aria-label="Default select example" class="form-select select-css">
+                                <option selected>처리안함
+                                </option>
+                                <option value="1">SK Leaders</option>
+                                <option value="2">KTF</option>
+                                <option value="2">비씨제휴</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-center"><span>비 고</span></td>
+                        <td colspan="3"><input name="title" type="text"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <ng-form #f="ngForm">
+            <div class="content-headerb">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-12 item">
+                            <span class="text-note text-danger">☞ 할인율은 전체상품 적용일때 보여짐.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-form>
+
+        <div class="contents-body">
+
+            <dx-accordion [animationDuration]="300"
+                          [collapsible]="true"
+                          [multiple]="false"
+            >
+                <dxi-item>
+                    <div class="grid">
+
+                        <dx-data-grid #mainGrid
+
+                                      (onExporting)="gridUtil.onPageExportXlsx($event)"
+                                      (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
+                                      [allowColumnReordering]="true"
+                                      [allowColumnResizing]="true"
+                                      [columnAutoWidth]="true"
+                                      [dataSource]="dataTest2"
+                                      [focusedRowEnabled]="true"
+                                      [height]="240"
+                                      [rowAlternationEnabled]="true"
+                                      [showRowLines]="true"
+                                      class="aaaaa"
+                                      columnResizingMode=nextColumn
+                                      keyExpr="id"
+                        >
+                            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                            <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                            <dxo-search-panel [placeholder]="''"
+                                              [visible]="true"
+                                              [width]="240">
+                            </dxo-search-panel>
+
+
+                            <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                        [showInColumnChooser]="false"
+                                        [visible]="false"
+                                        caption="UID"
+                                        dataField="uid">
+                            </dxi-column>
+                            <dxi-column [allowEditing]="false" [allowSearch]="false"
+                                        [showInColumnChooser]="false"
+                                        [visible]="false"
+                                        caption="tenant"
+                                        dataField="tenant">
+                            </dxi-column>
+
+                            <dxi-column *ngFor="let item of dataTitle2"
+                                        alignment="center" caption="{{item.title}}"
+                                        cssClass="{{item.cssClass}}" dataField="{{item.dataField}}"
+                            ></dxi-column>
+
+
+                        </dx-data-grid>
+                    </div>
+
+
+                </dxi-item>
+            </dx-accordion>
+        </div>
+    </div>
+</div>
+
+
