@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {PercentPipe} from '@angular/common';
 import {DevExtremeModule} from 'devextreme-angular';
 import {TranordComponent} from './tranord/tranord.component';
 import {CommonModule} from '@angular/common';
@@ -36,8 +37,8 @@ import {OnlyNumberDirective} from './only-number.directive';
 import {Buuastems14Component} from './buuastems14/buuastems14.component';
 import {Buuastems15Component} from './buuastems15/buuastems15.component';
 import {RouterModule} from '@angular/router';
-import { Buuastems16Component } from './buuastems16/buuastems16.component';
-import { Buuastems17Component } from './buuastems17/buuastems17.component';
+import {Buuastems16Component} from './buuastems16/buuastems16.component';
+import {Buuastems17Component} from './buuastems17/buuastems17.component';
 
 @NgModule({
     declarations: [
@@ -82,7 +83,10 @@ import { Buuastems17Component } from './buuastems17/buuastems17.component';
         PopupModule,
         FormsModule,
         RouterModule
-    ]
+    ],
+    providers: [
+        PercentPipe // import pipe vào provider
+    ],
 })
 export class AdminModule {
 }

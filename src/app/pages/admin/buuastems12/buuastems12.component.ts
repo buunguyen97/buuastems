@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from "devextreme-angular/ui/form";
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from "devextreme-angular";
 import {CommonUtilService} from "../../../shared/services/common-util.service";
@@ -98,6 +98,7 @@ export class Buuastems12Component implements OnInit, AfterViewInit {
     loadStateMain = this.gridUtil.fnGridLoadState(this.GRID_STATE_KEY + '_main');
     saveStatePopup = this.gridUtil.fnGridSaveState(this.GRID_STATE_KEY + '_popup');
     loadStatePopup = this.gridUtil.fnGridLoadState(this.GRID_STATE_KEY + '_popup');
+    titleValue: string;
 
     constructor(public utilService: CommonUtilService,
                 private service: Buuastems12Service,
@@ -115,9 +116,8 @@ export class Buuastems12Component implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.initCode();
     }
-    onSubmit(form: any): void {
-      console.log('you submitted value:', form);
-    }
+
+
     calculateAreaSummary(options) {
     }
 

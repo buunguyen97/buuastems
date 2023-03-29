@@ -31,11 +31,15 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
     public moihe: string = this.utilService.convert1('mm.code.codeCategory', 'ID');
     myForm: FormGroup;
     public tilte = "";
+    public share = "";
+    public discount = "";
+    public model = "";
+    public price = "";
     imagene = 'my-css-class';
     mainKey = 'uid';
     popupKey = 'uid';
-    todayDate: Date = new Date();
-    lastMonthDate: Date = new Date();
+    date2: Date = new Date();
+    date1: Date = new Date();
     // @Input() type = "month";
     // @Input() displayFormat = "dd/MM/yyyy";
     dataTest = [{
@@ -43,6 +47,10 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
         "title": "배추유나카드",
         "share": "10%",
         "discount": "25%",
+        "insert": "01/01/2018",
+        "update": "16/10/9999",
+        "model": "001",
+        "price": "",
 
 
     },
@@ -51,13 +59,21 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
             "title": "한샘그룹카드",
             "share": "0%",
             "discount": "5%",
+            "insert": "16/10/2012",
+            "update": "31/12/9999",
+            "model": "002",
+            "price": "",
         }
         ,
         {
             "id": 3,
             "title": "테스트용카드",
             "share": "50%",
-            "discount": "10%",
+            "discount": "",
+            "insert": "16/10/2017",
+            "update": "01/10/9999",
+            "model": "004",
+            "price": "",
         }
         ,
         {
@@ -65,6 +81,10 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
             "title": "Hi",
             "share": "50%",
             "discount": "50%",
+            "insert": "1/07/2010",
+            "update": "16/12/9999",
+            "model": "005",
+            "price": "4000",
         }
     ];
     dataTitle = [
@@ -98,52 +118,52 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
     dataTest2 = [];
     dataTest2Search = [{
         "id": 1,
-        "title": "8층테스트",
-        "user": "홍아무개",
-        "address": "서울특별시 광진구 구의강변로 30 (구의동) 목림빌딩",
-        "phone": "02) 123-1231",
-        "email": "atpos101@astems.co.kr",
+        "col1": "xp",
+        "col2": "xp1",
+        "col3": "xp2",
+        "col4": "xp테스트",
+        "col5": "20%",
         "model": "001"
 
 
     },
         {
             "id": 2,
-            "title": "ASTEMS교육장(매장)3",
-            "user": "홍길동",
-            "address": "서울 광진구 구의동  599",
-            "phone": "02) 123-1231",
-            "email": "atpos101@astems.co.kr",
+            "col1": "xp",
+            "col2": "xp1",
+            "col3": "xp2",
+            "col4": "xp테스트",
+            "col5": "20%",
             "model": "001"
         }
         ,
         {
             "id": 3,
-            "title": "SCR테스트",
-            "user": "홍길동",
-            "address": "서울 광진구 구의동  599",
-            "phone": "02) 123-1231",
-            "email": "atpos101@astems.co.kr",
+            "col1": "xp",
+            "col2": "xp1",
+            "col3": "xp2",
+            "col4": "xp테스트",
+            "col5": "20%",
             "model": "001"
         }
         ,
         {
             "id": 4,
-            "title": "ASTEMS교육장(매장)2",
-            "user": "홍아무개",
-            "address": "서울 광진구 구의동  599",
-            "phone": "02) 123-1231",
-            "email": "atpos101@astems.co.kr",
+            "col1": "xp",
+            "col2": "xp1",
+            "col3": "xp2",
+            "col4": "xp테스트",
+            "col5": "20%",
             "model": "002"
         }
         ,
         {
             "id": 5,
-            "title": "10층교육장",
-            "user": "홍아무개",
-            "address": "서울특별시 광진구 구의강변로 30 (구의동) 목림빌딩",
-            "phone": "02) 123-1231",
-            "email": "atpos105@astems.co.kr",
+            "col1": "xp",
+            "col2": "xp1",
+            "col3": "xp2",
+            "col4": "xp테스트",
+            "col5": "20%",
             "model": "002"
         }
     ];
@@ -151,7 +171,7 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
         {
             "id": 1,
             "title": "대분류명",
-            "dataField": "title",
+            "dataField": "col1",
             "alignment": "left",
 
         },
@@ -159,7 +179,7 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
         {
             "id": 2,
             "title": "중분류명",
-            "dataField": "user",
+            "dataField": "col2",
             "alignment": "center",
 
         }
@@ -167,21 +187,21 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
         {
             "id": 3,
             "title": "소분류명",
-            "dataField": "address",
+            "dataField": "col3",
             "alignment": "left",
 
         },
         {
             "id": 4,
             "title": "상품명",
-            "dataField": "phone",
+            "dataField": "col4",
             "alignment": "center",
         }
         ,
         {
             "id": 5,
             "title": "할인율",
-            "dataField": "email",
+            "dataField": "col5",
             "alignment": "left",
         }
 
@@ -210,7 +230,7 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
         this.onClickPopupSave = this.onClickPopupSave.bind(this);
         this.onClickPopupDelete = this.onClickPopupDelete.bind(this);
         this.onClickPopupCancel = this.onClickPopupCancel.bind(this);
-        this.lastMonthDate.setMonth(this.lastMonthDate.getMonth() - 1);
+        this.date1.setMonth(this.date1.getMonth() - 1);
         this.myForm = new FormGroup({
             title: new FormControl('')
         });
@@ -320,6 +340,20 @@ export class Buuastems17Component implements OnInit, AfterViewInit {
         // this.themText = e.data.isEditPossibleFlg;
         console.log(e.data);
         this.tilte = e.data.title;
+        this.discount = e.data.discount;
+        this.share = e.data.share;
+        this.model = e.data.model;
+        this.price = e.data.price;
+
+        let dateStr = e.data.insert;
+        let parts = dateStr.split("/");
+        this.date1 = new Date(parts[2], parts[1] - 1, parts[0]);
+
+        let dateStr1 = e.data.update;
+        let parts1 = dateStr1.split("/");
+        this.date2 = new Date(parts1[2], parts1[1] - 1, parts1[0]);
+
+        this.mainGrid2.dataSource = this.dataTest2Search.filter((item) => item.model === e.data.model);
 
 
     }

@@ -1,4 +1,4 @@
-<text-directory text="수주현황"></text-directory>
+<text-directory text="제휴카드사관리"></text-directory>
 <div class="content">
     <div class="content1">
 
@@ -33,7 +33,7 @@
                                       [columnAutoWidth]="true"
                                       [dataSource]="dataTest"
                                       [focusedRowEnabled]="true"
-                                      [height]="240"
+                                      [height]="740"
                                       [rowAlternationEnabled]="true"
                                       [showRowLines]="true"
                                       class="aaaaa"
@@ -61,6 +61,7 @@
                                         caption="tenant"
                                         dataField="tenant">
                             </dxi-column>
+
 
                             <dxi-column *ngFor="let item of dataTitle"
                                         alignment="center" caption="{{item.title}}"
@@ -81,11 +82,13 @@
         <div class="content-headerbnew">
             <div class="container">
                 <div class="row ">
-                    <div class=" col-10 item">
+                    <div class=" col-9 item">
 
                     </div>
-                    <div class=" col-2 item">
-                        <my-button (reset)="onReset()" (submit)="onSearch()"></my-button>
+                    <div class=" col-3 item">
+                        <app-button text="수 정"></app-button>
+                        <app-button text="삭 제"></app-button>
+                        <app-button text="신 규"></app-button>
                     </div>
                 </div>
             </div>
@@ -96,29 +99,31 @@
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <td class="text-center"><span>제휴카드사명</span></td>
-                        <td colspan="3"><input [name]="tilte" [value]="tilte" type="text"></td>
+                        <td class="text-center"><span class="center">제휴카드사명</span></td>
+                        <td colspan="3"><input [name]="tilte" [value]="tilte" class="form-control input-css"
+                                               type="text">
+                            <span *ngIf="model" class="model center"> {{'[' + model + ']'}}</span></td>
+
 
                     </tr>
                     <tr>
-                        <td class="text-center "><span>분담율</span></td>
-                        <td><input name="title" type="number"><span>%</span></td>
-                        <td class="text-center"><span>분담율면과세</span></td>
+                        <td class="text-center "><span class="center">분담율</span></td>
+                        <td><input [name]="share" [value]="share" class="form-control input-css" name="title"></td>
+                        <td class="text-center"><span class="center">분담율면과세</span></td>
                         <td>
-                            <select aria-label="Default select example" class="form-select">
+                            <select aria-label="Default select example" class="form-select select-css">
                                 <option selected>면세</option>
                                 <option value="1">과세</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-center"><span>유효기간</span></td>
+                        <td class="text-center"><span class="center">유효기간</span></td>
                         <td colspan="3">
                             <div class="date">
                                 <div class="col-5 item-date">
                                     <dx-date-box
-
-                                            [value]="lastMonthDate"
+                                            [value]="date1"
                                             displayFormat="dd/MM/yyyy"
                                             placeholder="16/10/2018"
                                             type="date"
@@ -131,7 +136,7 @@
                                 <div class="col-6 item-date">
                                     <dx-date-box
                                             [useMaskBehavior]="true"
-                                            [value]="todayDate"
+                                            [value]="date2"
                                             displayFormat="dd/MM/yyyy"
                                             placeholder="16/10/2018"
                                             type="date"
@@ -145,29 +150,37 @@
 
                     </tr>
                     <tr>
-                        <td class="text-center"><span>취급상품구분</span></td>
+                        <td class="text-center"><span class="center">취급상품구분</span></td>
+                        <td colspan="3">
+                            <select aria-label="Default select example" class="form-select select-css col-4">
+                                <option selected>전체상품</option>
+                                <option value="1">특정상품</option>
+                            </select>
+                            <div *ngIf="discount" class="input-group flex-nowrap col-4">
+                                <span class="text-input ">할인율 </span>
+                                <input [name]="discount" [value]="discount" class="form-control input-css">
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-center"><span class="center">할인액</span></td>
                         <td colspan="3">
                             <select aria-label="Default select example" class="form-select select-css">
                                 <option selected>전체상품</option>
                                 <option value="1">특정상품</option>
                             </select>
-                            <span>할인율 </span><input name="title" type="number"><span>%</span>
-
+                            <div *ngIf="price" class="input-group flex-nowrap col-4">
+                                <span class="text-input ">할인율 </span>
+                                <input [name]="price" [value]="price" class="form-control input-css">
+                                <span class="center">원</span>
+                            </div>
                         </td>
 
                     </tr>
                     <tr>
-                        <td class="text-center"><span>할인액</span></td>
-                        <td colspan="3">
-                            <select aria-label="Default select example" class="form-select select-css">
-                                <option selected>전체상품</option>
-                                <option value="1">특정상품</option>
-                            </select></td>
 
-                    </tr>
-                    <tr>
-
-                        <td class="text-center"><span>반올림구분</span></td>
+                        <td class="text-center"><span class="center">반올림구분</span></td>
                         <td>
                             <select aria-label="Default select example" class="form-select select-css">
                                 <option selected>반올림
@@ -176,7 +189,7 @@
                                 <option value="2">절상</option>
                             </select>
                         </td>
-                        <td class="text-center"><span>승인처리구분</span></td>
+                        <td class="text-center"><span class="center">승인처리구분</span></td>
                         <td>
                             <select aria-label="Default select example" class="form-select select-css">
                                 <option selected>처리안함
@@ -189,8 +202,8 @@
 
                     </tr>
                     <tr>
-                        <td class="text-center"><span>비 고</span></td>
-                        <td colspan="3"><input name="title" type="text"></td>
+                        <td class="text-center"><span class="center">비 고</span></td>
+                        <td colspan="3"><input class="form-control input-css" name="title" type="text"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -200,8 +213,19 @@
             <div class="content-headerb">
                 <div class="container">
                     <div class="row ">
-                        <div class="col-12 item">
-                            <span class="text-note text-danger">☞ 할인율은 전체상품 적용일때 보여짐.</span>
+                        <div class="col-4 item">
+                            <my-input label="할인율 일괄입력"></my-input>
+                        </div>
+                        <div class="col-2 item">
+                            <app-button text="적용"></app-button>
+                        </div>
+                        <div class="col-3 item">
+
+                        </div>
+                        <div class="col-3 item">
+                            <app-button text="상품추가"></app-button>
+                            <app-button text="수 정"></app-button>
+                            <app-button text="삭 제"></app-button>
                         </div>
                     </div>
                 </div>
@@ -209,7 +233,7 @@
             </div>
         </ng-form>
 
-        <div class="contents-body">
+        <div class="contents-body content-headerb">
 
             <dx-accordion [animationDuration]="300"
                           [collapsible]="true"
@@ -218,7 +242,7 @@
                 <dxi-item>
                     <div class="grid">
 
-                        <dx-data-grid #mainGrid
+                        <dx-data-grid #mainGrid2
 
                                       (onExporting)="gridUtil.onPageExportXlsx($event)"
                                       (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
@@ -227,10 +251,10 @@
                                       [columnAutoWidth]="true"
                                       [dataSource]="dataTest2"
                                       [focusedRowEnabled]="true"
-                                      [height]="240"
+                                      [height]="200"
                                       [rowAlternationEnabled]="true"
                                       [showRowLines]="true"
-                                      class="aaaaa"
+
                                       columnResizingMode=nextColumn
                                       keyExpr="id"
                         >
@@ -255,7 +279,8 @@
                                         caption="tenant"
                                         dataField="tenant">
                             </dxi-column>
-
+                            <dxo-selection mode="multiple"></dxo-selection>
+                            <dxi-column [width]="45" type="selection"></dxi-column>
                             <dxi-column *ngFor="let item of dataTitle2"
                                         alignment="center" caption="{{item.title}}"
                                         cssClass="{{item.cssClass}}" dataField="{{item.dataField}}"

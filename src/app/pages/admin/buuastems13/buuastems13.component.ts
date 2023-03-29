@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from "devextreme-angular/ui/form";
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from "devextreme-angular";
 import {CommonUtilService} from "../../../shared/services/common-util.service";
@@ -95,6 +95,7 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
     public themText = '';
     dsYN = [];
     dsUser = [];
+    @Input() titleHeader: string;
 
     GRID_STATE_KEY = 'mm_code';
     saveStateMain = this.gridUtil.fnGridSaveState(this.GRID_STATE_KEY + '_main');
@@ -231,6 +232,7 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
         console.log(e.column.index);
         if (e.column.index === 3) {
             this.router.navigate(['/tr/admin/buuastems14'], {skipLocationChange: true});
+            this.titleHeader = e.data.title;
         }
         if (e.column.index === 2) {
             console.log(e.data.title);

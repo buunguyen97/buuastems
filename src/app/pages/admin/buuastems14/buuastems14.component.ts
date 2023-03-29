@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from "devextreme-angular/ui/form";
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from "devextreme-angular";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -29,7 +29,7 @@ export class Buuastems14Component implements OnInit, AfterViewInit {
     pageInfo: any = this.utilService.getPageInfo();
     public moihe: string = this.utilService.convert1('mm.code.codeCategory', 'ID');
     myForm: FormGroup;
-
+    @Input() titleHeader: string;
     imagene = 'my-css-class';
     mainKey = 'uid';
     popupKey = 'uid';

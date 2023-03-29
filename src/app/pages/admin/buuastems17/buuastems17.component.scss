@@ -40,7 +40,31 @@
       float: left;
       font-size: 0.875rem;
     }
+
+    .input-css {
+      max-width: 200px;
+      float: left;
+      font-size: 0.875rem;
+    }
   }
+}
+
+.input-group {
+  max-width: 200px !important;
+  float: left;
+
+  .text-input {
+    padding: 0 20px 0 40px;
+    display: flex;
+    align-items: center;
+  }
+
+
+}
+
+.model {
+  color: gray;
+  padding: 0 20px;
 }
 
 .item-date {
@@ -58,13 +82,22 @@
   max-width: 310px;
 }
 
+.center {
+  position: relative;
+  top: 8px;
+}
+
 ::ng-deep .title {
   color: blue !important;
   cursor: pointer;
 }
 
 ::ng-deep .aaaaa {
-  height: 240px !important;
+  height: 815px !important;
+}
+
+::ng-deep .button-change {
+  float: left;
 }
 
 .content-headerb {
@@ -72,6 +105,7 @@
   border-radius: 15px;
   margin-bottom: 24px;
   padding: 24px 24px 18px 4px;
+  margin-left: 10px;
 
   .item {
     padding-top: 0px;
