@@ -6,7 +6,7 @@ import {CodeService} from "../../mm/code/code.service";
 import {CommonCodeService} from "../../../shared/services/common-code.service";
 import {GridUtilService} from "../../../shared/services/grid-util.service";
 import {FormControl, FormGroup} from "@angular/forms";
-import {Buuastems12Service} from "../buuastems12/buuastems12.service";
+import {Buuastems13Service} from "../buuastems13/buuastems13.service";
 import {Router} from '@angular/router';
 
 @Component({
@@ -95,7 +95,8 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
     public themText = '';
     dsYN = [];
     dsUser = [];
-    @Input() titleHeader: string;
+    titleHeader: string;
+    idHeader: number;
 
     GRID_STATE_KEY = 'mm_code';
     saveStateMain = this.gridUtil.fnGridSaveState(this.GRID_STATE_KEY + '_main');
@@ -107,7 +108,7 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
 
 
     constructor(public utilService: CommonUtilService,
-                private service: Buuastems12Service,
+                private service: Buuastems13Service,
                 private codeService: CommonCodeService,
                 public gridUtil: GridUtilService,
                 private router: Router) {
@@ -199,9 +200,6 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
         this.mainForm.formData = {};
     }
 
-    nhapso() {
-        alert(1111);
-    }
 
     onNew(e): void {
         this.isNewPopup = true;
@@ -232,7 +230,8 @@ export class Buuastems13Component implements OnInit, AfterViewInit {
         console.log(e.column.index);
         if (e.column.index === 3) {
             this.router.navigate(['/tr/admin/buuastems14'], {skipLocationChange: true});
-            this.titleHeader = e.data.title;
+            this.codeService.setTitleHeader(e.data.title);
+             this.codeService.setIdHeader(e.data.id);
         }
         if (e.column.index === 2) {
             console.log(e.data.title);

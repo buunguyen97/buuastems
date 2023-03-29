@@ -74,6 +74,26 @@ export class CommonCodeService {
     const baseUrl = `${APPCONSTANTS.BASE_URL_WM}/master-service/notification/findNotification`;
     return this.http.post<ApiResult<NotificationVO[]>>(baseUrl, data);
   }
+  private titleHeader: string;
+
+  setTitleHeader(titleHeader: string) {
+    this.titleHeader = titleHeader;
+  }
+
+  getTitleHeader(): string {
+    return this.titleHeader;
+  }
+
+
+  private idHeader: number;
+
+  setIdHeader(idHeader: number) {
+    this.idHeader = idHeader;
+  }
+
+  getIdHeader(): number {
+    return this.idHeader;
+  }
 
   // getCodeOrderByCode(tenant: string, codeCategory: string): Observable<ApiResult<CodeProjection[]>> {
   //   const baseUrl = `${APPCONSTANTS.BASE_URL_WM}/master-service/code/findCodeOrderByCode?tenant=${tenant}&codeCategory=${codeCategory}`;

@@ -50,9 +50,8 @@
                 </dx-button>
                 <dx-button (onClick)="onSearch()"
                            [focusStateEnabled]="false"
-                           [text]="utilService.convert1('com.btn.search', '조회')"
+                           text="Save"
                            class="search-btn"
-                           icon="search"
                            type="form">
                 </dx-button>
                 <dx-button (onClick)="onDelete()"
@@ -90,7 +89,6 @@
                 <dx-data-grid #mainGrid
                               (onCellClick)="handleCellClick($event)"
                               (onExporting)="gridUtil.onPageExportXlsx($event)"
-                              (onToolbarPreparing)="gridUtil.onToolbarPreparingWithComBtn($event, this, addClick, deleteClick)"
                               [allowColumnReordering]="true"
                               [allowColumnResizing]="true"
                               [columnAutoWidth]="true"
@@ -106,7 +104,7 @@
                     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
                     <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
                     <dxo-search-panel [placeholder]="''"
-                                      [visible]="true"
+                                      [visible]="true" cssClass="andi"
                                       [width]="240">
                     </dxo-search-panel>
 

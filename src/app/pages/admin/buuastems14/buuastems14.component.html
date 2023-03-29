@@ -5,15 +5,15 @@
             <div class="row ">
 
                 <div class="col-9 item">
-                    <span>[01 - 만원짜리] (발행완료된 선불카드는 수정 및 삭제 불가능)</span>
-                    <span class="text-danger">{{titleHeader}}aaa</span>
+                    <span>[{{idHeader | number:'2.0-0' }} - {{titleHeader}}] (발행완료된 선불카드는 수정 및 삭제 불가능)</span>
+
                 </div>
                 <div class="col-3 item">
                     <app-button text="등록"></app-button>
                     <app-button text="수정"></app-button>
                     <app-button text="삭제"></app-button>
                     <app-button text="초기화"></app-button>
-                    <app-button text="돌아가기"></app-button>
+                    <app-button (click)="return()" text="돌아가기"></app-button>
                 </div>
 
                 <div class=" col-4 item">
