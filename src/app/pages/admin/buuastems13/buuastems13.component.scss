@@ -2,4 +2,10 @@
   color: blue !important;
   cursor: pointer;
 }
+::ng-deep .astems .dx-datagrid-header-panel {
+  display: none;
+}
+::ng-deep .astems .dx-accordion-item-title {
+  display: none !important;
+}
 

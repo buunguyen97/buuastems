@@ -17,7 +17,7 @@
     <hr/>
 </div>
 
-<div class="contents-body">
+<div class="contents-body astems">
     <div class="search_foldable">
         <div class="search-box">
             <dx-form #mainForm
@@ -100,11 +100,11 @@
                               keyExpr="id"
 
                 >
-                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-load-panel [enabled]="true" ></dxo-load-panel>
                     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                    <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                    <dxo-export [allowExportSelectedData]="true" [enabled]="true" ></dxo-export>
                     <dxo-search-panel [placeholder]="''"
-                                      [visible]="true" cssClass="andi"
+                                      [visible]="false"
                                       [width]="240">
                     </dxo-search-panel>
 
