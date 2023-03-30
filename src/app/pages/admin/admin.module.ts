@@ -39,6 +39,9 @@ import {Buuastems15Component} from './buuastems15/buuastems15.component';
 import {RouterModule} from '@angular/router';
 import {Buuastems16Component} from './buuastems16/buuastems16.component';
 import {Buuastems17Component} from './buuastems17/buuastems17.component';
+import { Buuastems18Component } from './buuastems18/buuastems18.component';
+import { PhongComponent } from './phong/phong.component';
+import { ThienComponent } from './thien/thien.component';
 
 @NgModule({
     declarations: [
@@ -75,7 +78,10 @@ import {Buuastems17Component} from './buuastems17/buuastems17.component';
         Buuastems14Component,
         Buuastems15Component,
         Buuastems16Component,
-        Buuastems17Component
+        Buuastems17Component,
+        Buuastems18Component,
+        PhongComponent,
+        ThienComponent
     ],
     imports: [
         DevExtremeModule,

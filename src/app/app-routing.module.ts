@@ -68,6 +68,9 @@ import {Buuastems14Component} from './pages/admin/buuastems14/buuastems14.compon
 import {Buuastems16Component} from './pages/admin/buuastems16/buuastems16.component';
 import {Buuastems15Component} from './pages/admin/buuastems15/buuastems15.component';
 import {Buuastems17Component} from './pages/admin/buuastems17/buuastems17.component';
+import {Buuastems18Component} from './pages/admin/buuastems18/buuastems18.component';
+import {PhongComponent} from './pages/admin/phong/phong.component';
+import {ThienComponent} from './pages/admin/thien/thien.component';
 /* 관리자 */
 
 /* 화주 */
@@ -342,6 +345,21 @@ const routes: Routes = [
     {
         path: 'tr/admin/buuastems17',
         component: Buuastems17Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/buuastems18',
+        component: Buuastems18Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/phong',
+        component: PhongComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/thien',
+        component: ThienComponent,
         canActivate: [AuthGuardService]
     },
     /* 관리자 */

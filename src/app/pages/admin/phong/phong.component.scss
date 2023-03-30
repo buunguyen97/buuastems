@@ -1,0 +1,27 @@
+.double {
+  display: flex;
+}
+
+.textcol {
+  color: gray;
+}
+
+::ng-deep .phong {
+  color: blue !important;
+}
+
+::ng-deep .abc {
+  height: 260px !important;
+}
+
+//::ng-deep .dx-accordion-item .dx-accordion-item-title + .dx-accordion-item-body {
+//  height: 300px;
+//}
+
+::ng-deep .astems .dx-datagrid-header-panel {
+  display: none;
+}
+
+::ng-deep .astems .dx-accordion-item-title {
+  display: none;
+}
