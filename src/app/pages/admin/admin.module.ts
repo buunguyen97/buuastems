@@ -42,6 +42,7 @@ import {Buuastems17Component} from './buuastems17/buuastems17.component';
 import { Buuastems18Component } from './buuastems18/buuastems18.component';
 import { PhongComponent } from './phong/phong.component';
 import { ThienComponent } from './thien/thien.component';
+import { Astems21Component } from './astems21/astems21.component';
 
 @NgModule({
     declarations: [
@@ -81,7 +82,8 @@ import { ThienComponent } from './thien/thien.component';
         Buuastems17Component,
         Buuastems18Component,
         PhongComponent,
-        ThienComponent
+        ThienComponent,
+        Astems21Component
     ],
     imports: [
         DevExtremeModule,

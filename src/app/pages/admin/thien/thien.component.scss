@@ -1,86 +1,86 @@
-.search-center {
-  position: absolute;
-  left: 500px;
-  bottom: 366px;
-  display: flex;
-  align-content: flex-end;
-  justify-content: flex-end;
-  align-items: stretch;
-  margin-left: 15px;
-}
-
-.search-conte {
-  position: absolute;
-  left: 240px;
-  bottom: 28px;
-  display: flex;
-  align-content: flex-end;
-  justify-content: flex-end;
-  align-items: stretch;
-  margin-left: 15px;
-}
-
-.search-contra {
-  position: absolute;
-  right: 20px;
-  bottom: 28px;
-  display: flex;
-  align-content: flex-end;
-  justify-content: flex-end;
-  align-items: stretch;
-  margin-left: 15px;
-}
-
-.search-pocx {
-  border: 0;
-  border-radius: 3px;
-  background-color: transparent;
-  padding: 24px 24px 18px 4px;
-  position: relative;
-  margin-bottom: 0px;
-}
-
-.double {
-  display: flex;
-  padding: 0 10px;
-}
-
-.contents-double {
-  padding: 10px;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
-
-.qr {
-  margin-left: 10px;
-}
-
-.texttiles {
-  color: red;
-}
-
-::ng-deep .astems .dx-datagrid-header-panel {
-  display: none;
-}
-
-::ng-deep .astems .dx-accordion-item-title {
-  display: none !important;
-}
-
-::ng-deep .aaaaa .dx-accordion-item .dx-accordion-item-title + .dx-accordion-item-body {
-  padding-top: 80px;
-}
-
-::ng-deep .aaaaa {
-  margin-top: -75px;
-}
-
-
-::ng-deep .foder {
-  position: relative;
-  background-color: #fff;
-  border-radius: 15px;
-  margin-bottom: 24px;
-  top: 21px;
-}
+//.search-center {
+//  position: absolute;
+//  left: 500px;
+//  bottom: 366px;
+//  display: flex;
+//  align-content: flex-end;
+//  justify-content: flex-end;
+//  align-items: stretch;
+//  margin-left: 15px;
+//}
+//
+//.search-conte {
+//  position: absolute;
+//  left: 240px;
+//  bottom: 28px;
+//  display: flex;
+//  align-content: flex-end;
+//  justify-content: flex-end;
+//  align-items: stretch;
+//  margin-left: 15px;
+//}
+//
+//.search-contra {
+//  position: absolute;
+//  right: 20px;
+//  bottom: 28px;
+//  display: flex;
+//  align-content: flex-end;
+//  justify-content: flex-end;
+//  align-items: stretch;
+//  margin-left: 15px;
+//}
+//
+//.search-pocx {
+//  border: 0;
+//  border-radius: 3px;
+//  background-color: transparent;
+//  padding: 24px 24px 18px 4px;
+//  position: relative;
+//  margin-bottom: 0px;
+//}
+//
+//.double {
+//  display: flex;
+//  padding: 0 10px;
+//}
+//
+//.contents-double {
+//  padding: 10px;
+//  border: 0;
+//  border-radius: 0;
+//  background-color: transparent;
+//}
+//
+//.qr {
+//  margin-left: 10px;
+//}
+//
+//.texttiles {
+//  color: red;
+//}
+//
+//::ng-deep .astems .dx-datagrid-header-panel {
+//  display: none;
+//}
+//
+//::ng-deep .astems .dx-accordion-item-title {
+//  display: none !important;
+//}
+//
+//::ng-deep .aaaaa .dx-accordion-item .dx-accordion-item-title + .dx-accordion-item-body {
+//  padding-top: 80px;
+//}
+//
+//::ng-deep .aaaaa {
+//  margin-top: -75px;
+//}
+//
+//
+//::ng-deep .foder {
+//  position: relative;
+//  background-color: #fff;
+//  border-radius: 15px;
+//  margin-bottom: 24px;
+//  top: 21px;
+//}

@@ -1,5 +1,5 @@
 <div class="input-group flex-nowrap">
     <span class="text-input">{{label}}</span>
-    <input [name]="name" [type]="type" [value]="value"
+    <input [(ngModel)]="value" [name]="name" [type]="type" [value]="value"
            aria-describedby="addon-wrapping" class="form-control">
 </div>

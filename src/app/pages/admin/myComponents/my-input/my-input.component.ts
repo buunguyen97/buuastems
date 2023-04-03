@@ -1,4 +1,6 @@
 import {Component, Input} from '@angular/core';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 @Component({
     selector: 'my-input',
@@ -12,4 +14,5 @@ export class MyInputComponent {
     @Input() value: string = '';
 
     inputValue: string = '';
+
 }

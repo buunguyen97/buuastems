@@ -1,22 +1,22 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from "devextreme-angular/ui/form";
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from "devextreme-angular";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, NgForm} from "@angular/forms";
 import {CommonUtilService} from "../../../shared/services/common-util.service";
 import {Buuastems12Service} from "../buuastems12/buuastems12.service";
 import {CommonCodeService} from "../../../shared/services/common-code.service";
 import {GridUtilService} from "../../../shared/services/grid-util.service";
 import {Router} from "@angular/router";
-import {NgForm} from '@angular/forms';
 
 @Component({
-    selector: 'app-buuastems18',
-    templateUrl: './buuastems18.component.html',
-    styleUrls: ['./buuastems18.component.scss']
+    selector: 'app-astems21',
+    templateUrl: './astems21.component.html',
+    styleUrls: ['./astems21.component.scss']
 })
-
-export class Buuastems18Component implements OnInit, AfterViewInit {
+export class Astems21Component implements OnInit, AfterViewInit {
     @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
+    @ViewChild('mainForm1', {static: false}) mainForm1: DxFormComponent;
+    @ViewChild('mainForm2', {static: false}) mainForm2: DxFormComponent;
     @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
     @ViewChild('mainGrid2', {static: false}) mainGrid2: DxDataGridComponent;
     @ViewChild('mainGrid1', {static: false}) mainGrid1: DxDataGridComponent;
@@ -37,6 +37,7 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
     public share = "";
     public discount = "";
     public model = "";
+    public flag = false;
     public price = "";
     imagene = 'my-css-class';
     mainKey = 'uid';
@@ -49,7 +50,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
         "id": 1,
         "title": "20180206",
         "model": "001",
-        "price": "",
 
 
     },
@@ -57,28 +57,24 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 2,
             "title": "0218",
             "model": "002",
-            "price": "",
         }
         ,
         {
             "id": 3,
             "title": "교육용0001대분류",
             "model": "004",
-            "price": "",
         }
         ,
         {
             "id": 4,
             "title": "대테스트0609",
             "model": "005",
-            "price": "4000",
         }
     ];
     dataTest1 = [{
         "id": 1,
         "title": "교육용",
         "model": "001",
-        "price": "",
         "model1": "001",
 
 
@@ -87,7 +83,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 2,
             "title": "교육용2",
             "model": "001",
-            "price": "",
             "model1": "002",
         }
         ,
@@ -95,7 +90,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 3,
             "title": "0218",
             "model": "002",
-            "price": "",
             "model1": "003",
         }
         ,
@@ -103,17 +97,10 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 4,
             "title": "교육용0001중분류",
             "model": "003",
-            "price": "4000",
             "model1": "004",
         }
     ];
     dataTitle = [
-        {
-            "id": 1,
-            "title": "No.",
-            "dataField": "id",
-
-        },
 
         {
             "id": 2,
@@ -166,9 +153,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
         "id": 1,
         "col1": "xp",
         "col2": "xp1",
-        "col3": "xp2",
-        "col4": "xp테스트",
-        "col5": "20%",
         "model1": "001"
 
 
@@ -177,9 +161,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 2,
             "col1": "xp777",
             "col2": "xp1",
-            "col3": "xp2",
-            "col4": "xp테스트",
-            "col5": "20%",
             "model1": "001"
         }
         ,
@@ -187,9 +168,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 3,
             "col1": "xp666",
             "col2": "xp1",
-            "col3": "xp2",
-            "col4": "xp테스트",
-            "col5": "20%",
             "model1": "001"
         }
         ,
@@ -197,9 +175,6 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             "id": 4,
             "col1": "xp555",
             "col2": "xp1",
-            "col3": "xp2",
-            "col4": "xp테스트",
-            "col5": "20%",
             "model1": "002"
         }
         ,
@@ -308,9 +283,16 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
         }
     }
 
-    onReset(): void {
-        console.log(111);
+    onReset1(): void {
         this.mainForm.formData = {};
+    }
+
+    onReset2(): void {
+        this.mainForm1.formData.codeCategory = "";
+    }
+
+    onReset3(): void {
+        this.mainForm2.formData.col1 = "";
     }
 
 
@@ -344,12 +326,11 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
         console.log(e.column)
         if (e.column.index === 3 && e.column.caption === "대분류명칭") {
             this.mainGrid1.dataSource = this.dataTest1.filter((item) => item.model === e.data.model);
-            this.forminput.setValue({
-                value1: e.data.title,
-                // các trường khác trong forminput nếu có
-            });
-            this.value2 = "";
-            this.value3 = "";
+            this.mainForm.formData.codeCategory = e.data.title;
+            this.mainForm.formData.model = e.data.model;
+            this.mainForm1.formData.codeCategory = "";
+            this.mainForm1.formData.model = e.data.model;
+            this.mainForm2.formData.codeCategory = "";
             this.mainGrid2.dataSource = [];
         }
 
@@ -361,45 +342,202 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
         console.log(e.column)
         if (e.column.index === 3 && e.column.caption === "중분류명칭") {
             this.mainGrid2.dataSource = this.dataTest2.filter((item) => item.model1 === e.data.model1);
-            this.value2 = e.data.title;
-            this.value3 = "";
+            this.mainForm1.formData.codeCategory = e.data.title;
+            this.mainForm1.formData.model1 = e.data.model1;
+            this.mainForm2.formData.codeCategory = "";
+            this.mainForm2.formData.model1 = e.data.model1;
+
+        }
+
+
+    }
+
+    async handleCellClick2(e): Promise<void> {
+
+        if (e.column.index === 3 && e.column.caption === "명칭") {
+            this.mainForm2.formData.col1 = e.data.col1;
+            this.mainForm2.formData.model1 = e.data.model1;
         }
 
 
     }
 
     onSave1() {
-        console.log(this.forminput.value.value1);
-        const lastItem = this.dataTest[this.dataTest.length - 1];
-        const newId = lastItem.id + 1;
-        const newObject = {
-            "id": newId,
-            "title": this.mainForm.formData.codeCategory,
+        console.log(this.mainForm.formData);
+        if (this.mainForm.formData.codeCategory) {
+            const lastItem = this.dataTest[this.dataTest.length - 1];
+            let newId;
+            let newModel;
+            if (this.dataTest.length === 0) {
+                newModel = "001";
+                newId = 1;
+            } else {
+                newModel = (parseInt(lastItem.model) + 1).toString().padStart(3, '0');
+                newId = lastItem.id + 1;
+            }
 
-        };
+            console.log(newModel);
+            const newObject = {
+                "id": newId,
+                "title": this.mainForm.formData.codeCategory,
+                "model": newModel
+
+            };
+            this.dataTest.push(newObject);
+            this.mainGrid.dataSource = this.dataTest;
+
+            this.mainGrid.focusedRowKey = null;
+            this.mainGrid.paging.pageIndex = 0;
+            this.mainForm.formData = {};
+            this.mainForm1.formData = {};
+            this.mainForm2.formData = {};
+            this.mainGrid1.dataSource = [];
+            this.mainGrid2.dataSource = [];
+        }
+        console.log(this.dataTest);
     }
 
-    async handleCellClick2(e): Promise<void> {
+    onSave2() {
+        console.log(this.mainForm1.formData);
+        if (this.mainForm1.formData.codeCategory && this.mainForm1.formData.model) {
+            console.log(this.mainForm1.formData.model);
+            const lastItem = this.dataTest1[this.dataTest1.length - 1];
+            // const newId = lastItem.id + 1;
+            // const newModel = (parseInt(lastItem.model) + 1).toString().padStart(3, '0');
+            let newId;
+            let newModel;
+            if (this.dataTest.length === 0) {
+                newModel = "001";
+                newId = 1;
+            } else {
+                newModel = (parseInt(lastItem.model) + 1).toString().padStart(3, '0');
+                newId = lastItem.id + 1;
+            }
 
-        if (e.column.index === 3 && e.column.caption === "명칭") {
-            this.value3 = e.data.col1;
+            const newObject = {
+                "id": newId,
+                "title": this.mainForm1.formData.codeCategory,
+                "model": this.mainForm1.formData.model,
+                "model1": newModel,
+
+            };
+            this.dataTest1.push(newObject);
+            // this.mainGrid1.dataSource = this.dataTest1;
+            this.mainGrid1.dataSource = this.dataTest1.filter((item) => item.model === this.mainForm1.formData.model);
+            this.mainGrid1.focusedRowKey = null;
+            this.mainGrid1.paging.pageIndex = 0;
+            this.mainForm1.formData.codeCategory = "";
+            this.mainForm2.formData = {};
+            this.mainGrid2.dataSource = [];
+        }
+    }
+
+    onSave3() {
+        if (this.mainForm2.formData.col1 && this.mainForm2.formData.model1) {
+            const lastItem = this.dataTest2[this.dataTest2.length - 1];
+            let newId;
+            if (this.dataTest2.length === 0) {
+                newId = 1;
+            } else {
+                newId = lastItem.id + 1;
+            }
+            const newObject = {
+                "id": newId,
+                "col1": this.mainForm2.formData.col1,
+                "col2": this.mainForm2.formData.col1,
+                "model1": this.mainForm2.formData.model1
+
+            };
+            this.dataTest2.push(newObject);
+            // this.mainGrid2.dataSource = this.dataTest2;
+            this.mainGrid2.dataSource = this.dataTest2.filter((item) => item.model1 === this.mainForm2.formData.model1);
+            this.mainGrid2.focusedRowKey = null;
+            this.mainGrid2.paging.pageIndex = 0;
+            this.mainForm2.formData.col1 = "";
+        }
+    }
+
+
+    async onDelete1(): Promise<any> {
+        if (this.mainForm.formData.flag) {
+            this.dataTest = [];
+            this.dataTest1 = [];
+            this.dataTest2 = [];
+            this.mainGrid.dataSource = [];
+            this.mainGrid1.dataSource = [];
+            this.mainGrid2.dataSource = [];
+        } else {
+            if (this.mainForm.formData.model) {
+                console.log(this.mainForm.formData.model);
+                this.mainForm1.formData = {};
+                this.mainForm2.formData = {};
+                this.mainGrid1.dataSource = [];
+                this.mainGrid2.dataSource = [];
+
+                const titleToRemove = this.mainForm.formData.model;
+                const indexToRemove = this.dataTest.findIndex((item) => item.model === titleToRemove);
+                let deletedData = null;
+
+                if (indexToRemove !== -1) {
+                    deletedData = this.dataTest.splice(indexToRemove, 1)[0];
+                }
+                this.dataTest1 = this.dataTest1.filter(item => item.model !== titleToRemove);
+                this.mainForm.formData = {};
+                this.mainGrid.dataSource = this.dataTest;
+                return deletedData;
+            }
         }
 
 
     }
 
+    async onDelete2(): Promise<any> {
+        if (this.mainForm1.formData.flag) {
 
-    async onDelete(): Promise<any> {
-        console.log(111);
-        const titleToRemove = this.mainForm.formData.codeCategory
-        const indexToRemove = this.dataTest.findIndex((item) => item.title === titleToRemove);
-        let deletedData = null;
-        this.mainForm.formData = {};
-        if (indexToRemove !== -1) {
-            deletedData = this.dataTest.splice(indexToRemove, 1)[0];
+            this.dataTest1 = [];
+            this.dataTest2 = [];
+            this.mainGrid1.dataSource = [];
+            this.mainGrid2.dataSource = [];
+        } else {
+
+            if (this.mainForm1.formData.codeCategory && this.mainForm1.formData.model1) {
+                this.mainForm2.formData = {};
+                this.mainGrid2.dataSource = [];
+                console.log(2222);
+                const titleToRemove = this.mainForm1.formData.model1
+                const indexToRemove = this.dataTest1.findIndex((item) => item.model1 === titleToRemove);
+                let deletedData = null;
+                this.mainForm1.formData.codeCategory = "";
+                if (indexToRemove !== -1) {
+                    deletedData = this.dataTest1.splice(indexToRemove, 1)[0];
+                }
+                this.dataTest2 = this.dataTest2.filter(item => item.model1 !== titleToRemove);
+                this.mainGrid1.dataSource = this.dataTest1.filter((item) => item.model === this.mainForm1.formData.model);
+                return deletedData;
+            }
         }
-        this.mainGrid.dataSource = this.dataTest;
-        return deletedData;
+
+    }
+
+    async onDelete3(): Promise<any> {
+        if (this.mainForm2.formData.flag) {
+            this.dataTest2 = [];
+            this.mainGrid2.dataSource = [];
+        } else {
+
+            if (this.mainForm2.formData.col1 && this.mainForm2.formData.model1) {
+
+                const titleToRemove = this.mainForm2.formData.col1;
+                const indexToRemove = this.dataTest2.findIndex((item) => item.col1 === titleToRemove);
+                let deletedData = null;
+                this.mainForm2.formData.col1 = "";
+                if (indexToRemove !== -1) {
+                    deletedData = this.dataTest2.splice(indexToRemove, 1)[0];
+                }
+                this.mainGrid2.dataSource = this.dataTest2.filter((item) => item.model1 === this.mainForm2.formData.model1);
+                return deletedData;
+            }
+        }
 
     }
 
@@ -525,5 +663,29 @@ export class Buuastems18Component implements OnInit, AfterViewInit {
             }
         }
         return gridList;
+    }
+
+    handleSelectionChanged(e) {
+        const selectedRows = e.selectedRowsData;
+        const allRows = e.component.getVisibleRows();
+        if (selectedRows.length === allRows.length) {
+            this.mainForm.formData.flag = true;
+        }
+    }
+
+    handleSelectionChanged1(e) {
+        const selectedRows = e.selectedRowsData;
+        const allRows = e.component.getVisibleRows();
+        if (selectedRows.length === allRows.length) {
+            this.mainForm1.formData.flag = true;
+        }
+    }
+
+    handleSelectionChanged2(e) {
+        const selectedRows = e.selectedRowsData;
+        const allRows = e.component.getVisibleRows();
+        if (selectedRows.length === allRows.length) {
+            this.mainForm2.formData.flag = true;
+        }
     }
 }
