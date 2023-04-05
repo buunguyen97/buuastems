@@ -493,11 +493,8 @@ export class Astems21Component implements OnInit, AfterViewInit {
 
     async onDelete2(): Promise<any> {
         if (this.mainForm1.formData.flag) {
+            console.log(this.dataTest1.filter((item) => item.model === this.mainForm1.formData.model))
 
-            this.dataTest1 = [];
-            this.dataTest2 = [];
-            this.mainGrid1.dataSource = [];
-            this.mainGrid2.dataSource = [];
         } else {
 
             if (this.mainForm1.formData.codeCategory && this.mainForm1.formData.model1) {

@@ -72,6 +72,7 @@ import {Buuastems18Component} from './pages/admin/buuastems18/buuastems18.compon
 import {PhongComponent} from './pages/admin/phong/phong.component';
 import {ThienComponent} from './pages/admin/thien/thien.component';
 import {Astems21Component} from './pages/admin/astems21/astems21.component';
+import {Astems22Component} from './pages/admin/astems22/astems22.component';
 /* 관리자 */
 
 /* 화주 */
@@ -366,6 +367,11 @@ const routes: Routes = [
     {
         path: 'tr/admin/astems21',
         component: Astems21Component,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'tr/admin/astems22',
+        component: Astems22Component,
         canActivate: [AuthGuardService]
     },
     /* 관리자 */
