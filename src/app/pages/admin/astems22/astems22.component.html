@@ -1,0 +1,137 @@
+<!-- 공통 > 코드 -->
+<text-directory text="메인화면 6-3-5"></text-directory>
+<ng-form #forminput="ngForm">
+    <div class="content-headerb">
+        <div class="container">
+            <div class="row ">
+                <div class="col-2 item">
+                    <span class="text-note fw-bold"> 기초재고 등록 </span>
+                </div>
+                <div class="col-6 item">
+                    <span class="text-note">  ☞2018년 07월 기초자료입니다.</span>
+                </div>
+                <div class="col-4 item">
+                    <app-button (click)="changeInput()" text="저 장"></app-button>
+                    <app-button (click)="exportGrid()" text="엑 셀"></app-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-form>
+<div class="contents-body astems">
+
+    <dx-accordion [animationDuration]="300"
+                  [collapsible]="true"
+                  [multiple]="false"
+    >
+        <dxi-item>
+
+            <dx-data-grid #mainGrid
+                          (onExporting)="gridUtil.onPageExportXlsx($event)"
+                          [allowColumnReordering]="true"
+                          [allowColumnResizing]="true"
+                          [columnAutoWidth]="true"
+                          [dataSource]="dataTest"
+                          [focusedRowEnabled]="true"
+                          [rowAlternationEnabled]="true"
+                          [showRowLines]="true"
+                          columnResizingMode=nextColumn
+                          keyExpr="id"
+
+            >
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                <dxo-search-panel [placeholder]="''"
+                                  [visible]="false"
+                                  [width]="240">
+                </dxo-search-panel>
+
+
+                <!--                    <dxi-column *ngFor="let item of dataTitle"-->
+                <!--                                alignment="center"-->
+                <!--                                caption="{{item.title}}"-->
+                <!--                                dataField="{{item.dataField}}"-->
+                <!--                    > <dxi-button name="edit"></dxi-button>-->
+
+                <!--                    </dxi-column>-->
+                <dxi-column alignment="center" caption="No."
+                            dataField="id">
+                </dxi-column>
+                <dxi-column alignment="center" caption="상품코드"
+                            dataField="model">
+                </dxi-column>
+                <dxi-column alignment="center" caption="상품" dataField="title"
+                >
+                </dxi-column>
+                <dxi-column alignment="center" caption="단위/입수"
+                            dataField="unit">
+                </dxi-column>
+                <dxi-column caption="재고">
+                    <dxi-column [width]="100" alignment="center" caption="입수" cellTemplate="CellTemplateInput1"
+                                dataField="productName1">
+                    </dxi-column>
+                    <div *dxTemplate="let data of 'CellTemplateInput1'">
+                        <dx-number-box
+                                [(ngModel)]="data.data.productName1"
+                                [value]="data.data.name"
+                        >
+                        </dx-number-box>
+                        <span>{{data.data.test1}}</span>
+                    </div>
+                    <dxi-column [width]="100" alignment="center" caption="재고입수" cellTemplate="CellTemplateInput2"
+                                dataField="productName2">
+                        <div *dxTemplate="let data of 'CellTemplateInput2'">
+                            <dx-number-box
+                                    [(ngModel)]="data.data.productName2"
+                                    [value]="data.data.name"
+                            >
+                            </dx-number-box>
+                            <span>{{data.data.test2}}</span>
+                        </div>
+                    </dxi-column>
+
+                </dxi-column>
+                <dxi-column [width]="150" alignment="center" caption="재고금액" cellTemplate="CellTemplateInput3"
+                            dataField="productName3">
+                </dxi-column>
+                <div *dxTemplate="let data of 'CellTemplateInput3'">
+                    <dx-number-box
+                            [(ngModel)]="data.data.productName3"
+                            [value]="data.data.name"
+
+                    >
+                    </dx-number-box>
+                </div>
+                <dxi-column alignment="center" caption="07월 기초수량"
+                            dataField="price1">
+                </dxi-column>
+                <dxi-column
+                        [format]="'#,##0.00'"
+                        alignment="center"
+                        caption="07월 기초금액"
+                        dataField="price2">
+                </dxi-column>
+                <dxo-summary>
+                    <dxi-total-item
+                            displayFormat="전체합계"
+                            showInColumn="상품"
+                    >
+                    </dxi-total-item>
+                    <!-- **************************** Hang 1 **************************** -->
+                    <dxi-total-item
+                            alignment="right"
+                            displayFormat="{0}"
+                            name="price2"
+                            showInColumn="price2"
+                            summaryType="sum"
+                    >
+                    </dxi-total-item>
+                </dxo-summary>
+
+            </dx-data-grid>
+
+
+        </dxi-item>
+    </dx-accordion>
+</div>
