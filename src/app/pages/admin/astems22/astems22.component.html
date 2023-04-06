@@ -107,12 +107,12 @@
                             dataField="price1">
                 </dxi-column>
                 <dxi-column
-                        [format]="'#,##0.00'"
                         alignment="center"
                         caption="07월 기초금액"
-                        dataField="price2">
+                        dataField="price2"
+                        format='#,##0.00'>
                 </dxi-column>
-                <dxo-summary>
+                <dxo-summary [calculateCustomSummary]="calculateSelectedRow">
                     <dxi-total-item
                             displayFormat="전체합계"
                             showInColumn="상품"
@@ -124,7 +124,17 @@
                             displayFormat="{0}"
                             name="price2"
                             showInColumn="price2"
-                            summaryType="sum"
+                            summaryType="custom"
+                            valueFormat='#,##0.00'
+                    >
+                    </dxi-total-item>
+                    <dxi-total-item
+                            alignment="right"
+                            displayFormat="{0}"
+                            name="price1"
+                            showInColumn="price1"
+                            summaryType="custom"
+
                     >
                     </dxi-total-item>
                 </dxo-summary>

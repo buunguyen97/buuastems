@@ -45,10 +45,10 @@ export class Astems22Component implements OnInit, AfterViewInit {
         "test1": "Box",
         "test2": "EA",
         "price1": "0",
-        "price2": "27,272,736.00",
+        "price2": 27272736,
         "productName1": "",
         "productName2": "",
-        "productName3": "",
+        "productName3": undefined,
 
 
     },
@@ -60,10 +60,10 @@ export class Astems22Component implements OnInit, AfterViewInit {
             "test1": "Kg",
             "test2": "G",
             "price1": "-3276",
-            "price2": "83,425.00",
+            "price2": 83425,
             "productName1": "",
             "productName2": "",
-            "productName3": "",
+            "productName3": undefined,
         }
         ,
         {
@@ -74,10 +74,10 @@ export class Astems22Component implements OnInit, AfterViewInit {
             "test1": "",
             "test2": "EA",
             "price1": "1000",
-            "price2": "-180,438,160.00",
+            "price2": -180438160,
             "productName1": "",
             "productName2": "",
-            "productName3": "",
+            "productName3": undefined,
         }
     ];
 
@@ -248,12 +248,12 @@ export class Astems22Component implements OnInit, AfterViewInit {
             if (this.dataTest[i].productName2 !== '') {
                 this.dataTest[i].price1 = this.dataTest[i].productName2;
             }
-            if (this.dataTest[i].productName3 !== '') {
+            if (this.dataTest[i].productName3 !== undefined) {
                 this.dataTest[i].price2 = this.dataTest[i].productName3;
             }
             this.dataTest[i].productName1 = '';
             this.dataTest[i].productName2 = '';
-            this.dataTest[i].productName3 = '';
+            this.dataTest[i].productName3 = undefined;
         }
         this.mainGrid.dataSource = this.dataTest;
     }
@@ -279,6 +279,7 @@ export class Astems22Component implements OnInit, AfterViewInit {
         firstRow.eachCell((cell) => {
             cell.font = {bold: true};
         });
+
         // Add rows
         const rows = this.mainGrid.instance.getDataSource().items();
         console.log(rows)
@@ -289,6 +290,8 @@ export class Astems22Component implements OnInit, AfterViewInit {
             });
             worksheet.addRow(dataRow);
         });
+
+
 // Set borders
         worksheet.eachRow((row, rowNumber) => {
             row.eachCell((cell, columnNumber) => {
@@ -307,6 +310,15 @@ export class Astems22Component implements OnInit, AfterViewInit {
         });
     }
 
+    calculateSelectedRow(options) {
+        if (options.name === 'price2') {
+            if (options.summaryProcess === 'start') {
+                options.totalValue = 0;
+            } else if (options.summaryProcess === 'calculate') {
+                options.totalValue += options.value.price2;
+            }
+        }
+    }
 
     // async onChange(): Promise<any> {
     //     console.log(this.mainForm.formData.uid);
