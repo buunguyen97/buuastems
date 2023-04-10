@@ -7,18 +7,15 @@ import {Buuastems13Service} from "../buuastems13/buuastems13.service";
 import {CommonCodeService} from "../../../shared/services/common-code.service";
 import {GridUtilService} from "../../../shared/services/grid-util.service";
 import {Router} from "@angular/router";
-import {exportDataGrid} from "devextreme/excel_exporter";
-import * as ExcelJS from 'exceljs';
-import {Workbook} from 'exceljs';
+import * as ExcelJS from "exceljs";
 import {saveAs} from 'file-saver';
 
 @Component({
-    selector: 'app-astems22',
-    templateUrl: './astems22.component.html',
-    styleUrls: ['./astems22.component.scss']
+    selector: 'app-astems23',
+    templateUrl: './astems23.component.html',
+    styleUrls: ['./astems23.component.scss']
 })
-
-export class Astems22Component implements OnInit, AfterViewInit {
+export class Astems23Component implements OnInit, AfterViewInit {
     @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
     @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
 
@@ -40,48 +37,38 @@ export class Astems22Component implements OnInit, AfterViewInit {
 
     dataTest = [{
         "id": 1,
-        "title": "00000",
-        "model": "T0000200",
-        "unit": "Box(1)",
-        "test1": "Box",
-        "test2": "EA",
-        "price1": "0",
-        "price2": 27272736,
-        "productName1": "",
-        "productName2": "",
-        "productName3": undefined,
+        "title": "8층테스트",
+        "model": "NC1933",
+        "productName1": "5000",
+        "select1": "check",
+        "select2": "",
+        "select3": "",
 
 
     },
         {
             "id": 2,
-            "title": "000A1234",
-            "model": "T9876544",
-            "unit": "Kg(10)",
-            "test1": "Kg",
-            "test2": "G",
-            "price1": "-3276",
-            "price2": 83425,
-            "productName1": "",
-            "productName2": "",
-            "productName3": undefined,
+            "title": "ASTEMS교육장(매장)2aa",
+            "model": "NC5002",
+            "productName1": "5000",
+            "select1": "check",
+            "select2": "",
+            "select3": "",
         }
         ,
         {
             "id": 3,
-            "title": "00000",
-            "model": "T0000200",
-            "unit": "EA",
-            "test1": "",
-            "test2": "EA",
-            "price1": "1000",
-            "price2": -180438160,
+            "title": "8층테스트",
+            "model": "NC1939aa",
             "productName1": "",
-            "productName2": "",
-            "productName3": undefined,
+            "select1": "check",
+            "select2": "",
+            "select3": "",
         }
     ];
-
+    priorities3: any[] = [{value: 1}];
+    priorities1: any[] = [{value: 2}];
+    priorities2: any[] = [{value: 3}];
     isNewPopup = true;
     changesHien = false;
 
@@ -101,6 +88,7 @@ export class Astems22Component implements OnInit, AfterViewInit {
     // }
 
     function
+    isSelecting = false;
 
     constructor(public utilService: CommonUtilService,
                 private service: Buuastems13Service,
@@ -120,16 +108,6 @@ export class Astems22Component implements OnInit, AfterViewInit {
         this.initCode();
     }
 
-    onSubmit(form: any): void {
-        console.log('you submitted value:', form);
-    }
-
-    calculateAreaSummary(options) {
-    }
-
-    aaa() {
-        alert(1111);
-    }
 
     // async onSearch(): Promise<void> {
     //     const executionTxt = this.utilService.convert1('com.btn.search', '조회');
@@ -231,108 +209,27 @@ export class Astems22Component implements OnInit, AfterViewInit {
 
     }
 
-    changeInput() {
+    Change() {
         this.dataTest = this.mainGrid.instance.getDataSource().items();
         console.log(this.dataTest);
         for (let i = 0; i < this.dataTest.length; i++) {
             if (this.dataTest[i].productName1 !== '') {
-                if (this.dataTest[i].test1 === 'Box') {
-                    this.dataTest[i].unit = 'Box(' + this.dataTest[i].productName1 + ')';
-                }
-                if (this.dataTest[i].test1 === 'Kg') {
-                    this.dataTest[i].unit = 'Kg(' + this.dataTest[i].productName1 + ')';
-                }
-                if (this.dataTest[i].test1 === '') {
-                    this.dataTest[i].unit = 'EA(' + this.dataTest[i].productName1 + ')';
-                }
+                this.dataTest[i].productName1 = this.dataTest[i].productName1;
+
             }
-            if (this.dataTest[i].productName2 !== '') {
-                this.dataTest[i].price1 = this.dataTest[i].productName2;
+            if (this.dataTest[i].select1 !== undefined) {
+                this.dataTest[i].select1 = this.dataTest[i].select1;
             }
-            if (this.dataTest[i].productName3 !== undefined) {
-                this.dataTest[i].price2 = this.dataTest[i].productName3;
+            if (this.dataTest[i].select2 !== undefined) {
+                this.dataTest[i].select2 = this.dataTest[i].select2;
             }
-            this.dataTest[i].productName1 = '';
-            this.dataTest[i].productName2 = '';
-            this.dataTest[i].productName3 = undefined;
+            if (this.dataTest[i].select3 !== undefined) {
+                this.dataTest[i].select3 = this.dataTest[i].select3;
+            }
+
+
         }
         this.mainGrid.dataSource = this.dataTest;
-    }
-
-    exportGrid() {
-
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Data');
-        const columnWidths = [5, 20, 40, 20, 30, 30]; // Change these values to set the desired column widths
-        columnWidths.forEach((width, index) => {
-            worksheet.getColumn(index + 1).width = width;
-        });
-        // Add column headers
-        const columns = this.mainGrid.instance.getVisibleColumns().filter(col => col.dataField !== 'productName1' && col.dataField !== 'productName2' && col.dataField !== 'productName3');
-
-        const headerRow = [];
-        columns.forEach((column) => {
-            headerRow.push(column.caption);
-        });
-        worksheet.addRow(headerRow);
-        // Make headers bold
-        const firstRow = worksheet.getRow(1);
-        firstRow.eachCell((cell) => {
-            cell.font = {bold: true};
-        });
-
-        // Add rows
-        const rows = this.mainGrid.instance.getDataSource().items();
-        console.log(rows)
-        rows.forEach((row) => {
-            const dataRow = [];
-            columns.forEach((column) => {
-                dataRow.push(row[column.dataField]);
-            });
-            worksheet.addRow(dataRow);
-        });
-
-
-// Set borders
-        worksheet.eachRow((row, rowNumber) => {
-            row.eachCell((cell, columnNumber) => {
-                cell.border = {
-                    top: {style: 'thin'},
-                    left: {style: 'thin'},
-                    bottom: {style: 'thin'},
-                    right: {style: 'thin'}
-                };
-            });
-        });
-        // Export the file
-        workbook.xlsx.writeBuffer().then((data) => {
-            const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-            saveAs(blob, 'data.xlsx');
-        });
-    }
-
-    onExporting(e) {
-        const workbook = new Workbook();
-        const worksheet = workbook.addWorksheet('Main sheet');
-        exportDataGrid({
-            component: this.mainGrid.instance,
-            worksheet: worksheet,
-        }).then(function () {
-            workbook.xlsx.writeBuffer()
-                .then(function (buffer: BlobPart) {
-                    saveAs(new Blob([buffer], {type: 'application/octet-stream'}), 'Datatable.xlsx');
-                });
-        });
-    }
-
-    calculateSelectedRow(options) {
-        if (options.name === 'price2') {
-            if (options.summaryProcess === 'start') {
-                options.totalValue = 0;
-            } else if (options.summaryProcess === 'calculate') {
-                options.totalValue += options.value.price2;
-            }
-        }
     }
 
     // async onChange(): Promise<any> {
@@ -452,5 +349,15 @@ export class Astems22Component implements OnInit, AfterViewInit {
             }
         }
         return gridList;
+    }
+
+    ChangeNe() {
+        console.log(11111)
+    }
+
+    handleChange(event: Event, data: any): void {
+        // console.log("Event:", event);
+        // console.log("Data:", data);
+        // // handle logic here
     }
 }

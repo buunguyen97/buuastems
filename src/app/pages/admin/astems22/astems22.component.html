@@ -12,7 +12,8 @@
                 </div>
                 <div class="col-4 item">
                     <app-button (click)="changeInput()" text="저 장"></app-button>
-                    <app-button (click)="exportGrid()" text="엑 셀"></app-button>
+                    <!--                    <app-button (click)="exportGrid()" text="엑 셀"></app-button>-->
+                    <app-button (click)="onExporting($event)" text="엑 셀"></app-button>
                 </div>
             </div>
         </div>
@@ -67,9 +68,9 @@
                 <dxi-column alignment="center" caption="단위/입수"
                             dataField="unit">
                 </dxi-column>
-                <dxi-column caption="재고">
-                    <dxi-column [width]="100" alignment="center" caption="입수" cellTemplate="CellTemplateInput1"
-                                dataField="productName1">
+                <dxi-column [allowExporting]="false" caption="재고">
+                    <dxi-column [allowExporting]="false" [width]="100" alignment="center" caption="입수"
+                                cellTemplate="CellTemplateInput1" dataField="productName1">
                     </dxi-column>
                     <div *dxTemplate="let data of 'CellTemplateInput1'">
                         <dx-number-box
@@ -79,7 +80,8 @@
                         </dx-number-box>
                         <span>{{data.data.test1}}</span>
                     </div>
-                    <dxi-column [width]="100" alignment="center" caption="재고입수" cellTemplate="CellTemplateInput2"
+                    <dxi-column [allowExporting]="false" [width]="100" alignment="center" caption="재고입수"
+                                cellTemplate="CellTemplateInput2"
                                 dataField="productName2">
                         <div *dxTemplate="let data of 'CellTemplateInput2'">
                             <dx-number-box
@@ -92,7 +94,8 @@
                     </dxi-column>
 
                 </dxi-column>
-                <dxi-column [width]="150" alignment="center" caption="재고금액" cellTemplate="CellTemplateInput3"
+                <dxi-column [allowExporting]="false" [width]="150" alignment="center" caption="재고금액"
+                            cellTemplate="CellTemplateInput3"
                             dataField="productName3">
                 </dxi-column>
                 <div *dxTemplate="let data of 'CellTemplateInput3'">

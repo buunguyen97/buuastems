@@ -1,0 +1,128 @@
+<!-- 공통 > 코드 -->
+<text-directory text="여신/주문제한 관리 5-3-2"></text-directory>
+<ng-form #forminput="ngForm">
+    <div class="content-headerb">
+        <div class="container">
+            <div class="row ">
+                <div class="col-4 item">
+                    <span class="text-note fw-bold">주문제한 및 여신관리</span>
+                </div>
+                <div class="col-4 item">
+                    <my-input label="여신금액 "></my-input>
+                </div>
+                <div class="col-1 item">
+                    <app-button text="일괄입력"></app-button>
+                </div>
+                <div class="col-3 item">
+                    <app-button (click)="Change()" text="저 장"></app-button>
+                </div>
+                <div class="col-12 item">
+                    <span class="text-note">◈ 기초여신을 등록하지 않으시려면 빈란으로 두시기 바랍니다.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-form>
+<div class="contents-body astems">
+
+    <dx-accordion [animationDuration]="300"
+                  [collapsible]="true"
+                  [multiple]="false"
+    >
+        <dxi-item>
+
+            <dx-data-grid #mainGrid
+                          (onExporting)="gridUtil.onPageExportXlsx($event)"
+                          [allowColumnReordering]="true"
+                          [allowColumnResizing]="true"
+                          [columnAutoWidth]="true"
+                          [dataSource]="dataTest"
+                          [focusedRowEnabled]="true"
+                          [rowAlternationEnabled]="true"
+                          [showRowLines]="true"
+                          columnResizingMode=nextColumn
+
+                          keyExpr="id"
+
+            >
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                <dxo-export [allowExportSelectedData]="true" [enabled]="true"></dxo-export>
+                <dxo-search-panel [placeholder]="''"
+                                  [visible]="false"
+                                  [width]="240">
+                </dxo-search-panel>
+
+
+                <!--                    <dxi-column *ngFor="let item of dataTitle"-->
+                <!--                                alignment="center"-->
+                <!--                                caption="{{item.title}}"-->
+                <!--                                dataField="{{item.dataField}}"-->
+                <!--                    > <dxi-button name="edit"></dxi-button>-->
+
+                <!--                    </dxi-column>-->
+                <dxi-column alignment="center" caption="No."
+                            dataField="id">
+                </dxi-column>
+                <dxi-column alignment="center" caption="상품코드"
+                            dataField="model">
+                </dxi-column>
+                <dxi-column alignment="center" caption="상품" dataField="title"
+                >
+                </dxi-column>
+                <dxi-column alignment="center" caption="기초여신금액" cellTemplate="CellTemplateInput1"
+                            dataField="productName1">
+                </dxi-column>
+                <div *dxTemplate="let data of 'CellTemplateInput1'">
+                    <dx-number-box
+                            [(ngModel)]="data.data.productName1"
+                            [value]="data.data.name"
+                    >
+                    </dx-number-box>
+                </div>
+                <dxi-column caption="주문제한">
+
+                    <dxi-column alignment="center" allowEditing="true" caption="재고입수"
+                                cellTemplate="CellTemplateSelect1" dataField="select1"
+                                dataType="boolean">
+                        <div *dxTemplate="let data of 'CellTemplateSelect1'">
+                            <dx-radio-group [(ngModel)]="data.data.select3"
+                                            [items]="priorities1"
+                                            [value]="priorities1[1]"
+                                            layout="horizontal"></dx-radio-group>
+                        </div>
+                    </dxi-column>
+
+                    <dxi-column alignment="center" allowEditing="true" caption="재고입수"
+                                cellTemplate="CellTemplateSelect2"
+                                dataField="select2"
+                                dataType="boolean">
+                        <div *dxTemplate="let data of 'CellTemplateSelect2'">
+                            <dx-radio-group [(ngModel)]="data.data.select3"
+                                            [items]="priorities2"
+                                            [value]="priorities2[1]"
+                                            layout="horizontal"></dx-radio-group>
+                        </div>
+                    </dxi-column>
+                    <dxi-column alignment="center" allowEditing="true" caption="재고입수"
+                                cellTemplate="CellTemplateSelect3"
+                                dataField="select3"
+                                dataType="boolean">
+                        <div *dxTemplate="let data of 'CellTemplateSelect3'">
+                            <dx-radio-group [(ngModel)]="data.data.select3"
+                                            [items]="priorities3"
+                                            [value]="priorities3[1]"
+                                            layout="horizontal"></dx-radio-group>
+                        </div>
+                    </dxi-column>
+
+
+                </dxi-column>
+
+            </dx-data-grid>
+
+
+        </dxi-item>
+    </dx-accordion>
+</div>
+

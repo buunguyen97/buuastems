@@ -39,11 +39,13 @@ import {Buuastems15Component} from './buuastems15/buuastems15.component';
 import {RouterModule} from '@angular/router';
 import {Buuastems16Component} from './buuastems16/buuastems16.component';
 import {Buuastems17Component} from './buuastems17/buuastems17.component';
-import { Buuastems18Component } from './buuastems18/buuastems18.component';
-import { PhongComponent } from './phong/phong.component';
-import { ThienComponent } from './thien/thien.component';
-import { Astems21Component } from './astems21/astems21.component';
-import { Astems22Component } from './astems22/astems22.component';
+import {Buuastems18Component} from './buuastems18/buuastems18.component';
+import {PhongComponent} from './phong/phong.component';
+import {ThienComponent} from './thien/thien.component';
+import {Astems21Component} from './astems21/astems21.component';
+import {Astems22Component} from './astems22/astems22.component';
+import {Astems23Component} from './astems23/astems23.component';
+import {DxRadioGroupModule} from 'devextreme-angular';
 
 @NgModule({
     declarations: [
@@ -85,14 +87,16 @@ import { Astems22Component } from './astems22/astems22.component';
         PhongComponent,
         ThienComponent,
         Astems21Component,
-        Astems22Component
+        Astems22Component,
+        Astems23Component
     ],
     imports: [
         DevExtremeModule,
         CommonModule,
         PopupModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        DxRadioGroupModule
     ],
     providers: [
         PercentPipe // import pipe vào provider
