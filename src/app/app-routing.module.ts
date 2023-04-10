@@ -8,10 +8,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {
-    ChangePasswordFormComponent,
-    CreateAccountFormComponent,
-    LoginFormComponent,
-    ResetPasswordFormComponent
+  ChangePasswordFormComponent,
+  CreateAccountFormComponent,
+  LoginFormComponent,
+  ResetPasswordFormComponent
 } from './shared/components';
 import {AuthGuardService} from './shared/services';
 import {HomeComponent} from './pages/home/home.component';
@@ -74,6 +74,7 @@ import {ThienComponent} from './pages/admin/thien/thien.component';
 import {Astems21Component} from './pages/admin/astems21/astems21.component';
 import {Astems22Component} from './pages/admin/astems22/astems22.component';
 import {Astems23Component} from './pages/admin/astems23/astems23.component';
+import {Astems24Component} from './pages/admin/astems24/astems24.component';
 /* 관리자 */
 
 /* 화주 */
@@ -82,7 +83,7 @@ import {TranordComponent as TranordONComponent} from './pages/owner/tranord/tran
 
 /* 차주 */
 import {
-    TranordstatusComponent as TranordstatusCOComponent
+  TranordstatusComponent as TranordstatusCOComponent
 } from './pages/carowner/tranordstatus/tranordstatus.component';
 
 // import {TranordallocateComponent as TranordallocateCOComponent} from './pages/carowner/tranordallocate/tranordallocate.component';
@@ -92,7 +93,7 @@ import {
 
 /* 운송사 */
 import {
-    TranordstatusComponent as TranordstatusCRComponent
+  TranordstatusComponent as TranordstatusCRComponent
 } from './pages/carrier/tranordstatus/tranordstatus.component';
 
 // import {TranordallocateComponent as TranordallocateCRComponent} from './pages/carrier/tranordallocate/tranordallocate.component';
@@ -116,409 +117,414 @@ import {Layout9Component} from './pages/common/layout9/layout9.component';
 import {Layout10Component} from './pages/common/layout10/layout10.component';
 
 const routes: Routes = [
-    {
-        path: 'profile',
-        component: ProfileComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'home',
-        component: HomeComponent,
-        canActivate: [AuthGuardService]
-    },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuardService]
+  },
 
-    {
-        path: 'login-form',
-        component: LoginFormComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'reset-password',
-        component: ResetPasswordFormComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'create-account',
-        component: CreateAccountFormComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'change-password/:recoveryCode',
-        component: ChangePasswordFormComponent,
-        canActivate: [AuthGuardService]
-    },
+  {
+    path: 'login-form',
+    component: LoginFormComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordFormComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'create-account',
+    component: CreateAccountFormComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'change-password/:recoveryCode',
+    component: ChangePasswordFormComponent,
+    canActivate: [AuthGuardService]
+  },
 
-    /************
-     *  기준정보
-     *************/
-    {
-        path: 'mm/pgmauthority',
-        component: PgmauthorityComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/menu',
-        component: MenuComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/code',
-        component: CodeComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/mfmessage',
-        component: MessageComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/term',
-        component: TermComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/grade',
-        component: GradeComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/onboard',
-        component: OnboardComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/user',
-        component: UserComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/usermanagement',
-        component: UsermanagementComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/car',
-        component: CarComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/company',
-        component: CompanyComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'mm/precard',
-        component: PrecardComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        component: TranComponent,
-        path: 'mm/tran',
-        canActivate: [AuthGuardService]
-    },
-    {
-        component: UserprofileComponent,
-        path: 'mm/userprofile',
-        canActivate: [AuthGuardService]
-    },
-    /************
-     *  기준정보
-     *************/
+  /************
+   *  기준정보
+   *************/
+  {
+    path: 'mm/pgmauthority',
+    component: PgmauthorityComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/menu',
+    component: MenuComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/code',
+    component: CodeComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/mfmessage',
+    component: MessageComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/term',
+    component: TermComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/grade',
+    component: GradeComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/onboard',
+    component: OnboardComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/user',
+    component: UserComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/usermanagement',
+    component: UsermanagementComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/car',
+    component: CarComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/company',
+    component: CompanyComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'mm/precard',
+    component: PrecardComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    component: TranComponent,
+    path: 'mm/tran',
+    canActivate: [AuthGuardService]
+  },
+  {
+    component: UserprofileComponent,
+    path: 'mm/userprofile',
+    canActivate: [AuthGuardService]
+  },
+  /************
+   *  기준정보
+   *************/
 
 
-    /************
-     *  운송관리
-     *************/
-    /* 관리자 */
-    {
-        path: 'tr/admin/tranord',
-        component: TranordComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/tranordstatus',
-        component: TranordstatusComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/tranordmass',
-        component: TranordmassComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/tranordallocate',
-        component: TranordallocateComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/tranordaccident',
-        component: TranordaccidentComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/astems',
-        component: AstemsComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems',
-        component: BuuastemsComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems1',
-        component: Buuastems1Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems2',
-        component: Buuastems2Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems3',
-        component: Buuastems3Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems4',
-        component: Buuastems4Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems5',
-        component: Buuastems5Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems6',
-        component: Buuastems6Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems7',
-        component: Buuastems7Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems8',
-        component: Buuastems8Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems9',
-        component: Buuastems9Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems10',
-        component: Buuastems10Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems11',
-        component: Buuastems11Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems12',
-        component: Buuastems12Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems13',
-        component: Buuastems13Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems14',
-        component: Buuastems14Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems15',
-        component: Buuastems15Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems16',
-        component: Buuastems16Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems17',
-        component: Buuastems17Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/buuastems18',
-        component: Buuastems18Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/phong',
-        component: PhongComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/thien',
-        component: ThienComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/astems21',
-        component: Astems21Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/astems22',
-        component: Astems22Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/admin/astems23',
-        component: Astems23Component,
-        canActivate: [AuthGuardService]
-    },
-    /* 관리자 */
+  /************
+   *  운송관리
+   *************/
+  /* 관리자 */
+  {
+    path: 'tr/admin/tranord',
+    component: TranordComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/tranordstatus',
+    component: TranordstatusComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/tranordmass',
+    component: TranordmassComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/tranordallocate',
+    component: TranordallocateComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/tranordaccident',
+    component: TranordaccidentComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/astems',
+    component: AstemsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems',
+    component: BuuastemsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems1',
+    component: Buuastems1Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems2',
+    component: Buuastems2Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems3',
+    component: Buuastems3Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems4',
+    component: Buuastems4Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems5',
+    component: Buuastems5Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems6',
+    component: Buuastems6Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems7',
+    component: Buuastems7Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems8',
+    component: Buuastems8Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems9',
+    component: Buuastems9Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems10',
+    component: Buuastems10Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems11',
+    component: Buuastems11Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems12',
+    component: Buuastems12Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems13',
+    component: Buuastems13Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems14',
+    component: Buuastems14Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems15',
+    component: Buuastems15Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems16',
+    component: Buuastems16Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems17',
+    component: Buuastems17Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/buuastems18',
+    component: Buuastems18Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/phong',
+    component: PhongComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/thien',
+    component: ThienComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/astems21',
+    component: Astems21Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/astems22',
+    component: Astems22Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/astems23',
+    component: Astems23Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/astems24',
+    component: Astems24Component,
+    canActivate: [AuthGuardService]
+  },
+  /* 관리자 */
 
-    /* 화주 */
-    {
-        path: 'tr/owner/tranord',
-        component: TranordONComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'tr/owner/tranordstatus',
-        component: TranordstatusComponent,
-        canActivate: [AuthGuardService]
-    },
-    /* 화주 */
+  /* 화주 */
+  {
+    path: 'tr/owner/tranord',
+    component: TranordONComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/owner/tranordstatus',
+    component: TranordstatusComponent,
+    canActivate: [AuthGuardService]
+  },
+  /* 화주 */
 
-    /* 차주 */
-    {
-        path: 'tr/carowner/tranordstatus',
-        component: TranordstatusCOComponent,
-        canActivate: [AuthGuardService]
-    },
-    // {
-    //   path: 'tr/carowner/tranordmass',
-    //   component: TranordmassComponent,
-    //   canActivate: [AuthGuardService]
-    // },
-    // {
-    //   path: 'tr/carowner/tranordallocate',
-    //   component: TranordallocateComponent,
-    //   canActivate: [AuthGuardService]
-    // },
-    // {
-    //   path: 'tr/carowner/tranordaccident',
-    //   component: TranordaccidentComponent,
-    //   canActivate: [AuthGuardService]
-    // },
-    /* 차주 */
+  /* 차주 */
+  {
+    path: 'tr/carowner/tranordstatus',
+    component: TranordstatusCOComponent,
+    canActivate: [AuthGuardService]
+  },
+  // {
+  //   path: 'tr/carowner/tranordmass',
+  //   component: TranordmassComponent,
+  //   canActivate: [AuthGuardService]
+  // },
+  // {
+  //   path: 'tr/carowner/tranordallocate',
+  //   component: TranordallocateComponent,
+  //   canActivate: [AuthGuardService]
+  // },
+  // {
+  //   path: 'tr/carowner/tranordaccident',
+  //   component: TranordaccidentComponent,
+  //   canActivate: [AuthGuardService]
+  // },
+  /* 차주 */
 
-    /* 운송사 */
-    {
-        path: 'tr/carrier/tranordstatus',
-        component: TranordstatusCRComponent,
-        canActivate: [AuthGuardService]
-    },
-    // {
-    //   path: 'tr/carrier/tranordmass',
-    //   component: TranordmassComponent,
-    //   canActivate: [AuthGuardService]
-    // },
-    // {
-    //   path: 'tr/carrier/tranordallocate',
-    //   component: TranordallocateComponent,
-    //   canActivate: [AuthGuardService]
-    // },
-    // {
-    //   path: 'tr/carrier/tranordaccident',
-    //   component: TranordaccidentComponent,
-    //   canActivate: [AuthGuardService]
-    // },
-    /* 운송사 */
-    /************
-     *  운송관리
-     *************/
+  /* 운송사 */
+  {
+    path: 'tr/carrier/tranordstatus',
+    component: TranordstatusCRComponent,
+    canActivate: [AuthGuardService]
+  },
+  // {
+  //   path: 'tr/carrier/tranordmass',
+  //   component: TranordmassComponent,
+  //   canActivate: [AuthGuardService]
+  // },
+  // {
+  //   path: 'tr/carrier/tranordallocate',
+  //   component: TranordallocateComponent,
+  //   canActivate: [AuthGuardService]
+  // },
+  // {
+  //   path: 'tr/carrier/tranordaccident',
+  //   component: TranordaccidentComponent,
+  //   canActivate: [AuthGuardService]
+  // },
+  /* 운송사 */
+  /************
+   *  운송관리
+   *************/
 
-    /************
-     *  정산관리
-     *************/
-    /************
-     *  정산관리
-     *************/
+  /************
+   *  정산관리
+   *************/
+  /************
+   *  정산관리
+   *************/
 
-    /*공통 템플릿*/
-    {
-        path: 'common/layout0',
-        component: Layout0Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout1',
-        component: Layout1Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout2',
-        component: Layout2Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout3',
-        component: Layout3Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout4',
-        component: Layout4Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout5',
-        component: Layout5Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout6',
-        component: Layout6Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout7',
-        component: Layout7Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout8',
-        component: Layout8Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout9',
-        component: Layout9Component,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'common/layout10',
-        component: Layout10Component,
-        canActivate: [AuthGuardService]
-    },
-    /* 기준정보 */
-    {
-        path: '**',
-        redirectTo: 'home'
-    },
+  /*공통 템플릿*/
+  {
+    path: 'common/layout0',
+    component: Layout0Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout1',
+    component: Layout1Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout2',
+    component: Layout2Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout3',
+    component: Layout3Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout4',
+    component: Layout4Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout5',
+    component: Layout5Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout6',
+    component: Layout6Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout7',
+    component: Layout7Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout8',
+    component: Layout8Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout9',
+    component: Layout9Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'common/layout10',
+    component: Layout10Component,
+    canActivate: [AuthGuardService]
+  },
+  /* 기준정보 */
+  {
+    path: '**',
+    redirectTo: 'home'
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes), DxDataGridModule, DxFormModule, DevExtremeModule],
-    providers: [AuthGuardService],
-    exports: [RouterModule],
-    declarations: [HomeComponent, ProfileComponent]
+  imports: [RouterModule.forRoot(routes), DxDataGridModule, DxFormModule, DevExtremeModule],
+  providers: [AuthGuardService],
+  exports: [RouterModule],
+  declarations: [HomeComponent, ProfileComponent]
 })
 export class AppRoutingModule {
 }
