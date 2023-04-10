@@ -8,10 +8,10 @@
                     <span class="text-note fw-bold">주문제한 및 여신관리</span>
                 </div>
                 <div class="col-4 item">
-                    <my-input label="여신금액 "></my-input>
+                    <my-input label="여신금액 " name="inputText"></my-input>
                 </div>
                 <div class="col-1 item">
-                    <app-button text="일괄입력"></app-button>
+                    <app-button (click)="changesNumber()" text="일괄입력"></app-button>
                 </div>
                 <div class="col-3 item">
                     <app-button (click)="Change()" text="저 장"></app-button>
@@ -86,10 +86,10 @@
                                 cellTemplate="CellTemplateSelect1" dataField="select1"
                                 dataType="boolean">
                         <div *dxTemplate="let data of 'CellTemplateSelect1'">
-                            <dx-radio-group [(ngModel)]="data.data.select3"
-                                            [items]="priorities1"
-                                            [value]="priorities1[1]"
-                                            layout="horizontal"></dx-radio-group>
+                            <dx-radio-group [(ngModel)]="data.data.select"
+                                            [items]="option1"
+                                            layout="horizontal"
+                                            valueExpr="value"></dx-radio-group>
                         </div>
                     </dxi-column>
 
@@ -98,10 +98,11 @@
                                 dataField="select2"
                                 dataType="boolean">
                         <div *dxTemplate="let data of 'CellTemplateSelect2'">
-                            <dx-radio-group [(ngModel)]="data.data.select3"
-                                            [items]="priorities2"
-                                            [value]="priorities2[1]"
-                                            layout="horizontal"></dx-radio-group>
+                            <dx-radio-group [(ngModel)]="data.data.select"
+                                            [items]="option2"
+
+                                            layout="horizontal"
+                                            valueExpr="value"></dx-radio-group>
                         </div>
                     </dxi-column>
                     <dxi-column alignment="center" allowEditing="true" caption="재고입수"
@@ -109,10 +110,10 @@
                                 dataField="select3"
                                 dataType="boolean">
                         <div *dxTemplate="let data of 'CellTemplateSelect3'">
-                            <dx-radio-group [(ngModel)]="data.data.select3"
-                                            [items]="priorities3"
-                                            [value]="priorities3[1]"
-                                            layout="horizontal"></dx-radio-group>
+                            <dx-radio-group [(ngModel)]="data.data.select"
+                                            [items]="option3"
+                                            layout="horizontal"
+                                            valueExpr="value"></dx-radio-group>
                         </div>
                     </dxi-column>
 

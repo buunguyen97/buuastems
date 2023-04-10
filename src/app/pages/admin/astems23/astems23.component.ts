@@ -40,9 +40,7 @@ export class Astems23Component implements OnInit, AfterViewInit {
         "title": "8층테스트",
         "model": "NC1933",
         "productName1": "5000",
-        "select1": "check",
-        "select2": "",
-        "select3": "",
+        "select": 1,
 
 
     },
@@ -51,9 +49,8 @@ export class Astems23Component implements OnInit, AfterViewInit {
             "title": "ASTEMS교육장(매장)2aa",
             "model": "NC5002",
             "productName1": "5000",
-            "select1": "check",
-            "select2": "",
-            "select3": "",
+            "select": 1,
+
         }
         ,
         {
@@ -61,14 +58,15 @@ export class Astems23Component implements OnInit, AfterViewInit {
             "title": "8층테스트",
             "model": "NC1939aa",
             "productName1": "",
-            "select1": "check",
-            "select2": "",
-            "select3": "",
+            "select": 2,
+
         }
     ];
-    priorities3: any[] = [{value: 1}];
-    priorities1: any[] = [{value: 2}];
-    priorities2: any[] = [{value: 3}];
+    option1 = [{value: 1}];
+    option2 = [{value: 2}];
+    option3 = [{value: 3}];
+
+
     isNewPopup = true;
     changesHien = false;
 
@@ -211,25 +209,21 @@ export class Astems23Component implements OnInit, AfterViewInit {
 
     Change() {
         this.dataTest = this.mainGrid.instance.getDataSource().items();
-        console.log(this.dataTest);
         for (let i = 0; i < this.dataTest.length; i++) {
             if (this.dataTest[i].productName1 !== '') {
                 this.dataTest[i].productName1 = this.dataTest[i].productName1;
 
             }
-            if (this.dataTest[i].select1 !== undefined) {
-                this.dataTest[i].select1 = this.dataTest[i].select1;
-            }
-            if (this.dataTest[i].select2 !== undefined) {
-                this.dataTest[i].select2 = this.dataTest[i].select2;
-            }
-            if (this.dataTest[i].select3 !== undefined) {
-                this.dataTest[i].select3 = this.dataTest[i].select3;
-            }
+            this.dataTest[i].select = this.dataTest[i].select;
 
 
         }
         this.mainGrid.dataSource = this.dataTest;
+        console.log(this.dataTest);
+    }
+
+    changesNumber() {
+        console.log(this.mainForm.formData);
     }
 
     // async onChange(): Promise<any> {
