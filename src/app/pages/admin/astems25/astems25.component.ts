@@ -2,19 +2,19 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {DxButtonComponent, DxDataGridComponent, DxPopupComponent} from 'devextreme-angular';
 import {DxFormComponent} from 'devextreme-angular/ui/form';
 import DataSource from 'devextreme/data/data_source';
-import ArrayStore from 'devextreme/data/array_store';
 import {CommonUtilService} from '../../../shared/services/common-util.service';
+import {Astems24Service} from '../astems24/astems24.service';
 import {CommonCodeService} from '../../../shared/services/common-code.service';
 import {GridUtilService} from '../../../shared/services/grid-util.service';
-import {Astems24Service} from './astems24.service';
+import ArrayStore from 'devextreme/data/array_store';
 
 @Component({
-  selector: 'app-astems24',
-  templateUrl: './astems24.component.html',
-  styleUrls: ['./astems24.component.scss']
+  selector: 'app-astems25',
+  templateUrl: './astems25.component.html',
+  styleUrls: ['./astems25.component.scss']
 })
 
-export class Astems24Component implements OnInit {
+export class Astems25Component implements OnInit {
   @ViewChild('bookmarkBtn', {static: false}) bookmarkBtn: DxButtonComponent;
   @ViewChild('mainForm', {static: false}) mainForm: DxFormComponent;
   @ViewChild('mainGrid', {static: false}) mainGrid: DxDataGridComponent;
@@ -157,7 +157,7 @@ export class Astems24Component implements OnInit {
   ];
   dsYN = [];
   changes = [];
-
+  popupVisible = false;
 
   isNewPopup = true;
   popupKey = 'uid';
@@ -174,12 +174,6 @@ export class Astems24Component implements OnInit {
     this.onSave = this.onSave.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onClose = this.onClose.bind(this);
-  }
-
-  async onPopupAfterOpen(): Promise<void> {
-  }
-
-  async onPopupAfterClose(): Promise<void> {
   }
 
   initCode(): void {

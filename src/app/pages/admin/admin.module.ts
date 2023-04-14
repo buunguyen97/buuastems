@@ -47,6 +47,7 @@ import {Astems22Component} from './astems22/astems22.component';
 import {Astems23Component} from './astems23/astems23.component';
 import {DxRadioGroupModule} from 'devextreme-angular';
 import { Astems24Component } from './astems24/astems24.component';
+import { Astems25Component } from './astems25/astems25.component';
 
 @NgModule({
     declarations: [
@@ -90,7 +91,8 @@ import { Astems24Component } from './astems24/astems24.component';
         Astems21Component,
         Astems22Component,
         Astems23Component,
-        Astems24Component
+        Astems24Component,
+        Astems25Component
     ],
     imports: [
         DevExtremeModule,

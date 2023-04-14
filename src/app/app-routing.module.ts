@@ -75,6 +75,7 @@ import {Astems21Component} from './pages/admin/astems21/astems21.component';
 import {Astems22Component} from './pages/admin/astems22/astems22.component';
 import {Astems23Component} from './pages/admin/astems23/astems23.component';
 import {Astems24Component} from './pages/admin/astems24/astems24.component';
+import {Astems25Component} from './pages/admin/astems25/astems25.component';
 /* 관리자 */
 
 /* 화주 */
@@ -384,6 +385,11 @@ const routes: Routes = [
   {
     path: 'tr/admin/astems24',
     component: Astems24Component,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'tr/admin/astems25',
+    component: Astems25Component,
     canActivate: [AuthGuardService]
   },
   /* 관리자 */

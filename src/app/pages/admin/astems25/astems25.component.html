@@ -283,7 +283,6 @@
           [dragEnabled]="true"
           [resizeEnabled]="true"
           [width]="1140"
-          (onShown)="onPopupAfterOpen()" (onHidden)="onPopupAfterClose()"
 
 >
   <dxi-toolbar-item [options]="{
@@ -498,7 +497,6 @@
                     [allowColumnReordering]="true"
                     [allowColumnResizing]="true"
                     [class]="'pop-item-box'"
-                    [columnAutoWidth]="false"
                     [focusedRowEnabled]="true"
                     [height]="450"
                     [rowAlternationEnabled]="true"
@@ -506,11 +504,8 @@
                     columnResizingMode=nextColumn
 
       >
-        <dxo-editing [(changes)]="changes"
-                     [allowUpdating]="true"
-                     [newRowPosition]="'last'"
-                     [selectTextOnEditStart]="true"
-                     mode="batch">
+        <dxo-editing
+          mode="batch">
         </dxo-editing>
         <dxo-selection mode="single"></dxo-selection>    <!-- single, multiple -->
         <dxo-load-panel [enabled]="true"></dxo-load-panel>
